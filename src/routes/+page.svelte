@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import ThemeToggle from '@/components/ui/ThemeToggle.svelte';
-</script>
+	</script>
 
 <main class="grid h-screen items-center justify-center">
 	<div class="grid w-[400px]">

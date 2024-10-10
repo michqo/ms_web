@@ -10,7 +10,11 @@
   export let id: 'login' | 'register';
   export let data: SuperValidated<LoginSchema>;
 
-  const actionWord = id == 'login' ? 'Log in' : 'Register';
+  const actionWords = {
+    login: 'Log In',
+    register: 'Register'
+  };
+  const actionWord = actionWords[id];
 
   const dispatch = createEventDispatcher();
 
