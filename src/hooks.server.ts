@@ -3,7 +3,6 @@ import { redirect, type Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
   const accessToken = event.cookies.get('access_token');
-  event.locals.accessToken = accessToken;
   const refreshToken = event.cookies.get('refresh_token');
 
   const isAuth = event.url.pathname.startsWith('/auth');
@@ -16,6 +15,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (accessToken) {
     try {
       const user = await serverApi(fetch, accessToken).getUsersMe();
+      event.locals.accessToken = accessToken;
       event.locals.user = user;
     } catch {
       try {
