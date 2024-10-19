@@ -1,81 +1,54 @@
 import { PUBLIC_API_URL } from '$env/static/public';
+import axios from 'axios';
 import type { LoginSchema } from './schemas';
 import type { LoginResponse, RefreshJWTResponse } from './types';
 
-const authApi = (customFetch = fetch) => ({
+const instance = axios.create({
+  baseURL: PUBLIC_API_URL,
+  validateStatus(status) {
+    return status < 400;
+  },
+});
+
+const authApi = () => ({
   createJwt: async (credentials: LoginSchema): Promise<LoginResponse> => {
-    const response = await customFetch(`${PUBLIC_API_URL}/auth/jwt/create/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    });
-    if (!response.ok) {
-      throw response.status;
-    }
-    return response.json();
+    const response = await instance.post('/auth/jwt/create/', credentials);
+    return response.data;
   },
   postUser: async (credentials: LoginSchema): Promise<any> => {
-    const response = await customFetch(`${PUBLIC_API_URL}/auth/users/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    });
-    if (!response.ok) {
-      throw await response.json();
-    }
-    return await response.json();
+    const response = await instance.post('/auth/users/', credentials);
+    return response.data;
   },
   refreshJwt: async (refresh: string): Promise<RefreshJWTResponse> => {
-    const response = await customFetch(`${PUBLIC_API_URL}/auth/jwt/refresh/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ refresh })
-    });
-    if (!response.ok) {
-      throw response.status;
-    }
-    return await response.json();
+    const response = await instance.post('/auth/jwt/refresh/', { refresh });
+    return response.data;
   }
 });
 
-const serverApi = (customFetch = fetch, token: string) => ({
+const serverApi = (token: string) => ({
   getUsersMe: async (): Promise<string> => {
-    const response = await customFetch(`${PUBLIC_API_URL}/auth/users/me/`, {
+    const response = await instance.get('/auth/users/me/', {
       headers: {
         Authorization: `JWT ${token}`
       }
     });
-    if (!response.ok) {
-      throw await response.json();
-    }
-    return (await response.json()).username;
+    return response.data.username;
   }
 });
 
-let headers = {};
+const authInstance = axios.create({
+  baseURL: PUBLIC_API_URL
+});
 
-const setAuthHeaders = (token: string) => {
-  headers = {
-    Authorization: `JWT ${token}`
-  };
+const setAuthToken = (token: string) => {
+  authInstance.defaults.headers.common['Authorization'] = `JWT ${token}`;
 };
 
-const api = (customFetch = fetch) => ({
+const api = () => ({
   getUsersMe: async (): Promise<string> => {
-    const response = await customFetch(`${PUBLIC_API_URL}/auth/users/me/`, {
-      headers
-    });
-    if (!response.ok) {
-      throw await response.json();
-    }
-    return (await response.json()).username;
+    const response = await authInstance.get('/auth/users/me/');
+    return response.data.username;
   }
 });
 
-export { authApi, serverApi, setAuthHeaders, api };
+export { authApi, serverApi, setAuthToken, api };

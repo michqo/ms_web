@@ -14,12 +14,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   if (accessToken) {
     try {
-      const user = await serverApi(fetch, accessToken).getUsersMe();
+      const user = await serverApi(accessToken).getUsersMe();
       event.locals.accessToken = accessToken;
       event.locals.user = user;
     } catch {
       try {
-        const res = await authApi(fetch).refreshJwt(refreshToken!);
+        const res = await authApi().refreshJwt(refreshToken!);
         event.cookies.set('access_token', res.access, { path: '/' });
       } catch {
         event.cookies.delete('access_token', { path: '/' });

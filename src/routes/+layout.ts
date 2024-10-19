@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { QueryClient } from '@tanstack/svelte-query';
 import type { LayoutLoad } from './$types';
-import { setAuthHeaders, api } from '@/shared/api';
+import { setAuthToken, api } from '@/shared/api';
 
 export const load = (async ({data, fetch}) => {
 	const queryClient = new QueryClient({
@@ -15,10 +15,10 @@ export const load = (async ({data, fetch}) => {
 
 	const accessToken = data.accessToken;
   if (accessToken) {
-    setAuthHeaders(accessToken);
+    setAuthToken(accessToken);
     const prefetchedUser = queryClient.prefetchQuery({
       queryKey: ['usersMe'],
-      queryFn: () => api(fetch).getUsersMe(),
+      queryFn: () => api().getUsersMe(),
       initialData: data.user
     });
     await Promise.all([prefetchedUser]);

@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { authApi } from '@/shared/api';
 import type { PostUserErrorResponse } from '@/shared/types';
 import { error } from '@sveltejs/kit';
+import { isAxiosError } from 'axios';
 
 export const load = (async () => {
 	return {
@@ -21,11 +22,11 @@ export const actions = {
       });
     }
 
-    const { fetch, cookies } = event;
+    const { cookies } = event;
     switch (form.id) {
       case 'login':
         try {
-          const res = await authApi(fetch).createJwt(form.data);
+          const res = await authApi().createJwt(form.data);
           cookies.set('access_token', res.access, { path: '/' });
           cookies.set('refresh_token', res.refresh, { path: '/' });
         } catch {
@@ -34,14 +35,16 @@ export const actions = {
         break;
       case 'register':
         try {
-          await authApi(fetch).postUser(form.data);
+          await authApi().postUser(form.data);
         } catch (error) {
-          const e = error as PostUserErrorResponse;
-          if (e.username) {
-            setError(form, 'username', e.username);
-          }
-          if (e.password) {
-            setError(form, 'password', e.password);
+          if (isAxiosError(error)) {
+            const e = error.response?.data as PostUserErrorResponse;
+            if (e.username) {
+              setError(form, 'username', e.username);
+            }
+            if (e.password) {
+              setError(form, 'password', e.password);
+            }
           }
         }
         break;
