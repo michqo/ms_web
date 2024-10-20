@@ -6,8 +6,16 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
 	import type { LayoutData } from './$types';
+	import { goto } from '$app/navigation';
+	import { api } from '@/shared/api';
+	import {Button} from '@/components/ui/button';
 	
   export let data: LayoutData;
+
+	function logOut() {
+		api.setAuthToken('');
+		goto('/logout');
+	}
 </script>
 
 <ModeWatcher />
@@ -21,6 +29,7 @@
 			<h1 class="text-2xl font-bold">Auth</h1>
 			<div class="flex items-center gap-x-2">
 				<p>{data.user ? data.user : ''}</p>
+				<Button variant='outline' on:click={logOut}>Log out</Button>
 				<ThemeToggle />
 			</div>
 		</div>
