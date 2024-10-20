@@ -22,7 +22,7 @@ export const load = (async ({data, fetch}) => {
       initialData: data.user
     });
     await Promise.all([prefetchedUser]);
-    return { queryClient, accessToken };
+    return { queryClient, accessToken, user: data.user };
   }
 	
 	return { queryClient };

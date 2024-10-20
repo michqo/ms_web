@@ -20,6 +20,7 @@
 		<div class="flex w-full max-w-xl items-center justify-between">
 			<h1 class="text-2xl font-bold">Auth</h1>
 			<div class="flex items-center gap-x-2">
+				<p>{data.user ? data.user : ''}</p>
 				<ThemeToggle />
 			</div>
 		</div>
