@@ -5,7 +5,7 @@
 
 	const userQuery = createQuery({
     queryKey: ['usersMe'],
-    queryFn: () => api().getUsersMe()
+    queryFn: () => api.getUsersMe()
   });
 	</script>
 

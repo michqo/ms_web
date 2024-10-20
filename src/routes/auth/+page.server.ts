@@ -26,7 +26,7 @@ export const actions = {
     switch (form.id) {
       case 'login':
         try {
-          const res = await authApi().createJwt(form.data);
+          const res = await authApi.createJwt(form.data);
           cookies.set('access_token', res.access, { path: '/' });
           cookies.set('refresh_token', res.refresh, { path: '/' });
         } catch {
@@ -35,7 +35,7 @@ export const actions = {
         break;
       case 'register':
         try {
-          await authApi().postUser(form.data);
+          await authApi.postUser(form.data);
         } catch (error) {
           if (isAxiosError(error)) {
             const e = error.response?.data as PostUserErrorResponse;

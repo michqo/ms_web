@@ -1,54 +1,58 @@
 import { PUBLIC_API_URL } from '$env/static/public';
-import axios from 'axios';
+import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
 import type { LoginResponse, RefreshJWTResponse } from './types';
 
-const instance = axios.create({
+const instanceConfig: CreateAxiosDefaults = {
   baseURL: PUBLIC_API_URL,
   validateStatus(status) {
     return status < 400;
-  },
-});
-
-const authApi = () => ({
-  createJwt: async (credentials: LoginSchema): Promise<LoginResponse> => {
-    const response = await instance.post('/auth/jwt/create/', credentials);
-    return response.data;
-  },
-  postUser: async (credentials: LoginSchema): Promise<any> => {
-    const response = await instance.post('/auth/users/', credentials);
-    return response.data;
-  },
-  refreshJwt: async (refresh: string): Promise<RefreshJWTResponse> => {
-    const response = await instance.post('/auth/jwt/refresh/', { refresh });
-    return response.data;
   }
-});
-
-const serverApi = (token: string) => ({
-  getUsersMe: async (): Promise<string> => {
-    const response = await instance.get('/auth/users/me/', {
-      headers: {
-        Authorization: `JWT ${token}`
-      }
-    });
-    return response.data.username;
-  }
-});
-
-const authInstance = axios.create({
-  baseURL: PUBLIC_API_URL
-});
-
-const setAuthToken = (token: string) => {
-  authInstance.defaults.headers.common['Authorization'] = `JWT ${token}`;
 };
 
-const api = () => ({
-  getUsersMe: async (): Promise<string> => {
-    const response = await authInstance.get('/auth/users/me/');
+class AuthenticationApi {
+  private instance = axios.create(instanceConfig);
+
+  async createJwt(credentials: LoginSchema): Promise<LoginResponse> {
+    const response = await this.instance.post('/auth/jwt/create/', credentials);
+    return response.data;
+  }
+
+  async postUser(credentials: LoginSchema): Promise<any> {
+    const response = await this.instance.post('/auth/users/', credentials);
+    return response.data;
+  }
+
+  async refreshJwt(refresh: string): Promise<RefreshJWTResponse> {
+    const response = await this.instance.post('/auth/jwt/refresh/', { refresh });
+    return response.data;
+  }
+
+  async getUsersMe(token?: string): Promise<string> {
+    const headers = token ? { Authorization: `JWT ${token}` } : undefined;
+    const response = await this.instance.get('/auth/users/me/', { headers });
     return response.data.username;
   }
-});
+}
 
-export { authApi, serverApi, setAuthToken, api };
+class AuthenticatedApi {
+  private instance = axios.create(instanceConfig);
+
+  setAuthToken(token: string) {
+    if (token === '') {
+      delete this.instance.defaults.headers.common['Authorization'];
+      return;
+    }
+    this.instance.defaults.headers.common['Authorization'] = `JWT ${token}`;
+  }
+
+  async getUsersMe(): Promise<string> {
+    const response = await this.instance.get('/auth/users/me/');
+    return response.data.username;
+  }
+}
+
+const authApi = new AuthenticationApi();
+const authenticatedApi = new AuthenticatedApi();
+
+export { authApi, authenticatedApi as api };
