@@ -1,7 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse } from './types';
+import type { LoginResponse, RefreshJWTResponse, Measurement, ListResponse } from './types';
 
 const instanceConfig: CreateAxiosDefaults = {
   baseURL: PUBLIC_API_URL,
@@ -49,6 +49,11 @@ class AuthenticatedApi {
   async getUsersMe(): Promise<string> {
     const response = await this.instance.get('/auth/users/me/');
     return response.data.username;
+  }
+
+  async getMeasurements(): Promise<Measurement[]> {
+    const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/');
+    return response.data.results;
   }
 }
 

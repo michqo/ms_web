@@ -1,15 +1,34 @@
 interface LoginResponse {
-  refresh: string;
-  access: string;
+	refresh: string;
+	access: string;
 }
 
 interface PostUserErrorResponse {
-  username?: string[];
-  password?: string[];
+	username?: string[];
+	password?: string[];
 }
 
 interface RefreshJWTResponse {
-  access: string;
+	access: string;
 }
 
-export type { LoginResponse, PostUserErrorResponse, RefreshJWTResponse };
+interface ListResponse<T> {
+	count: number;
+	next: string | null;
+	previous: string | null;
+	results: T[];
+}
+
+interface Measurement {
+	timestamp: string;
+	temperature: number;
+	humidity: number;
+	pressure: number;
+	rain: number;
+	wind_speed: number;
+	wind_direction: number;
+	created_at: string;
+}
+
+export type { ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse };
+
