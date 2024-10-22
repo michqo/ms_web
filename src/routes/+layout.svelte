@@ -8,9 +8,10 @@
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
 	import { api } from '@/shared/api';
-	import {Button} from '@/components/ui/button';
-	
-  export let data: LayoutData;
+	import { Button } from '@/components/ui/button';
+	import { page } from '$app/stores';
+
+	export let data: LayoutData;
 
 	function logOut() {
 		api.setAuthToken('');
@@ -24,12 +25,16 @@
 
 <QueryClientProvider client={data.queryClient}>
 	<Loading />
-	<div class="fixed p-4 w-full flex justify-center">
+	<div class="fixed flex w-full justify-center p-4">
 		<div class="flex w-full max-w-xl items-center justify-between">
-			<h1 class="text-2xl font-bold">Auth</h1>
+			<h1 class="text-2xl font-bold">
+				{$page.url.pathname.length > 1 ? $page.url.pathname.split('/')[1] : '/'}
+			</h1>
 			<div class="flex items-center gap-x-2">
-				<p>{data.user ? data.user : ''}</p>
-				<Button variant='outline' on:click={logOut}>Log out</Button>
+				{#if data.user}
+					<p>{data.user}</p>
+					<Button variant="outline" on:click={logOut}>Log out</Button>
+				{/if}
 				<ThemeToggle />
 			</div>
 		</div>
