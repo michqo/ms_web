@@ -6,12 +6,18 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
 	import type { LayoutData } from './$types';
+	import type { Snippet } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { api } from '@/shared/api';
 	import { Button } from '@/components/ui/button';
 	import { page } from '$app/stores';
 
-	export let data: LayoutData;
+	interface Props {
+		data: LayoutData;
+		children: Snippet;
+	}
+
+	let { data, children }: Props = $props();
 
 	function logOut() {
 		api.setAuthToken('');
@@ -33,11 +39,11 @@
 			<div class="flex items-center gap-x-2">
 				{#if data.user}
 					<p>{data.user}</p>
-					<Button variant="outline" on:click={logOut}>Log out</Button>
+					<Button variant="outline" onclick={logOut}>Log out</Button>
 				{/if}
 				<ThemeToggle />
 			</div>
 		</div>
 	</div>
-	<slot />
+	{@render children()}
 </QueryClientProvider>
