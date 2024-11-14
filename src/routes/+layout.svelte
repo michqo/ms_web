@@ -33,7 +33,7 @@
 <QueryClientProvider client={data.queryClient}>
 	<Loading />
 	<div
-		class="fixed flex w-full justify-center border-b border-border/40 bg-primary-foreground/60 p-4 backdrop-blur-md"
+		class="sticky z-50 inset-0 flex w-full justify-center border-b border-border/40 bg-primary-foreground/60 p-4 backdrop-blur-md"
 	>
 		<div class="flex w-full max-w-xl items-center justify-between">
 			<h1 class="text-2xl font-bold">
