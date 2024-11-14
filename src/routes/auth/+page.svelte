@@ -11,7 +11,7 @@
 
 	let { data }: Props = $props();
 
-	const forParam = $page.url.searchParams.get('for');
+	const forParam = $derived($page.url.searchParams.get('for'));
 </script>
 
 <main class="grid h-screen items-center justify-center">
