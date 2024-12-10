@@ -5,6 +5,7 @@
 	import { resetMode, setMode } from 'mode-watcher';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { buttonVariants } from '@/components/ui/button/index.js';
+	import { SunMoon } from 'lucide-svelte';
 </script>
 
 <DropdownMenu.Root>
@@ -18,8 +19,14 @@
 		<span class="sr-only">Toggle theme</span>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
-		<DropdownMenu.Item onclick={() => setMode('light')}>Light</DropdownMenu.Item>
-		<DropdownMenu.Item onclick={() => setMode('dark')}>Dark</DropdownMenu.Item>
-		<DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+		<DropdownMenu.Item onclick={() => setMode('light')}>
+			<Sun class="mr-2" /> Light
+		</DropdownMenu.Item>
+		<DropdownMenu.Item onclick={() => setMode('dark')}>
+			<Moon class="mr-2" /> Dark
+		</DropdownMenu.Item>
+		<DropdownMenu.Item onclick={() => resetMode()}>
+			<SunMoon class="mr-2" /> System
+		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
