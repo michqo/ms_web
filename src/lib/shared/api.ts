@@ -51,9 +51,9 @@ class AuthenticatedApi {
     return response.data.username;
   }
 
-  async getMeasurements(): Promise<Measurement[]> {
-    const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/');
-    return response.data.results;
+  async getMeasurements(page: number = 1): Promise<ListResponse<Measurement>> {
+    const response = await this.instance.get<ListResponse<Measurement>>(`/api/measurements/?page=${page}`);
+    return response.data;
   }
 }
 

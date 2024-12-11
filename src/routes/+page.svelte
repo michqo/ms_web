@@ -4,11 +4,14 @@
 	import * as Tabs from '@/components/ui/tabs';
 	import * as Table from '@/components/ui/table';
 	import dayjs from 'dayjs';
+	import Pagination from '@/components/Pagination.svelte';
 
-	const dataQuery = createQuery({
-		queryKey: ['measurements'],
-		queryFn: () => api.getMeasurements()
-	});
+	let page = $state(1);
+	
+	const dataQuery = $derived(createQuery({
+		queryKey: ['measurements', page],
+		queryFn: () => api.getMeasurements(page)
+	}));
 </script>
 
 <Tabs.Root value="table" class="w-full">
@@ -19,7 +22,7 @@
 	<main class="grid h-svh items-center justify-center">
 		<Tabs.Content value="table">
 			{#if $dataQuery.data}
-				<Table.Root>
+				<Table.Root class="mb-8">
 					<Table.Header>
 						<Table.Row>
 							<Table.Cell>Time</Table.Cell>
@@ -28,7 +31,7 @@
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{#each $dataQuery.data as measurement}
+						{#each $dataQuery.data.results as measurement}
 							<Table.Row>
 								<Table.Cell>{dayjs(measurement.timestamp).format("DD.MM.YYYY HH:mm")}</Table.Cell>
 								<Table.Cell>{measurement.temperature}</Table.Cell>
@@ -37,6 +40,7 @@
 						{/each}
 					</Table.Body>
 				</Table.Root>
+				<Pagination bind:page count={$dataQuery.data.count} />
 			{/if}
 		</Tabs.Content>
 		<Tabs.Content value="graph">
