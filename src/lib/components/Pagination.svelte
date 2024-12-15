@@ -6,12 +6,13 @@
   interface Props {
     count: number;
     page: number;
+    onPageChange?: (page: number) => void;
   }
 
-	let { count, page = $bindable() }: Props = $props();
+	let { count, page = $bindable(), onPageChange }: Props = $props();
 </script>
 
-<Pagination.Root bind:page {count} perPage={countPerPage}>
+<Pagination.Root bind:page {count} {onPageChange} perPage={countPerPage}>
   {#snippet children({ pages, currentPage })}
     <Pagination.Content>
       <Pagination.Item>

@@ -5,13 +5,20 @@
 	import * as Table from '@/components/ui/table';
 	import dayjs from 'dayjs';
 	import Pagination from '@/components/Pagination.svelte';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
-	let page = $state(1);
-	
+	const pageParam = $derived($page.url.searchParams.get('page'));
+	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
+
 	const dataQuery = $derived(createQuery({
-		queryKey: ['measurements', page],
-		queryFn: () => api.getMeasurements(page)
+		queryKey: ['measurements', pageNumber],
+		queryFn: () => api.getMeasurements(pageNumber)
 	}));
+
+	function onPageChange(page: number) {
+		goto(`?page=${page}`);
+	}
 </script>
 
 <Tabs.Root value="table" class="w-full">
@@ -40,7 +47,7 @@
 						{/each}
 					</Table.Body>
 				</Table.Root>
-				<Pagination bind:page count={$dataQuery.data.count} />
+				<Pagination page={pageNumber} count={$dataQuery.data.count} {onPageChange} />
 			{/if}
 		</Tabs.Content>
 		<Tabs.Content value="graph">
