@@ -6,7 +6,7 @@
 	import '../app.css';
 	import type { LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
-	import Nav from '@/components/Nav.svelte';
+	import Nav from '@/components/ui/nav'
 
 	interface Props {
 		data: LayoutData;
