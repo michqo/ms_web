@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Home } from 'lucide-svelte';
+	import { Home, Thermometer } from 'lucide-svelte';
 
   type Route = {
     name: string;
@@ -14,6 +14,10 @@
       name: 'Home',
       icon: Home,
     },
+    '/measurements': {
+      name: 'Measurements',
+      icon: Thermometer,
+    },
   }
 
   const homeLink = {
@@ -24,21 +28,17 @@
   const currentPage = $derived($page.url.pathname ? routesMap[$page.url.pathname] : homeLink);
 </script>
 
-{#snippet link(route: string, data: Route)}
-  <data.icon />
-  <a href={route}>{data.name}</a>
-{/snippet}
-
 <DropdownMenu.Root>
-  <DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost' })}>
+  <DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary' })}>
     <currentPage.icon />
     <span>{currentPage.name}</span>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       {#each Object.entries(routesMap) as [route, data]}
-        <DropdownMenu.Item>
-          {@render link(route, data)}
+        <DropdownMenu.Item class={currentPage.name === data.name ? 'bg-secondary' : ''}>
+          <data.icon />
+          <a href={route}>{data.name}</a>
         </DropdownMenu.Item>
       {/each}
     </DropdownMenu.Group>
