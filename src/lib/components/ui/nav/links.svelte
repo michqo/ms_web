@@ -1,14 +1,11 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-	import { buttonVariants } from '@/components/ui/button';
-	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Home, Thermometer } from 'lucide-svelte';
+  import { page } from '$app/state';
+  import { buttonVariants } from '@/components/ui/button';
+  import * as DropdownMenu from '@/components/ui/dropdown-menu';
+  import { Home, Thermometer } from 'lucide-svelte';
+  import { type Route } from './nav.svelte';
+	import type { Snippet } from 'svelte';
 
-  type Route = {
-    name: string;
-    icon: any;
-  }
-  
   const routesMap: Record<string, Route> = {
     '/': {
       name: 'Home',
@@ -25,13 +22,14 @@
     icon: Home,
   }
 
-  const currentPage = $derived($page.url.pathname ? routesMap[$page.url.pathname] : homeLink);
+  const { link }: { link: Snippet<[Route]> } = $props();
+
+  const currentPage = $derived(page.url.pathname ? routesMap[page.url.pathname] : homeLink);
 </script>
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary' })}>
-    <currentPage.icon />
-    <span>{currentPage.name}</span>
+    {@render link(currentPage)}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>

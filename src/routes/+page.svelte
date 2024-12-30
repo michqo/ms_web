@@ -5,10 +5,10 @@
 	import * as Table from '@/components/ui/table';
 	import dayjs from 'dayjs';
 	import Pagination from '@/components/Pagination.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 
-	const pageParam = $derived($page.url.searchParams.get('page'));
+	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
 
 	const dataQuery = $derived(createQuery({

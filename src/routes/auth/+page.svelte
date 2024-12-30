@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import * as Tabs from '@/components/ui/tabs/index';
 	import type { PageData } from './$types';
 	import AuthCard from '@/components/ui/AuthCard.svelte';
@@ -11,7 +11,7 @@
 
 	let { data }: Props = $props();
 
-	const forParam = $derived($page.url.searchParams.get('for'));
+	const forParam = $derived(page.url.searchParams.get('for'));
 </script>
 
 <main class="grid h-screen items-center justify-center">
