@@ -36,7 +36,7 @@
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       {#each Object.entries(routesMap) as [route, data]}
-        <DropdownMenu.Item class={currentPage.name === data.name ? 'bg-secondary' : ''}>
+        <DropdownMenu.Item class={{ 'bg-secondary': currentPage.name === data.name }}>
           <data.icon />
           <a href={route}>{data.name}</a>
         </DropdownMenu.Item>
