@@ -2,11 +2,11 @@
 	import { api } from '@/shared/api';
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
-	import * as Table from '@/components/ui/table';
-	import dayjs from 'dayjs';
-	import Pagination from '@/components/Pagination.svelte';
+	import {Skeleton} from '@/components/ui/skeleton';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
+	import Table from '@/components/measurements/table.svelte';
 
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
@@ -19,6 +19,14 @@
 	function onPageChange(page: number) {
 		goto(`?page=${page}`);
 	}
+
+	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
+	
+	$effect(() => {
+		if (emptyData) {
+			toast.error('No measurements found.');
+		}
+	})
 </script>
 
 <Tabs.Root value="table" class="w-full">
@@ -29,25 +37,15 @@
 	<main class="grid h-svh items-center justify-center">
 		<Tabs.Content value="table">
 			{#if $dataQuery.data}
-				<Table.Root class="mb-8">
-					<Table.Header>
-						<Table.Row>
-							<Table.Cell>Time</Table.Cell>
-							<Table.Cell>Temperature</Table.Cell>
-							<Table.Cell>Humidity</Table.Cell>
-						</Table.Row>
-					</Table.Header>
-					<Table.Body>
-						{#each $dataQuery.data.results as measurement}
-							<Table.Row>
-								<Table.Cell>{dayjs(measurement.timestamp).format("DD.MM.YYYY HH:mm")}</Table.Cell>
-								<Table.Cell>{measurement.temperature}</Table.Cell>
-								<Table.Cell>{measurement.humidity}</Table.Cell>
-							</Table.Row>
-						{/each}
-					</Table.Body>
-				</Table.Root>
-				<Pagination page={pageNumber} count={$dataQuery.data.count} {onPageChange} />
+				{#if !emptyData}
+					<Table {pageNumber} {onPageChange} {dataQuery} />
+				{:else}
+					<div class="flex flex-col items-center gap-5">
+						<Skeleton class="h-[35px] w-[250px]" />
+						<Skeleton class="h-[20px] w-[150px] rounded" />
+						<Skeleton class="h-[30px] w-[180px]" />
+					</div>
+				{/if}
 			{/if}
 		</Tabs.Content>
 		<Tabs.Content value="graph">
