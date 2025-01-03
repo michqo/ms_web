@@ -21,7 +21,12 @@
 	function onPageChange(page: number) {
 		goto(`?page=${page}`);
 	}
+	function onViewChange(view: string) {
+		goto(`?view=${view}`);
+	}
 
+	const viewParam = $derived(page.url.searchParams.get('view'));
+	
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
 
 	$effect(() => {
@@ -31,7 +36,7 @@
 	});
 </script>
 
-<Tabs.Root value="table" class="w-full">
+<Tabs.Root value={viewParam ? viewParam : 'table'} onValueChange={onViewChange} class="w-full">
 	<Tabs.List class="grid w-full grid-cols-2">
 		<Tabs.Trigger value="table">Table</Tabs.Trigger>
 		<Tabs.Trigger value="graph">Graph</Tabs.Trigger>
