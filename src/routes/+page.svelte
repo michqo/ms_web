@@ -2,7 +2,7 @@
 	import { api } from '@/shared/api';
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
-	import {Skeleton} from '@/components/ui/skeleton';
+	import { Skeleton } from '@/components/ui/skeleton';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
@@ -11,22 +11,24 @@
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
 
-	const dataQuery = $derived(createQuery({
-		queryKey: ['measurements', pageNumber],
-		queryFn: () => api.getMeasurements(pageNumber)
-	}));
+	const dataQuery = $derived(
+		createQuery({
+			queryKey: ['measurements', pageNumber],
+			queryFn: () => api.getMeasurements(pageNumber)
+		})
+	);
 
 	function onPageChange(page: number) {
 		goto(`?page=${page}`);
 	}
 
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
-	
+
 	$effect(() => {
 		if (emptyData) {
 			toast.error('No measurements found.');
 		}
-	})
+	});
 </script>
 
 <Tabs.Root value="table" class="w-full">
@@ -35,8 +37,8 @@
 		<Tabs.Trigger value="graph">Graph</Tabs.Trigger>
 	</Tabs.List>
 	<main class="grid h-svh items-center justify-center">
-		<Tabs.Content value="table">
-			{#if $dataQuery.data}
+		{#if $dataQuery.data}
+			<Tabs.Content value="table">
 				{#if !emptyData}
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
@@ -46,10 +48,10 @@
 						<Skeleton class="h-[30px] w-[180px]" />
 					</div>
 				{/if}
-			{/if}
-		</Tabs.Content>
-		<Tabs.Content value="graph">
-			<p>TODO: graph</p>
-		</Tabs.Content>
+			</Tabs.Content>
+			<Tabs.Content value="graph">
+				<p>graph</p>
+			</Tabs.Content>
+		{/if}
 	</main>
 </Tabs.Root>

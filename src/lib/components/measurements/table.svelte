@@ -1,12 +1,14 @@
 <script lang="ts">
-  	import * as Table from '@/components/ui/table';
+  import * as Table from '@/components/ui/table';
 	import dayjs from 'dayjs';
 	import Pagination from '@/components/Pagination.svelte';
+	import type { ListResponse, Measurement } from '@/shared/types';
+	import type { CreateQueryResult } from '@tanstack/svelte-query';
 
   interface Props {
     pageNumber: number;
     onPageChange: (page: number) => void;
-    dataQuery: any;
+    dataQuery: CreateQueryResult<ListResponse<Measurement>, Error>;
   }
   
   const { pageNumber, onPageChange, dataQuery }: Props = $props();
@@ -21,7 +23,7 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each $dataQuery.data.results as measurement}
+    {#each $dataQuery.data!.results as measurement}
       <Table.Row>
         <Table.Cell>{dayjs(measurement.timestamp).format("DD.MM.YYYY HH:mm")}</Table.Cell>
         <Table.Cell>{measurement.temperature}</Table.Cell>
@@ -30,4 +32,4 @@
     {/each}
   </Table.Body>
 </Table.Root>
-<Pagination page={pageNumber} count={$dataQuery.data.count} {onPageChange} />
+<Pagination page={pageNumber} count={$dataQuery.data!.count} {onPageChange} />
