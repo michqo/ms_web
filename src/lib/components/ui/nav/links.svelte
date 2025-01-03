@@ -5,6 +5,7 @@
   import { Cloud, Home, Thermometer } from 'lucide-svelte';
   import { type Route } from './nav.svelte';
 	import type { Snippet } from 'svelte';
+	import { goto } from '$app/navigation';
 
   const routesMap: Record<string, Route> = {
     '/': {
@@ -20,15 +21,15 @@
       icon: Cloud,
     },
   }
-
-  const homeLink = {
-    name: 'Home',
+  
+  const unknownRoute = {
+    name: 'Unknown',
     icon: Home,
   }
 
   const { link }: { link: Snippet<[Route]> } = $props();
 
-  const currentPage = $derived(page.url.pathname ? routesMap[page.url.pathname] : homeLink);
+  const currentPage = $derived(routesMap[page.url.pathname] ?? unknownRoute);
 </script>
 
 <DropdownMenu.Root>
@@ -38,9 +39,8 @@
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       {#each Object.entries(routesMap) as [route, data]}
-        <DropdownMenu.Item class={{ 'bg-secondary': currentPage.name === data.name }}>
-          <data.icon />
-          <a href={route}>{data.name}</a>
+        <DropdownMenu.Item onclick={() => goto(route)} class={{ 'bg-secondary': currentPage.name === data.name }}>
+          {@render link(data)}
         </DropdownMenu.Item>
       {/each}
     </DropdownMenu.Group>
