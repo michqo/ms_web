@@ -2,7 +2,7 @@
   type Route = {
     name: string;
     icon: any;
-  }
+  };
 
 	export { type Route };
 </script>

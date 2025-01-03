@@ -1,0 +1,1 @@
+<p class="text-emerald-500">forecast</p>

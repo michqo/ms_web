@@ -2,7 +2,7 @@
   import { page } from '$app/state';
   import { buttonVariants } from '@/components/ui/button';
   import * as DropdownMenu from '@/components/ui/dropdown-menu';
-  import { Home, Thermometer } from 'lucide-svelte';
+  import { Cloud, Home, Thermometer } from 'lucide-svelte';
   import { type Route } from './nav.svelte';
 	import type { Snippet } from 'svelte';
 
@@ -14,6 +14,10 @@
     '/measurements': {
       name: 'Measurements',
       icon: Thermometer,
+    },
+    '/forecast': {
+      name: 'Forecast',
+      icon: Cloud,
     },
   }
 
