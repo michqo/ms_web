@@ -3,11 +3,13 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
 	import { Skeleton } from '@/components/ui/skeleton';
+  import * as Accordion from '@/components/ui/accordion';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import Table from '@/components/measurements/table.svelte';
 	import Chart from '@/components/measurements/chart.svelte';
+	import type { Measurement } from '@/shared/types';
 
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
@@ -26,8 +28,18 @@
 		goto(`?view=${view}`);
 	}
 
-	const viewParam = $derived(page.url.searchParams.get('view'));
+  function createChartData(key: keyof Measurement) {
+    return $dataQuery.data?.results.map((data) => ({
+        date: new Date(data.timestamp),
+        value: data[key]
+    }))
+  }
 
+  const tempChartData = $derived(createChartData('temperature'));
+  const humChartData = $derived(createChartData('humidity'));
+
+	const viewParam = $derived(page.url.searchParams.get('view'));
+  
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
 
 	$effect(() => {
@@ -56,7 +68,20 @@
 				{/if}
 			</Tabs.Content>
 			<Tabs.Content value="graph">
-        <Chart {dataQuery} />
+        <Accordion.Root value={["temp"]} type="multiple" class="w-screen max-w-2xl">
+          <Accordion.Item value="temp">
+            <Accordion.Trigger>Temperature</Accordion.Trigger>
+            <Accordion.Content>
+              <Chart chartData={tempChartData!} />
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item value="hum">
+            <Accordion.Trigger>Humidity</Accordion.Trigger>
+            <Accordion.Content>
+              <Chart chartData={humChartData!} />
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
 			</Tabs.Content>
 		{/if}
 	</main>

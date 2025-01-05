@@ -1,25 +1,17 @@
 <script lang="ts">
-	import type { ListResponse, Measurement } from '@/shared/types';
-	import type { CreateQueryResult } from '@tanstack/svelte-query';
+	import type { ChartData } from '@/shared/types';
 	import { scaleTime } from 'd3-scale';
 	import dayjs from 'dayjs';
 	import { Area, Axis, Chart, Highlight, Svg, Tooltip } from 'layerchart';
 
 	interface Props {
-		dataQuery: CreateQueryResult<ListResponse<Measurement>, Error>;
+    chartData: ChartData[]
 	}
 
-	const { dataQuery }: Props = $props();
-
-	const chartData = $derived(
-		$dataQuery.data?.results.map((data) => ({
-			date: new Date(data.timestamp),
-			value: data.temperature
-		}))
-	);
+	const { chartData }: Props = $props();
 </script>
 
-<div class="w-[700px] h-[300px] rounded border p-4">
+<div class="w-full h-[300px] rounded border p-4">
 	<Chart
 		data={chartData}
 		x="date"

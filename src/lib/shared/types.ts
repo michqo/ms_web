@@ -30,5 +30,10 @@ interface Measurement {
 	created_at: string;
 }
 
-export type { ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse };
+interface ChartData {
+	date: Date;
+	value: string | number;
+}
+
+export type { ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse, ChartData };
 
