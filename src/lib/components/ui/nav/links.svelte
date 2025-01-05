@@ -39,9 +39,11 @@
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       {#each Object.entries(routesMap) as [route, data]}
-        <DropdownMenu.Item onclick={() => goto(route)} class={{ 'bg-secondary': currentPage.name === data.name }}>
-          {@render link(data)}
-        </DropdownMenu.Item>
+        <a href={route}>
+          <DropdownMenu.Item class={{ 'bg-secondary': currentPage.name === data.name }}>
+            {@render link(data)}
+          </DropdownMenu.Item>
+        </a>
       {/each}
     </DropdownMenu.Group>
   </DropdownMenu.Content>
