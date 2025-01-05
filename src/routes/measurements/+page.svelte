@@ -7,6 +7,7 @@
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import Table from '@/components/measurements/table.svelte';
+	import Chart from '@/components/measurements/chart.svelte';
 
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
@@ -55,7 +56,7 @@
 				{/if}
 			</Tabs.Content>
 			<Tabs.Content value="graph">
-				<p>graph</p>
+        <Chart {dataQuery} />
 			</Tabs.Content>
 		{/if}
 	</main>
