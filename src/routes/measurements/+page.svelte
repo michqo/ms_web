@@ -60,28 +60,35 @@
 				{#if !emptyData}
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
-					<div class="flex flex-col items-center gap-5">
-						<Skeleton class="h-[35px] w-[250px]" />
-						<Skeleton class="h-[20px] w-[150px] rounded" />
-						<Skeleton class="h-[30px] w-[180px]" />
+					<div class="flex flex-col items-center gap-5 w-screen max-w-sm">
+						<Skeleton class="h-[35px] w-full" />
+						<Skeleton class="h-[300px] w-full rounded" />
+						<Skeleton class="h-[35px] w-full" />
 					</div>
 				{/if}
 			</Tabs.Content>
 			<Tabs.Content value="graph">
-        <Accordion.Root value={["temp"]} type="multiple" class="w-screen max-w-2xl">
-          <Accordion.Item value="temp">
-            <Accordion.Trigger>Temperature</Accordion.Trigger>
-            <Accordion.Content>
-              <Chart chartData={tempChartData!} />
-            </Accordion.Content>
-          </Accordion.Item>
-          <Accordion.Item value="hum">
-            <Accordion.Trigger>Humidity</Accordion.Trigger>
-            <Accordion.Content>
-              <Chart chartData={humChartData!} />
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion.Root>
+        {#if !emptyData}
+          <Accordion.Root value={["temp"]} type="multiple" class="w-screen max-w-xl">
+            <Accordion.Item value="temp">
+              <Accordion.Trigger>Temperature</Accordion.Trigger>
+              <Accordion.Content>
+                <Chart chartData={tempChartData!} suffix="°C" />
+              </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="hum">
+              <Accordion.Trigger>Humidity</Accordion.Trigger>
+              <Accordion.Content>
+                <Chart chartData={humChartData!} suffix="%" />
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
+				{:else}
+					<div class="flex flex-col items-center gap-5 w-screen max-w-xl">
+						<Skeleton class="h-[40px] w-full" />
+						<Skeleton class="h-[40px] w-full" />
+					</div>
+				{/if}
 			</Tabs.Content>
 		{/if}
 	</main>
