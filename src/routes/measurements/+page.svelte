@@ -3,7 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
 	import { Skeleton } from '@/components/ui/skeleton';
-  import * as Accordion from '@/components/ui/accordion';
+	import * as Accordion from '@/components/ui/accordion';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
@@ -28,18 +28,17 @@
 		goto(`?view=${view}`);
 	}
 
-  function createChartData(key: keyof Measurement) {
-    return $dataQuery.data?.results.map((data) => ({
-        date: new Date(data.timestamp),
-        value: data[key]
-    }))
-  }
+	const createChartData = (key: keyof Measurement) =>
+		$dataQuery.data?.results.map((data) => ({
+			date: new Date(data.timestamp),
+			value: data[key]
+		}));
 
-  const tempChartData = $derived(createChartData('temperature'));
-  const humChartData = $derived(createChartData('humidity'));
+	const tempChartData = $derived(createChartData('temperature'));
+	const humChartData = $derived(createChartData('humidity'));
 
 	const viewParam = $derived(page.url.searchParams.get('view'));
-  
+
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
 
 	$effect(() => {
@@ -60,7 +59,7 @@
 				{#if !emptyData}
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
-					<div class="flex flex-col items-center gap-5 w-screen max-w-sm">
+					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
 						<Skeleton class="h-[35px] w-full" />
 						<Skeleton class="h-[300px] w-full rounded" />
 						<Skeleton class="h-[35px] w-full" />
@@ -68,23 +67,23 @@
 				{/if}
 			</Tabs.Content>
 			<Tabs.Content value="graph">
-        {#if !emptyData}
-          <Accordion.Root value={["temp"]} type="multiple" class="w-screen max-w-xl">
-            <Accordion.Item value="temp">
-              <Accordion.Trigger>Temperature</Accordion.Trigger>
-              <Accordion.Content>
-                <Chart chartData={tempChartData!} suffix="°C" />
-              </Accordion.Content>
-            </Accordion.Item>
-            <Accordion.Item value="hum">
-              <Accordion.Trigger>Humidity</Accordion.Trigger>
-              <Accordion.Content>
-                <Chart chartData={humChartData!} suffix="%" />
-              </Accordion.Content>
-            </Accordion.Item>
-          </Accordion.Root>
+				{#if !emptyData}
+					<Accordion.Root value={['temp']} type="multiple" class="w-screen max-w-xl">
+						<Accordion.Item value="temp">
+							<Accordion.Trigger>Temperature</Accordion.Trigger>
+							<Accordion.Content>
+								<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
+							</Accordion.Content>
+						</Accordion.Item>
+						<Accordion.Item value="hum">
+							<Accordion.Trigger>Humidity</Accordion.Trigger>
+							<Accordion.Content>
+								<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion.Root>
 				{:else}
-					<div class="flex flex-col items-center gap-5 w-screen max-w-xl">
+					<div class="flex w-screen max-w-xl flex-col items-center gap-5">
 						<Skeleton class="h-[40px] w-full" />
 						<Skeleton class="h-[40px] w-full" />
 					</div>

@@ -2,37 +2,50 @@
 	import type { ChartData } from '@/shared/types';
 	import { scaleTime } from 'd3-scale';
 	import dayjs from 'dayjs';
-	import { Area, Axis, Chart, Highlight, Svg, Tooltip } from 'layerchart';
+	import { Axis, Chart, Highlight, Labels, Spline, Svg, Tooltip } from 'layerchart';
+
+	type LineColor = 'red' | 'purple';
 
 	interface Props {
-    chartData: ChartData[]
+		chartData: ChartData[];
+		lineColor: LineColor;
+		suffix?: string;
 	}
 
-	const { chartData }: Props = $props();
+	const lineColors: Record<LineColor, string> = {
+		red: 'stroke-red-500',
+		purple: 'stroke-purple-500'
+	};
+
+	const { chartData, lineColor, suffix = '' }: Props = $props();
 </script>
 
-<div class="w-full h-[300px] rounded border p-4">
+<div class="h-[300px] w-full rounded border p-5">
 	<Chart
 		data={chartData}
 		x="date"
 		xScale={scaleTime()}
 		y="value"
-		yDomain={[0, null]}
 		yNice
 		padding={{ left: 16, bottom: 24 }}
 		tooltip={{ mode: 'bisect-x' }}
 	>
 		<Svg>
-			<Axis placement="left" grid rule />
-			<Axis placement="bottom" format={(d) => dayjs(d).format('HH:mm')} rule />
-			<Area line={{ class: 'stroke-2 stroke-primary' }} class="fill-primary/30" />
+			<Axis placement="left" grid rule={{ class: 'stroke-border' }} />
+			<Axis
+				placement="bottom"
+				format={(d) => dayjs(d).format('HH:mm')}
+				rule={{ class: 'stroke-border' }}
+			/>
+			<Spline class="stroke-2 {lineColors[lineColor]}" />
+			<Labels format="integer" />
 			<Highlight points lines />
 		</Svg>
 
 		<Tooltip.Root let:data>
-			<Tooltip.Header>{dayjs(data.d).format('ddd, MMMM D')}</Tooltip.Header>
+			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D HH:mm')}</Tooltip.Header>
 			<Tooltip.List>
-				<Tooltip.Item label="value" value={data.value} />
+				<Tooltip.Item label="value" value={data.value + suffix} />
 			</Tooltip.List>
 		</Tooltip.Root>
 	</Chart>
