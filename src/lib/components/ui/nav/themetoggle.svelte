@@ -2,7 +2,7 @@
 	import Moon from 'lucide-svelte/icons/moon';
 	import Sun from 'lucide-svelte/icons/sun';
 
-	import { resetMode, setMode } from 'mode-watcher';
+	import { resetMode, setMode, mode } from 'mode-watcher';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { buttonVariants } from '@/components/ui/button/index.js';
 	import { SunMoon } from 'lucide-svelte';
@@ -19,10 +19,10 @@
 		<span class="sr-only">Toggle theme</span>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
-		<DropdownMenu.Item onclick={() => setMode('light')}>
+		<DropdownMenu.Item onclick={() => setMode('light')} class={{ 'bg-secondary': $mode === 'light' }}>
 			<Sun class="mr-2" /> Light
 		</DropdownMenu.Item>
-		<DropdownMenu.Item onclick={() => setMode('dark')}>
+		<DropdownMenu.Item onclick={() => setMode('dark')} class={{ 'bg-secondary': $mode === 'dark' }}>
 			<Moon class="mr-2" /> Dark
 		</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={() => resetMode()}>
