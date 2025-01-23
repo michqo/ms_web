@@ -9,7 +9,9 @@
 	import { toast } from 'svelte-sonner';
 	import Table from '@/components/measurements/table.svelte';
 	import Chart from '@/components/measurements/chart.svelte';
+	import Popover from '@/components/ui/weekday';
 	import type { Measurement } from '@/shared/types';
+	import { groupByWeekDay } from '@/shared/utils';
 
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
@@ -55,8 +57,9 @@
 	</Tabs.List>
 	<main class="grid h-svh items-center justify-center">
 		{#if $dataQuery.data}
-			<Tabs.Content value="table">
+			<Tabs.Content value="table" class="flex flex-col items-center gap-y-5 w-full">
 				{#if !emptyData}
+					<Popover />
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
 					<div class="flex w-screen max-w-sm flex-col items-center gap-5">

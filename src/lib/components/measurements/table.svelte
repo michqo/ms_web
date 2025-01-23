@@ -14,7 +14,7 @@
   const { pageNumber, onPageChange, dataQuery }: Props = $props();
 </script>
 
-<Table.Root class="mb-8">
+<Table.Root>
   <Table.Header>
     <Table.Row>
       <Table.Cell>Time</Table.Cell>
