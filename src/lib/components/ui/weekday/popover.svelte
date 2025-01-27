@@ -3,31 +3,33 @@
   import {buttonVariants} from '@/components/ui/button';
 	import Button from '../button/button.svelte';
 	import { cn } from '@/utils';
+	import dayjs, { type Dayjs } from 'dayjs';
+	import { goto } from '$app/navigation';
 
   type Props = {
-    dates: string[];
-    selected?: string;
+    dates: Dayjs[];
+    selected: string;
   }
-  
-  let { dates, selected = $bindable() }: Props = $props();
+
+  let { dates, selected }: Props = $props();
 </script>
 
 <Popover.Root>
   <Popover.Trigger class={cn(buttonVariants({
     variant: "outline",
   }), 'w-full')}>
-    Thu
+    {dayjs(selected).format('dddd')}
   </Popover.Trigger>
   <Popover.Content class="p-0 flex w-full items-center gap-x-1">
     {#each dates as date}
       <Button
         variant="ghost"
-        class={{
-          'bg-primary-500 text-white': date === selected,
-        }}
-        onclick={() => selected = date}
+        class={cn({
+          'bg-secondary': date.isSame(selected, 'day'),
+        })}
+        onclick={() => goto(`?date=${date.toISOString()}`)}
       >
-        {date}
+        {date.format('ddd')}
       </Button>
     {/each}
   </Popover.Content>

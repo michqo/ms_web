@@ -3,7 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
 	import { Skeleton } from '@/components/ui/skeleton';
-	import * as Accordion from '@/components/ui/accordion';
+	import * as Accordion from '@/components/ui/accordion'; 
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
@@ -11,15 +11,17 @@
 	import Chart from '@/components/measurements/chart.svelte';
 	import Popover from '@/components/ui/weekday';
 	import type { Measurement } from '@/shared/types';
-	import { groupByWeekDay } from '@/shared/utils';
+	import dayjs from 'dayjs';
 
 	const pageParam = $derived(page.url.searchParams.get('page'));
+	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
+	const dates = Array.from({ length: 4 }, (_, i) => dayjs().subtract(i, 'day')).reverse();
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['measurements', pageNumber],
-			queryFn: () => api.getMeasurements(pageNumber)
+			queryKey: ['measurements', pageNumber, dateParam],
+			queryFn: () => api.getMeasurements(pageNumber, dayjs(dateParam))
 		})
 	);
 
@@ -40,9 +42,9 @@
 	const humChartData = $derived(createChartData('humidity'));
 
 	const viewParam = $derived(page.url.searchParams.get('view'));
-
+	
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
-
+	
 	$effect(() => {
 		if (emptyData) {
 			toast.error('No measurements found.');
@@ -59,7 +61,7 @@
 		{#if $dataQuery.data}
 			<Tabs.Content value="table" class="flex flex-col items-center gap-y-5 w-full">
 				{#if !emptyData}
-					<Popover />
+					<Popover {dates} selected={dateParam} />
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
 					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
