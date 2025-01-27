@@ -5,13 +5,20 @@
 	import { cn } from '@/utils';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
   type Props = {
     dates: Dayjs[];
     selected: string;
+    params: SvelteURLSearchParams
   }
 
-  let { dates, selected }: Props = $props();
+  let { dates, selected, params }: Props = $props();
+
+  function setDate(date: string) {
+    params.set('date', date);
+    goto(`?${params.toString()}`);
+  }
 </script>
 
 <Popover.Root>
@@ -27,7 +34,7 @@
         class={cn({
           'bg-secondary': date.isSame(selected, 'day'),
         })}
-        onclick={() => goto(`?date=${date.toISOString()}`)}
+        onclick={() => setDate(date.toISOString())}
       >
         {date.format('ddd')}
       </Button>

@@ -12,7 +12,11 @@
 	import Popover from '@/components/ui/weekday';
 	import type { Measurement } from '@/shared/types';
 	import dayjs from 'dayjs';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
+	const queryParams = new SvelteURLSearchParams();
+
+	const viewParam = $derived(page.url.searchParams.get('view'));
 	const pageParam = $derived(page.url.searchParams.get('page'));
 	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
 	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
@@ -25,11 +29,13 @@
 		})
 	);
 
-	function onPageChange(page: number) {
-		goto(`?page=${page}`);
+	function onPageChange(pageNumber: number) {
+		queryParams.set('page', pageNumber.toString());
+		goto(`?${queryParams.toString()}`);
 	}
 	function onViewChange(view: string) {
-		goto(`?view=${view}`);
+		queryParams.set('view', view);
+		goto(`?${queryParams.toString()}`);
 	}
 
 	const createChartData = (key: keyof Measurement) =>
@@ -41,8 +47,6 @@
 	const tempChartData = $derived(createChartData('temperature'));
 	const humChartData = $derived(createChartData('humidity'));
 
-	const viewParam = $derived(page.url.searchParams.get('view'));
-	
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
 	
 	$effect(() => {
@@ -61,7 +65,7 @@
 		{#if $dataQuery.data}
 			<Tabs.Content value="table" class="flex flex-col items-center gap-y-5 w-full">
 				{#if !emptyData}
-					<Popover {dates} selected={dateParam} />
+					<Popover {dates} selected={dateParam} params={queryParams} />
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
 					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
