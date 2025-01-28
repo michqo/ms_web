@@ -25,7 +25,7 @@
   <Table.Body>
     {#each $dataQuery.data!.results as measurement}
       <Table.Row>
-        <Table.Cell>{dayjs(measurement.timestamp).format("DD.MM.YYYY HH:mm")}</Table.Cell>
+        <Table.Cell>{dayjs(measurement.timestamp).format("HH:mm")}</Table.Cell>
         <Table.Cell>{measurement.temperature}</Table.Cell>
         <Table.Cell>{measurement.humidity}</Table.Cell>
       </Table.Row>

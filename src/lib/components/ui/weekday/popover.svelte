@@ -5,7 +5,7 @@
 	import { cn } from '@/utils';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { goto } from '$app/navigation';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import type { SvelteURLSearchParams } from 'svelte/reactivity';
 
   type Props = {
     dates: Dayjs[];

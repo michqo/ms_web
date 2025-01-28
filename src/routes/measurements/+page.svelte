@@ -63,9 +63,9 @@
 	</Tabs.List>
 	<main class="grid h-svh items-center justify-center">
 		{#if $dataQuery.data}
-			<Tabs.Content value="table" class="flex flex-col items-center gap-y-5 w-full">
+			<Tabs.Content value="table">
+				<Popover {dates} selected={dateParam} params={queryParams} />
 				{#if !emptyData}
-					<Popover {dates} selected={dateParam} params={queryParams} />
 					<Table {pageNumber} {onPageChange} {dataQuery} />
 				{:else}
 					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
