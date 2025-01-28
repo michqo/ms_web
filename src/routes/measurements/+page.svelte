@@ -17,15 +17,14 @@
 	const queryParams = new SvelteURLSearchParams();
 
 	const viewParam = $derived(page.url.searchParams.get('view'));
-	const pageParam = $derived(page.url.searchParams.get('page'));
+	const pageParam = $derived(parseInt(page.url.searchParams.get('page') || '1') || 1);
 	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
-	let pageNumber = $derived(pageParam ? parseInt(pageParam) : 1);
 	const dates = Array.from({ length: 4 }, (_, i) => dayjs().subtract(i, 'day')).reverse();
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['measurements', pageNumber, dateParam],
-			queryFn: () => api.getMeasurements(pageNumber, dayjs(dateParam))
+			queryKey: ['measurements', pageParam, dateParam],
+			queryFn: () => api.getMeasurements(pageParam, dayjs(dateParam))
 		})
 	);
 
@@ -66,7 +65,7 @@
 			<Tabs.Content value="table">
 				<Popover {dates} selected={dateParam} params={queryParams} />
 				{#if !emptyData}
-					<Table {pageNumber} {onPageChange} {dataQuery} />
+					<Table pageNumber={pageParam} {onPageChange} {dataQuery} />
 				{:else}
 					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
 						<Skeleton class="h-[35px] w-full" />
