@@ -1,7 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse, Measurement, ListResponse } from './types';
+import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse } from './types';
 import type { Dayjs } from 'dayjs';
 
 const instanceConfig: CreateAxiosDefaults = {
@@ -58,6 +58,11 @@ class AuthenticatedApi {
     params.append('timestamp__gt', date.startOf('day').toISOString());
     params.append('timestamp__lt', date.endOf('day').toISOString());
     const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/', { params });
+    return response.data;
+  }
+
+  async getForecast(): Promise<Forecast> {
+    const response = await this.instance.get<Forecast>('/api/forecast/');
     return response.data;
   }
 }
