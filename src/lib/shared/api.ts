@@ -70,4 +70,20 @@ class AuthenticatedApi {
 const authApi = new AuthenticationApi();
 const authenticatedApi = new AuthenticatedApi();
 
-export { authApi, authenticatedApi as api };
+const transformForecast = (forecast: Forecast) =>
+	forecast.time.map((time, index) => ({
+		time,
+		temperature_instant: forecast.temperature_instant[index],
+		temperature_max: forecast.temperature_max[index],
+		temperature_min: forecast.temperature_min[index],
+		windspeed_mean: forecast.windspeed_mean[index],
+		sealevelpressure_mean: forecast.sealevelpressure_mean[index],
+		precipitation: forecast.precipitation[index],
+		precipitation_hours: forecast.precipitation_hours[index],
+		predictability: forecast.predictability[index],
+		pictocode: forecast.pictocode[index],
+		winddirection: forecast.winddirection[index],
+		uvindex: forecast.uvindex[index]
+	}));
+
+export { authApi, authenticatedApi as api, transformForecast };

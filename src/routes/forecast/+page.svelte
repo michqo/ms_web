@@ -1,17 +1,21 @@
 <script lang="ts">
-	import { api } from "@/shared/api";
+	import { api, transformForecast } from "@/shared/api";
 	import { createQuery } from "@tanstack/svelte-query";
+  import ForecastCard from '@/components/forecast/card.svelte';
 
   const dataQuery = createQuery({
     queryKey: ['forecast'],
-    queryFn: () => api.getForecast()
+    queryFn: () => api.getForecast(),
+    select: transformForecast
   })
 </script>
 
 <main class="grid h-svh items-center justify-center">
   {#if $dataQuery.data}
-    {#each $dataQuery.data!.temperature_instant as temp}
-      <p>{temp}</p>
-    {/each}
+    <div class="grid w-full gap-4 grid-cols-3">
+      {#each $dataQuery.data as item}
+        <ForecastCard forecast={item} />
+      {/each}
+    </div>
   {/if}
 </main>

@@ -35,27 +35,34 @@ interface ChartData {
 	value: string | number;
 }
 
-interface Forecast {
-	id: number;
-	latitude: number;
-	longitude: number;
-	modelrun_utc: string;
-	utc_timeoffset: number;
-	generation_time_ms: number;
-	time: string[];
-	temperature_instant: number[];
-	temperature_max: number[];
-	temperature_min: number[];
-	windspeed_mean: number[];
-	sealevelpressure_mean: number[];
-	precipitation: number[];
-	precipitation_hours: number[];
-	predictability: number[];
-	pictocode: number[];
-	winddirection: number[];
-	uvindex: number[];
-	created_at: string;
+interface ForecastBase {
+  time: string;
+  temperature_instant: number;
+  temperature_max: number;
+  temperature_min: number;
+  windspeed_mean: number;
+  sealevelpressure_mean: number;
+  precipitation: number;
+  precipitation_hours: number;
+  predictability: number;
+  pictocode: number;
+  winddirection: number;
+  uvindex: number;
 }
 
-export type { ListResponse, LoginResponse, Measurement, Forecast, PostUserErrorResponse, RefreshJWTResponse, ChartData };
+type ForecastArray = {
+  [K in keyof ForecastBase]: ForecastBase[K][];
+};
+
+interface Forecast extends ForecastArray {
+  id: number;
+  latitude: number;
+  longitude: number;
+  modelrun_utc: string;
+  utc_timeoffset: number;
+  generation_time_ms: number;
+  created_at: string;
+}
+
+export type { ListResponse, LoginResponse, Measurement, Forecast, ForecastBase, PostUserErrorResponse, RefreshJWTResponse, ChartData };
 
