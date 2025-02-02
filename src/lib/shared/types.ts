@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+
 interface LoginResponse {
 	refresh: string;
 	access: string;
@@ -36,10 +38,12 @@ interface ChartData {
 }
 
 interface ForecastBase {
-  time: string;
+  time: Dayjs;
+  temperature_mean: number;
   temperature_instant: number;
   temperature_max: number;
   temperature_min: number;
+  relativehumidity_mean: number;
   windspeed_mean: number;
   sealevelpressure_mean: number;
   precipitation: number;

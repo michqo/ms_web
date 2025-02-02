@@ -3,6 +3,7 @@ import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
 import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse } from './types';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 const instanceConfig: CreateAxiosDefaults = {
   baseURL: PUBLIC_API_URL,
@@ -72,10 +73,12 @@ const authenticatedApi = new AuthenticatedApi();
 
 const transformForecast = (forecast: Forecast) =>
 	forecast.time.map((time, index) => ({
-		time,
+		time: dayjs(time),
+    temperature_mean: forecast.temperature_mean[index],
 		temperature_instant: forecast.temperature_instant[index],
 		temperature_max: forecast.temperature_max[index],
 		temperature_min: forecast.temperature_min[index],
+    relativehumidity_mean: forecast.relativehumidity_mean[index],
 		windspeed_mean: forecast.windspeed_mean[index],
 		sealevelpressure_mean: forecast.sealevelpressure_mean[index],
 		precipitation: forecast.precipitation[index],

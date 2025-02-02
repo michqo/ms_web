@@ -5,7 +5,6 @@
   import { Cloud, Home, Thermometer } from 'lucide-svelte';
   import { type Route } from './nav.svelte';
 	import type { Snippet } from 'svelte';
-	import { goto } from '$app/navigation';
 
   const routesMap: Record<string, Route> = {
     '/': {

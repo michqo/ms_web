@@ -12,7 +12,7 @@
 
 <main class="grid h-svh items-center justify-center">
   {#if $dataQuery.data}
-    <div class="grid w-full gap-4 grid-cols-3">
+    <div class="grid w-full gap-4 grid-cols-7">
       {#each $dataQuery.data as item}
         <ForecastCard forecast={item} />
       {/each}
