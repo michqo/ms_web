@@ -72,21 +72,23 @@ const authApi = new AuthenticationApi();
 const authenticatedApi = new AuthenticatedApi();
 
 const transformForecast = (forecast: Forecast) =>
-	forecast.time.map((time, index) => ({
-		time: dayjs(time),
-    temperature_mean: forecast.temperature_mean[index],
-		temperature_instant: forecast.temperature_instant[index],
-		temperature_max: forecast.temperature_max[index],
-		temperature_min: forecast.temperature_min[index],
-    relativehumidity_mean: forecast.relativehumidity_mean[index],
-		windspeed_mean: forecast.windspeed_mean[index],
-		sealevelpressure_mean: forecast.sealevelpressure_mean[index],
-		precipitation: forecast.precipitation[index],
-		precipitation_hours: forecast.precipitation_hours[index],
-		predictability: forecast.predictability[index],
-		pictocode: forecast.pictocode[index],
-		winddirection: forecast.winddirection[index],
-		uvindex: forecast.uvindex[index]
-	}));
+  forecast.time
+    .map((time, index) => ({
+      time: dayjs(time),
+      temperature_mean: forecast.temperature_mean[index],
+      temperature_instant: forecast.temperature_instant[index],
+      temperature_max: forecast.temperature_max[index],
+      temperature_min: forecast.temperature_min[index],
+      relativehumidity_mean: forecast.relativehumidity_mean[index],
+      windspeed_mean: forecast.windspeed_mean[index],
+      sealevelpressure_mean: forecast.sealevelpressure_mean[index],
+      precipitation: forecast.precipitation[index],
+      precipitation_hours: forecast.precipitation_hours[index],
+      predictability: forecast.predictability[index],
+      pictocode: forecast.pictocode[index],
+      winddirection: forecast.winddirection[index],
+      uvindex: forecast.uvindex[index]
+    }))
+    .filter(item => item.time.isAfter(dayjs().startOf('day').subtract(1, 'millisecond')));
 
 export { authApi, authenticatedApi as api, transformForecast };
