@@ -54,6 +54,10 @@ interface ForecastBase {
   uvindex: number;
 }
 
+interface ForecastTransformed extends ForecastBase {
+  icon: any;
+};
+
 type ForecastArray = {
   [K in keyof ForecastBase]: ForecastBase[K][];
 };
@@ -68,5 +72,5 @@ interface Forecast extends ForecastArray {
   created_at: string;
 }
 
-export type { ListResponse, LoginResponse, Measurement, Forecast, ForecastBase, PostUserErrorResponse, RefreshJWTResponse, ChartData };
+export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse };
 
