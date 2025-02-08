@@ -63,16 +63,18 @@
 	<main class="grid h-svh items-center justify-center">
 		{#if $dataQuery.data}
 			<Tabs.Content value="table">
-				<Popover {dates} selected={dateParam} params={queryParams} />
-				{#if !emptyData}
-					<Table pageNumber={pageParam} {onPageChange} {dataQuery} />
-				{:else}
-					<div class="flex w-screen max-w-sm flex-col items-center gap-5">
-						<Skeleton class="h-[35px] w-full" />
-						<Skeleton class="h-[300px] w-full rounded" />
-						<Skeleton class="h-[35px] w-full" />
-					</div>
-				{/if}
+				<div class="flex flex-col items-center gap-y-5">
+					<Popover {dates} selected={dateParam} params={queryParams} />
+					{#if !emptyData}
+						<Table pageNumber={pageParam} {onPageChange} {dataQuery} />
+					{:else}
+						<div class="flex w-screen max-w-sm flex-col items-center gap-5">
+							<Skeleton class="h-[35px] w-full" />
+							<Skeleton class="h-[300px] w-full rounded" />
+							<Skeleton class="h-[35px] w-full" />
+						</div>
+					{/if}
+				</div>
 			</Tabs.Content>
 			<Tabs.Content value="graph">
 				{#if !emptyData}
