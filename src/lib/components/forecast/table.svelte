@@ -19,7 +19,9 @@
     {#each forecast as item}
       <Table.Row>
         <Table.Cell>{displayTime(item)}</Table.Cell>
-        <Table.Cell><item.icon /></Table.Cell>
+        <Table.Cell>
+          <item.icon />
+        </Table.Cell>
         <Table.Cell>{Math.round(item.temperature_max)}°</Table.Cell>
         <Table.Cell class="text-muted-foreground">{Math.round(item.temperature_min)}°</Table.Cell>
       </Table.Row>
