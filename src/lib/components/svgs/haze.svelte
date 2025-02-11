@@ -9,13 +9,13 @@
   {width}
   {height}
 	><defs
-		><linearGradient id="b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient id="lightning-bolt-b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
 			/></linearGradient
 		><linearGradient
-			id="a"
+			id="lightning-bolt-a"
 			x1="17.94"
 			x2="26.94"
 			y1="55.73"
@@ -26,36 +26,36 @@
 				stop-color="#bec1c6"
 			/></linearGradient
 		><linearGradient
-			id="c"
+			id="lightning-bolt-c"
 			x1="28.81"
 			x2="37.81"
 			y1="49.45"
 			y2="65.04"
-			xlink:href="#a"
+			xlink:href="#lightning-bolt-a"
 		/><linearGradient
-			id="d"
+			id="lightning-bolt-d"
 			x1="37.06"
 			x2="46.06"
 			y1="44.68"
 			y2="60.27"
-			xlink:href="#a"
+			xlink:href="#lightning-bolt-a"
 		/><linearGradient
-			id="e"
+			id="lightning-bolt-e"
 			x1="17.94"
 			x2="26.94"
 			y1="49.73"
 			y2="65.32"
-			xlink:href="#a"
+			xlink:href="#lightning-bolt-a"
 		/><linearGradient
-			id="f"
+			id="lightning-bolt-f"
 			x1="28.81"
 			x2="37.81"
 			y1="43.45"
 			y2="59.04"
-			xlink:href="#a"
-		/><linearGradient id="g" x1="37.06" x2="46.06" y1="38.68" y2="54.27" xlink:href="#a" /></defs
+			xlink:href="#lightning-bolt-a"
+		/><linearGradient id="lightning-bolt-g" x1="37.06" x2="46.06" y1="38.68" y2="54.27" xlink:href="#lightning-bolt-a" /></defs
 	><path
-		fill="url(#b)"
+		fill="url(#lightning-bolt-b)"
 		stroke="#e6effc"
 		stroke-miterlimit="10"
 		stroke-width=".5"
@@ -63,14 +63,14 @@
 	/><g
 		><path
 			fill="none"
-			stroke="url(#a)"
+			stroke="url(#lightning-bolt-a)"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
 			stroke-width="3"
 			d="M17 58h4.5"
 		/><path
 			fill="none"
-			stroke="url(#c)"
+			stroke="url(#lightning-bolt-c)"
 			stroke-dasharray="7 7"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
@@ -78,7 +78,7 @@
 			d="M28.5 58H39"
 		/><path
 			fill="none"
-			stroke="url(#d)"
+			stroke="url(#lightning-bolt-d)"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
 			stroke-width="3"
@@ -94,14 +94,14 @@
 	><g
 		><path
 			fill="none"
-			stroke="url(#e)"
+			stroke="url(#lightning-bolt-e)"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
 			stroke-width="3"
 			d="M17 52h4.5"
 		/><path
 			fill="none"
-			stroke="url(#f)"
+			stroke="url(#lightning-bolt-f)"
 			stroke-dasharray="7 7"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
@@ -109,7 +109,7 @@
 			d="M28.5 52H39"
 		/><path
 			fill="none"
-			stroke="url(#g)"
+			stroke="url(#lightning-bolt-g)"
 			stroke-linecap="round"
 			stroke-miterlimit="10"
 			stroke-width="3"

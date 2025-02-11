@@ -5,7 +5,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" {width} {height}
 	><defs
 		><linearGradient
-			id="a"
+			id="clear-day-a"
 			x1="26.75"
 			x2="37.25"
 			y1="22.91"
@@ -20,7 +20,7 @@
 		cx="32"
 		cy="32"
 		r="10.5"
-		fill="url(#a)"
+		fill="url(#clear-day-a)"
 		stroke="#f8af18"
 		stroke-miterlimit="10"
 		stroke-width=".5"

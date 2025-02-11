@@ -4,17 +4,17 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" {width} {height} viewBox="0 0 64 64"
 	><defs
-		><linearGradient id="a" x1="16.5" x2="21.5" y1="19.67" y2="28.33" gradientUnits="userSpaceOnUse"
+		><linearGradient id="overcast-day-a" x1="16.5" x2="21.5" y1="19.67" y2="28.33" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#fbbf24" /><stop offset=".45" stop-color="#fbbf24" /><stop
 				offset="1"
 				stop-color="#f59e0b"
 			/></linearGradient
-		><linearGradient id="b" x1="40.76" x2="50.83" y1="23" y2="40.46" gradientUnits="userSpaceOnUse"
+		><linearGradient id="overcast-day-b" x1="40.76" x2="50.83" y1="23" y2="40.46" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#9ca3af" /><stop offset=".45" stop-color="#9ca3af" /><stop
 				offset="1"
 				stop-color="#6b7280"
 			/></linearGradient
-		><linearGradient id="c" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient id="overcast-day-c" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
@@ -24,7 +24,7 @@
 		cx="19"
 		cy="24"
 		r="5"
-		fill="url(#a)"
+		fill="url(#overcast-day-a)"
 		stroke="#f8af18"
 		stroke-miterlimit="10"
 		stroke-width=".5"
@@ -43,7 +43,7 @@
 			values="0 19 24; 360 19 24"
 		/></path
 	><path
-		fill="url(#b)"
+		fill="url(#overcast-day-b)"
 		stroke="#848b98"
 		stroke-miterlimit="10"
 		stroke-width=".5"
@@ -56,7 +56,7 @@
 			values="-2.1 0; 2.1 0; -2.1 0"
 		/></path
 	><path
-		fill="url(#c)"
+		fill="url(#overcast-day-c)"
 		stroke="#e6effc"
 		stroke-miterlimit="10"
 		stroke-width=".5"

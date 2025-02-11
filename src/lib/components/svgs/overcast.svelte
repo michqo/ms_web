@@ -4,19 +4,19 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" {width} {height} viewBox="0 0 64 64"
 	><defs
-		><linearGradient id="a" x1="40.76" x2="50.83" y1="23" y2="40.46" gradientUnits="userSpaceOnUse"
+		><linearGradient id="overcast-a" x1="40.76" x2="50.83" y1="23" y2="40.46" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#9ca3af" /><stop offset=".45" stop-color="#9ca3af" /><stop
 				offset="1"
 				stop-color="#6b7280"
 			/></linearGradient
-		><linearGradient id="b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient id="overcast-b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
 			/></linearGradient
 		></defs
 	><path
-		fill="url(#a)"
+		fill="url(#overcast-a)"
 		stroke="#848b98"
 		stroke-miterlimit="10"
 		stroke-width=".5"
@@ -29,7 +29,7 @@
 			values="-2.1 0; 2.1 0; -2.1 0"
 		/></path
 	><path
-		fill="url(#b)"
+		fill="url(#overcast-b)"
 		stroke="#e6effc"
 		stroke-miterlimit="10"
 		stroke-width=".5"

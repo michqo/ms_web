@@ -5,7 +5,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" {width} {height} viewBox="0 0 64 64"
 	><defs
 		><linearGradient
-			id="a"
+			id="lightning-bolt-a"
 			x1="24.11"
 			x2="37.64"
 			y1="18.33"
@@ -17,7 +17,7 @@
 			/></linearGradient
 		></defs
 	><path
-		fill="url(#a)"
+		fill="url(#lightning-bolt-a)"
 		stroke="#f6a823"
 		stroke-miterlimit="10"
 		stroke-width=".5"
