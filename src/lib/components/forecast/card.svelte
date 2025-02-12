@@ -1,26 +1,26 @@
 <script lang="ts">
-  import * as Table from '@/components/ui/table';
-	import type { ForecastBase } from '@/shared/types';
-	import dayjs from 'dayjs';
+	import type { ForecastTransformed } from '@/shared/types';
+  import Wind from '@/components/svgs/wind.svelte';
+	import Thermometer from '@/components/svgs/thermometer.svelte';
 
 	interface Props {
-		forecast: ForecastBase;
+		forecast: ForecastTransformed;
 	}
 
 	const { forecast }: Props = $props();
-
-  const displayTime = forecast.time.isSame(dayjs(), 'day')
-    ? 'Today'
-    : forecast.time.isSame(dayjs().add(1, 'day'), 'day')
-    ? 'Tomorrow'
-    : forecast.time.format('ddd');
 </script>
 
-<div class="flex flex-col w-24 p-4 rounded-lg bg-accent shadow-lg">
-  <h2 class="text-xl font-semibold">{forecast.time.format('ddd')}</h2>
-  <p class="text-sm text-gray-500">{displayTime}</p>
-  <div class="mt-5 flex justify-around">
-    <p>{Math.round(forecast.temperature_max)}°</p>
-    <p class="text-muted-foreground">{Math.round(forecast.temperature_min)}°</p>
+<div class="flex flex-col px-8 py-4 rounded-lg border border-border shadow-lg">
+  <h2 class="text-lg font-semibold">Current conditions</h2>
+  <div class="flex gap-x-6">
+    <forecast.icon width={64} height={64} />
+    <div class="flex gap-x-2 items-center">
+      <Thermometer width={48} height={48} />
+      <p class="font-medium text-4xl">{Math.round(forecast.temperature_max)}°</p>
+    </div>
+    <div class="flex items-center">
+      <Wind width={48} height={48} />
+      <p class="text-nowrap"><span class="font-medium text-4xl">{Math.floor(forecast.windspeed_mean)}</span> m/s</p>
+    </div>
   </div>
 </div>
