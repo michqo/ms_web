@@ -72,5 +72,14 @@ interface Forecast extends ForecastArray {
   created_at: string;
 }
 
-export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse };
+interface Station {
+  id: number;
+  user: number
+  name: string;
+  latitude: number;
+  longitude: number;
+  created_at: string;
+}
+
+export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse, Station };
 

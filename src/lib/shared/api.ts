@@ -1,7 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed } from './types';
+import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station } from './types';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import ClearDay from '@/components/svgs/clear-day.svelte';
@@ -76,6 +76,11 @@ class AuthenticatedApi {
 
   async getForecast(): Promise<Forecast> {
     const response = await this.instance.get<Forecast>('/api/forecast/');
+    return response.data;
+  }
+
+  async getStations(): Promise<ListResponse<Station>> {
+    const response = await this.instance.get<ListResponse<Station>>('/api/stations/');
     return response.data;
   }
 }
