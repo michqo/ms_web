@@ -3,7 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
 	import { Skeleton } from '@/components/ui/skeleton';
-	import * as Accordion from '@/components/ui/accordion'; 
+	import * as Accordion from '@/components/ui/accordion';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
@@ -12,10 +12,8 @@
 	import Popover from '@/components/ui/weekday';
 	import type { Measurement } from '@/shared/types';
 	import dayjs from 'dayjs';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
-	const queryParams = new SvelteURLSearchParams();
-
+	const stationParam = $derived(parseInt(page.url.searchParams.get('station') || '1') || 1);
 	const viewParam = $derived(page.url.searchParams.get('view'));
 	const pageParam = $derived(parseInt(page.url.searchParams.get('page') || '1') || 1);
 	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
@@ -23,18 +21,15 @@
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['measurements', pageParam, dateParam],
-			queryFn: () => api.getMeasurements(pageParam, dayjs(dateParam))
+			queryKey: ['measurements', stationParam, pageParam, dateParam],
+			queryFn: () => api.getMeasurements(stationParam, pageParam, dayjs(dateParam))
 		})
 	);
 
-	function onPageChange(pageNumber: number) {
-		queryParams.set('page', pageNumber.toString());
-		goto(`?${queryParams.toString()}`);
-	}
-	function onViewChange(view: string) {
-		queryParams.set('view', view);
-		goto(`?${queryParams.toString()}`);
+	function setParam(key: string, value: string) {
+		const params = new URLSearchParams(page.url.search);
+		params.set(key, value);
+		goto(`?${params.toString()}`);
 	}
 
 	const createChartData = (key: keyof Measurement) =>
@@ -47,7 +42,7 @@
 	const humChartData = $derived(createChartData('humidity'));
 
 	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data.results.length == 0);
-	
+
 	$effect(() => {
 		if (emptyData) {
 			toast.error('No measurements found.');
@@ -55,7 +50,11 @@
 	});
 </script>
 
-<Tabs.Root value={viewParam ? viewParam : 'table'} onValueChange={onViewChange} class="w-full">
+<Tabs.Root
+	value={viewParam ? viewParam : 'table'}
+	onValueChange={(value) => setParam('view', value)}
+	class="w-full"
+>
 	<Tabs.List class="grid w-full grid-cols-2">
 		<Tabs.Trigger value="table">Table</Tabs.Trigger>
 		<Tabs.Trigger value="graph">Graph</Tabs.Trigger>
@@ -64,9 +63,13 @@
 		{#if $dataQuery.data}
 			<Tabs.Content value="table">
 				<div class="flex flex-col items-center gap-y-5">
-					<Popover {dates} selected={dateParam} params={queryParams} />
+					<Popover {dates} selected={dateParam} />
 					{#if !emptyData}
-						<Table pageNumber={pageParam} {onPageChange} {dataQuery} />
+						<Table
+							pageNumber={pageParam}
+							onPageChange={(page) => setParam('page', page.toString())}
+							{dataQuery}
+						/>
 					{:else}
 						<div class="flex w-screen max-w-sm flex-col items-center gap-5">
 							<Skeleton class="h-[35px] w-full" />

@@ -65,8 +65,9 @@ class AuthenticatedApi {
     return response.data.username;
   }
 
-  async getMeasurements(page: number = 1, date: Dayjs): Promise<ListResponse<Measurement>> {
+  async getMeasurements(station: number, page: number = 1, date: Dayjs): Promise<ListResponse<Measurement>> {
     const params = new URLSearchParams();
+    params.append('station', station.toString());
     params.append('page', page.toString());
     params.append('timestamp__gt', date.startOf('day').toISOString());
     params.append('timestamp__lt', date.endOf('day').toISOString());

@@ -5,17 +5,16 @@
 	import { cn } from '@/utils';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { goto } from '$app/navigation';
-	import type { SvelteURLSearchParams } from 'svelte/reactivity';
 
   type Props = {
     dates: Dayjs[];
     selected: string;
-    params: SvelteURLSearchParams
   }
 
-  let { dates, selected, params }: Props = $props();
+  let { dates, selected }: Props = $props();
 
   function setDate(date: string) {
+    const params = new URLSearchParams(location.search);
     params.set('date', date);
     goto(`?${params.toString()}`);
   }

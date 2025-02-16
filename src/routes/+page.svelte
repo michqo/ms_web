@@ -14,10 +14,13 @@
     <h1 class="font-medium text-3xl mt-24">Stations</h1>
     <ul class="mt-10 flex flex-col items-center gap-y-4 w-full max-w-xs">
       {#each stations as station}
-        <li class="flex flex-col px-8 py-4 rounded-lg border border-border shadow-lg">
+      <a href="/measurements?station={station.id}">
+        <li class="flex flex-col px-8 py-4 rounded-lg border border-border shadow-lg hover:border-primary">
           <span>{station.name}</span>
-          <span class="text-muted-foreground">({station.id})</span>
+          <span class="text-muted-foreground">{station.latitude}</span>
+          <span class="text-muted-foreground">{station.longitude}</span>
         </li>
+      </a>
       {/each}
     </ul>
   {/if}
