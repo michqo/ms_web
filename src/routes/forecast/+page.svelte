@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { api, transformForecast } from "@/shared/api";
 	import { createQuery } from "@tanstack/svelte-query";
   import Table from '@/components/forecast/table.svelte';
   import Card from '@/components/forecast/card.svelte';
 	import dayjs from "dayjs";
+	import { api, transformForecast } from "@/shared";
 
   const dataQuery = createQuery({
     queryKey: ['forecast'],

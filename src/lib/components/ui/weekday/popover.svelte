@@ -5,6 +5,7 @@
 	import { cn } from '@/utils';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { goto } from '$app/navigation';
+	import { setParam } from '@/shared';
 
   type Props = {
     dates: Dayjs[];
@@ -12,12 +13,6 @@
   }
 
   let { dates, selected }: Props = $props();
-
-  function setDate(date: string) {
-    const params = new URLSearchParams(location.search);
-    params.set('date', date);
-    goto(`?${params.toString()}`);
-  }
 </script>
 
 <Popover.Root>
@@ -33,7 +28,7 @@
         class={cn({
           'bg-secondary': date.isSame(selected, 'day'),
         })}
-        onclick={() => setDate(date.toISOString())}
+        onclick={() => setParam('date', date.toISOString())}
       >
         {date.format('ddd')}
       </Button>

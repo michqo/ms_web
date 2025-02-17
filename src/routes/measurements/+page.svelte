@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { api } from '@/shared/api';
 	import { createQuery } from '@tanstack/svelte-query';
 	import * as Tabs from '@/components/ui/tabs';
 	import { Skeleton } from '@/components/ui/skeleton';
@@ -12,6 +11,7 @@
 	import Popover from '@/components/ui/weekday';
 	import type { Measurement } from '@/shared/types';
 	import dayjs from 'dayjs';
+	import { api, setParam } from '@/shared';
 
 	const stationParam = $derived(parseInt(page.url.searchParams.get('station') || '1') || 1);
 	const viewParam = $derived(page.url.searchParams.get('view'));
@@ -25,12 +25,6 @@
 			queryFn: () => api.getMeasurements(stationParam, pageParam, dayjs(dateParam))
 		})
 	);
-
-	function setParam(key: string, value: string) {
-		const params = new URLSearchParams(page.url.search);
-		params.set(key, value);
-		goto(`?${params.toString()}`);
-	}
 
 	const createChartData = (key: keyof Measurement) =>
 		$dataQuery.data?.results.map((data) => ({

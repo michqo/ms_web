@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
-	import { api } from '@/shared/api';
+	import { api } from '@/shared';
 
   const dataQuery = createQuery({
     queryKey: ['stations'],
