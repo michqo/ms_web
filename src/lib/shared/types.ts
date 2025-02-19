@@ -66,6 +66,7 @@ interface Forecast extends ForecastArray {
   id: number;
   latitude: number;
   longitude: number;
+  city_name: string;
   modelrun_utc: string;
   utc_timeoffset: number;
   generation_time_ms: number;
@@ -76,6 +77,7 @@ interface Station {
   id: number;
   user: number
   name: string;
+  city_name: string;
   latitude: number;
   longitude: number;
   created_at: string;

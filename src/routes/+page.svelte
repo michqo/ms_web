@@ -17,8 +17,7 @@
       <a href="/measurements?station={station.id}">
         <li class="flex flex-col px-8 py-4 rounded-lg border border-border shadow-lg hover:border-primary">
           <span>{station.name}</span>
-          <span class="text-muted-foreground">{station.latitude}</span>
-          <span class="text-muted-foreground">{station.longitude}</span>
+          <span class="text-muted-foreground">{station.city_name}</span>
         </li>
       </a>
       {/each}

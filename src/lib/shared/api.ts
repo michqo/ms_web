@@ -62,8 +62,10 @@ class AuthenticatedApi {
     return response.data;
   }
 
-  async getForecast(): Promise<Forecast> {
-    const response = await this.instance.get<Forecast>('/api/forecast/');
+  async getForecast(station: number): Promise<Forecast> {
+    const params = new URLSearchParams();
+    params.append('station', station.toString());
+    const response = await this.instance.get<Forecast>('/api/forecast/', { params });
     return response.data;
   }
 
