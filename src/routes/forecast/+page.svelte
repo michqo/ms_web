@@ -9,10 +9,12 @@
     queryKey: ['stations'],
     queryFn: () => api.getStations(),
   });
+
+  const currentStation = $stationsQuery.data?.results[0];
   
   const dataQuery = createQuery({
     queryKey: ['forecast'],
-    queryFn: () => api.getForecast($stationsQuery.data?.results[0].id!),
+    queryFn: () => api.getForecast(currentStation?.id!),
     enabled: $stationsQuery.isSuccess,
     select: (data) => ({
       id: data.id,
@@ -30,7 +32,10 @@
 <main class="grid h-svh place-items-center">
   {#if $dataQuery.data}
     {@const forecast = $dataQuery.data}
-    <h1 class="font-medium text-3xl">{forecast.city_name}</h1>
+    <div class="flex flex-col items-center">
+      <h1 class="font-medium text-4xl">{currentStation?.name}</h1>
+      <h2 class="text-xl font-light text-muted-foreground">{currentStation?.city_name}</h2>
+    </div>
 
     <div class="flex flex-col items-center gap-y-4 w-full max-w-xs">
       <Card forecast={forecast.results[0]} />
