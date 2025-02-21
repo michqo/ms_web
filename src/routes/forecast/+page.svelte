@@ -15,7 +15,7 @@
   const dataQuery = createQuery({
     queryKey: ['forecast'],
     queryFn: () => api.getForecast(currentStation?.id!),
-    enabled: $stationsQuery.isSuccess,
+    enabled: currentStation != undefined,
     select: (data) => ({
       id: data.id,
       latitude: data.latitude,
