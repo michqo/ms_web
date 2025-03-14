@@ -3,7 +3,8 @@
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { api } from '@/shared/api';
-	import { CircleUser, LogOut, User } from 'lucide-svelte';
+	import { CircleUser, LogOut } from 'lucide-svelte';
+	import Profile from './profile.svelte';
 
 	let { user }: { user?: string } = $props();
 
@@ -20,16 +21,12 @@
 			{user}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
-			<DropdownMenu.Group>
-				<DropdownMenu.Item>
-					<User class="mr-2" /> Profile
-				</DropdownMenu.Item>
-			</DropdownMenu.Group>
-			<DropdownMenu.Group>
-				<DropdownMenu.Item class="text-red-500" onclick={logOut}>
-					<LogOut class="mr-2" /> Log out
-				</DropdownMenu.Item>
-			</DropdownMenu.Group>
+			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
+				<Profile {user} />
+			</DropdownMenu.Item>
+			<DropdownMenu.Item class="text-red-500" onclick={logOut}>
+				<LogOut class="mr-2" /> Log out
+			</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 {/if}

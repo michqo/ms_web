@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-const formSchema = z.object({
-  name: z.string().min(1).max(50)
+const usernameSchema = z.object({
+  current_password: z.string().min(3).max(20),
+  new_username: z.string().min(3).max(20),
 });
 
 const loginSchema = z.object({
@@ -10,4 +11,4 @@ const loginSchema = z.object({
 });
 type LoginSchema = z.infer<typeof loginSchema>;
 
-export { formSchema, loginSchema, type LoginSchema };
+export { usernameSchema, loginSchema, type LoginSchema };

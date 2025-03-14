@@ -1,7 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station } from './types';
+import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station, ProfileUsername } from './types';
 import type { Dayjs } from 'dayjs';
 
 const instanceConfig: CreateAxiosDefaults = {
@@ -45,6 +45,10 @@ class AuthenticatedApi {
       return;
     }
     this.instance.defaults.headers.common['Authorization'] = `JWT ${token}`;
+  }
+
+  async setUsername(profile: ProfileUsername) {
+    await this.instance.post('/auth/users/set_username/', profile);
   }
 
   async getUsersMe(): Promise<string> {
