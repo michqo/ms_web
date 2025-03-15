@@ -2,6 +2,7 @@
 	import { User } from 'lucide-svelte';
 	import * as Dialog from '../dialog';
 	import UserDialog from './user-dialog.svelte';
+	import PasswordDialog from './password-dialog.svelte';
 
   const { user }: { user?: string } = $props();
 </script>
@@ -23,6 +24,10 @@
           <span class="text-sm text-muted-foreground">{user}</span>
         </div>
         <UserDialog {user} />
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-sm">Password</span>
+        <PasswordDialog />
       </div>
     </div>
 	</Dialog.Content>

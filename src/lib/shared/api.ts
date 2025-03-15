@@ -1,7 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station, ProfileUsername } from './types';
+import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station, ProfileUsername, ProfilePassword } from './types';
 import type { Dayjs } from 'dayjs';
 
 const instanceConfig: CreateAxiosDefaults = {
@@ -49,6 +49,10 @@ class AuthenticatedApi {
 
   async setUsername(profile: ProfileUsername) {
     await this.instance.post('/auth/users/set_username/', profile);
+  }
+
+  async setPassword(profile: ProfilePassword) {
+    await this.instance.post('/auth/users/set_password/', profile);
   }
 
   async getUsersMe(): Promise<string> {

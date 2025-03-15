@@ -88,5 +88,10 @@ interface ProfileUsername {
   new_username: string;
 }
 
-export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, ProfileUsername, RefreshJWTResponse, Station };
+interface ProfilePassword {
+  current_password: string;
+  new_password: string;
+}
+
+export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, ProfilePassword, ProfileUsername, RefreshJWTResponse, Station };
 

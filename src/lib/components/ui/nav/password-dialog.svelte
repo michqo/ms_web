@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { api } from '@/shared';
-	import { usernameSchema } from '@/shared/schemas';
+	import { passwordSchema } from '@/shared/schemas';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import { buttonVariants } from '../button/button.svelte';
@@ -8,16 +8,15 @@
 	import * as Form from '../form';
 	import { Input } from '../input';
 
-	const { user }: { user?: string } = $props();
-
 	let open = $state(false);
 
-	const form = superForm(defaults(zod(usernameSchema)), {
+	const form = superForm(defaults(zod(passwordSchema)), {
 		SPA: true,
-		validators: zodClient(usernameSchema),
+		validators: zodClient(passwordSchema),
 		onUpdate: async ({ form: f }) => {
 			if (f.valid) {
-				await api.setUsername(f.data);
+				const { current_password, new_password } = f.data;
+				await api.setPassword({ current_password, new_password });
 				open = false;
 			} else {
 				console.error('Please fix the errors in the form.');
@@ -29,26 +28,35 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Change Username</Dialog.Trigger>
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Change Password</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title>Change username</Dialog.Title>
+			<Dialog.Title>Change password</Dialog.Title>
 		</Dialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
-			<Form.Field {form} name="new_username">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>New Username</Form.Label>
-						<Input {...props} bind:value={$formData.new_username} />
-					{/snippet}
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
 			<Form.Field {form} name="current_password">
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>Current Password</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.current_password} />
+					{/snippet}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="new_password">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>New Password</Form.Label>
+						<Input {...props} type="password" bind:value={$formData.new_password} />
+					{/snippet}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="confirm_password">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Confirm New Password</Form.Label>
+						<Input {...props} type="password" bind:value={$formData.confirm_password} />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
