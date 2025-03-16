@@ -1,8 +1,8 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
-import type { LoginSchema } from './schemas';
-import type { LoginResponse, RefreshJWTResponse, Measurement, Forecast, ListResponse, ForecastTransformed, Station, ProfileUsername, ProfilePassword } from './types';
 import type { Dayjs } from 'dayjs';
+import type { DeleteSchema, LoginSchema, PasswordSchema, UsernameSchema } from './schemas';
+import type { Forecast, ListResponse, LoginResponse, Measurement, RefreshJWTResponse, Station } from './types';
 
 const instanceConfig: CreateAxiosDefaults = {
   baseURL: PUBLIC_API_URL,
@@ -47,12 +47,16 @@ class AuthenticatedApi {
     this.instance.defaults.headers.common['Authorization'] = `JWT ${token}`;
   }
 
-  async setUsername(profile: ProfileUsername) {
+  async setUsername(profile: UsernameSchema) {
     await this.instance.post('/auth/users/set_username/', profile);
   }
 
-  async setPassword(profile: ProfilePassword) {
+  async setPassword(profile: Omit<PasswordSchema, 'confirm_password'>) {
     await this.instance.post('/auth/users/set_password/', profile);
+  }
+
+  async deleteAccount(profile: DeleteSchema) {
+    await this.instance.delete('/auth/users/me/', { data: profile });
   }
 
   async getUsersMe(): Promise<string> {
@@ -86,4 +90,5 @@ class AuthenticatedApi {
 const authApi = new AuthenticationApi();
 const authenticatedApi = new AuthenticatedApi();
 
-export { authApi, authenticatedApi as api };
+export { authenticatedApi as api, authApi };
+

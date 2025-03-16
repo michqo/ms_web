@@ -83,15 +83,5 @@ interface Station {
   created_at: string;
 }
 
-interface ProfileUsername {
-  current_password: string;
-  new_username: string;
-}
-
-interface ProfilePassword {
-  current_password: string;
-  new_password: string;
-}
-
-export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, ProfilePassword, ProfileUsername, RefreshJWTResponse, Station };
+export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse, Station };
 

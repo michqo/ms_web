@@ -3,6 +3,7 @@
 	import * as Dialog from '../dialog';
 	import UserDialog from './user-dialog.svelte';
 	import PasswordDialog from './password-dialog.svelte';
+	import DeleteDialog from './delete-dialog.svelte';
 
   const { user }: { user?: string } = $props();
 </script>
@@ -28,6 +29,10 @@
       <div class="flex justify-between items-center">
         <span class="text-sm">Password</span>
         <PasswordDialog />
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-sm">Account</span>
+        <DeleteDialog />
       </div>
     </div>
 	</Dialog.Content>
