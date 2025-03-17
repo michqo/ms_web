@@ -51,7 +51,7 @@
 			</Form.Field>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action type="submit" class={buttonVariants({ variant: 'destructive' })}
+				<AlertDialog.Action type="submit" formaction="?/delete" class={buttonVariants({ variant: 'destructive' })}
 					>Delete</AlertDialog.Action
 				>
 			</AlertDialog.Footer>

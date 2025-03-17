@@ -1,24 +1,17 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { api } from '@/shared/api';
-	import { CircleUser, LogOut } from 'lucide-svelte';
-	import Profile from './profile.svelte';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { DeleteSchema } from '@/shared/schemas';
+	import { CircleUser, LogOut } from 'lucide-svelte';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import Profile from './profile.svelte';
 
 	interface Props {
-		user?: string,
-		data: SuperValidated<DeleteSchema>
+		user?: string;
+		data: SuperValidated<DeleteSchema>;
 	}
 
 	let { user, data }: Props = $props();
-
-	function logOut() {
-		api.setAuthToken('');
-		goto('/logout');
-	}
 </script>
 
 {#if user}
@@ -31,8 +24,12 @@
 			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
 				<Profile {user} {data} />
 			</DropdownMenu.Item>
-			<DropdownMenu.Item class="text-red-500" onclick={logOut}>
-				<LogOut class="mr-2" /> Log out
+			<DropdownMenu.Item class="text-red-500">
+				<form method="POST" action="?/logout">
+					<button type="submit" class="flex cursor-default items-center gap-2">
+						<LogOut class="mr-2" /> Log out
+					</button>
+				</form>
 			</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
