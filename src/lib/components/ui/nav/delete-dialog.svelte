@@ -1,26 +1,28 @@
 <script lang="ts">
-	import { api } from '@/shared';
-	import { deleteSchema } from '@/shared/schemas';
-	import { defaults, superForm } from 'sveltekit-superforms';
-	import { zod, zodClient } from 'sveltekit-superforms/adapters';
+	import { deleteSchema, type DeleteSchema } from '@/shared/schemas';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 	import * as AlertDialog from '../alert-dialog';
 	import { buttonVariants } from '../button/button.svelte';
 	import * as Form from '../form';
 	import { Input } from '../input';
-	import { goto } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
+
+  interface Props {
+		data: SuperValidated<DeleteSchema>
+	}
+
+  const { data }: Props = $props();
 
 	let open = $state(false);
 
-	const form = superForm(defaults(zod(deleteSchema)), {
-		SPA: true,
+	const form = superForm(data, {
 		validators: zodClient(deleteSchema),
 		onUpdate: async ({ form: f }) => {
 			if (f.valid) {
-				await api.deleteAccount(f.data);
-        goto('/logout');
-				open = false;
+        toast.success('Successfully deleted account.')
 			} else {
-				console.error('Please fix the errors in the form.');
+				toast.error('Failed to delete account.');
 			}
 		}
 	});

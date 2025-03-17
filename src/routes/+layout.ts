@@ -13,7 +13,7 @@ export const load = (async ({data, fetch}) => {
 		}
 	});
 
-	const accessToken = data.accessToken;
+	const { accessToken, form } = data;
   if (accessToken) {
     api.setAuthToken(accessToken);
     const prefetchedUser = queryClient.prefetchQuery({
@@ -22,8 +22,8 @@ export const load = (async ({data, fetch}) => {
       initialData: data.user
     });
     await Promise.all([prefetchedUser]);
-    return { queryClient, accessToken, user: data.user };
+    return { queryClient, accessToken, form, user: data.user };
   }
 	
-	return { queryClient };
+	return { queryClient, form };
 }) satisfies LayoutLoad;

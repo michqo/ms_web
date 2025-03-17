@@ -5,8 +5,15 @@
 	import { api } from '@/shared/api';
 	import { CircleUser, LogOut } from 'lucide-svelte';
 	import Profile from './profile.svelte';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { DeleteSchema } from '@/shared/schemas';
 
-	let { user }: { user?: string } = $props();
+	interface Props {
+		user?: string,
+		data: SuperValidated<DeleteSchema>
+	}
+
+	let { user, data }: Props = $props();
 
 	function logOut() {
 		api.setAuthToken('');
@@ -22,7 +29,7 @@
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
 			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<Profile {user} />
+				<Profile {user} {data} />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item class="text-red-500" onclick={logOut}>
 				<LogOut class="mr-2" /> Log out

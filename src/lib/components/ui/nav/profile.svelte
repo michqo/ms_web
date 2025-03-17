@@ -4,8 +4,15 @@
 	import UserDialog from './user-dialog.svelte';
 	import PasswordDialog from './password-dialog.svelte';
 	import DeleteDialog from './delete-dialog.svelte';
+	import type { DeleteSchema } from '@/shared/schemas';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
-  const { user }: { user?: string } = $props();
+  interface Props {
+		user?: string,
+		data: SuperValidated<DeleteSchema>
+	}
+  
+  const { user, data }: Props = $props();
 </script>
 
 <Dialog.Root>
@@ -32,7 +39,7 @@
       </div>
       <div class="flex justify-between items-center">
         <span class="text-sm">Account</span>
-        <DeleteDialog />
+        <DeleteDialog {data} />
       </div>
     </div>
 	</Dialog.Content>

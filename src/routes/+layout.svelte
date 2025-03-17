@@ -23,7 +23,7 @@
 <Toaster />
 
 <QueryClientProvider client={data.queryClient}>
-	<Nav user={data?.user} />
+	<Nav user={data?.user} data={data.form} />
 	{#key page.url}
 		<Loading />
 		<div class="w-full h-full" in:fade>
