@@ -94,6 +94,11 @@ class AuthenticatedApi {
   async deleteStation(stationId: number): Promise<void> {
     await this.instance.delete(`/api/stations/${stationId}/`);
   }
+
+  async createStation(station: Partial<Station>): Promise<Station> {
+    const response = await this.instance.post<Station>('/api/stations/', station);
+    return response.data;
+  }
 }
 
 const authApi = new AuthenticationApi();

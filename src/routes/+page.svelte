@@ -4,7 +4,7 @@
 	import { api } from '@/shared';
 	import type { Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { Edit } from 'lucide-svelte';
+	import { Edit, Plus } from 'lucide-svelte';
 
 	const dataQuery = createQuery({
 		queryKey: ['stations'],
@@ -12,11 +12,11 @@
 		refetchOnWindowFocus: false
 	});
 
-	let selectedStation = $state();
+	let selectedStation: Partial<Station> | undefined = $state();
 	let dialogOpen = $state(false);
 
-	function openDialog(station: Partial<Station>) {
-		selectedStation = station;
+	function openDialog(station?: Partial<Station>) {
+		selectedStation = station || undefined;
 		dialogOpen = true;
 	}
 </script>
@@ -24,7 +24,14 @@
 <main class="flex w-screen flex-col items-center">
 	{#if $dataQuery.data}
 		{@const stations = $dataQuery.data.results}
-		<h1 class="mt-24 text-3xl font-medium">Stations</h1>
+    <div class="mt-24 flex w-full max-w-xs items-center justify-between">
+      <h1 class="text-3xl font-medium">Stations</h1>
+      <Button onclick={() => openDialog()} variant="outline" size="sm">
+        <Plus class="mr-2 h-4 w-4" />
+        Add
+      </Button>
+    </div>
+
 		<ul class="mt-10 flex w-full max-w-xs flex-col items-center gap-y-4">
 			{#each stations as station}
 				<li
@@ -44,10 +51,5 @@
 		</ul>
 	{/if}
 
-	{#if selectedStation}
-		<StationDialog
-			bind:open={dialogOpen}
-			station={selectedStation}
-		/>
-	{/if}
+	<StationDialog bind:open={dialogOpen} station={selectedStation} />
 </main>
