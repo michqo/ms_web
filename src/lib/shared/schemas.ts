@@ -29,13 +29,28 @@ const deleteSchema = z.object({
 });
 type DeleteSchema = z.infer<typeof deleteSchema>;
 
+const stationSchema = z.object({
+	name: z.string().min(1, 'Station name is required'),
+	latitude: z.coerce
+		.number()
+		.min(-90, 'Latitude must be between -90 and 90')
+		.max(90, 'Latitude must be between -90 and 90'),
+	longitude: z.coerce
+		.number()
+		.min(-180, 'Longitude must be between -180 and 180')
+		.max(180, 'Longitude must be between -180 and 180')
+});
+type StationSchema = z.infer<typeof stationSchema>;
+
 export {
 	deleteSchema,
 	loginSchema,
 	passwordSchema,
+	stationSchema,
 	usernameSchema,
 	type DeleteSchema,
 	type LoginSchema,
 	type PasswordSchema,
+	type StationSchema,
 	type UsernameSchema
 };
