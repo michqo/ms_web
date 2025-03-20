@@ -12,7 +12,10 @@
 
 	let open = $state(false);
 
-	const form = superForm(defaults(zod(usernameSchema)), {
+	const form = superForm({
+		new_username: user || '',
+		current_password: ''
+	}, {
 		SPA: true,
 		validators: zodClient(usernameSchema),
 		onUpdate: async ({ form: f }) => {
