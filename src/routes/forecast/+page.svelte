@@ -38,7 +38,7 @@
     </div>
 
     <div class="flex flex-col items-center gap-y-4 w-full max-w-xs">
-      <Card forecast={forecast.results[0]} />
+      <Card forecast={forecast.results[0]} stationId={currentStation?.id!}/>
       <Table forecast={forecast.results} />
       <p class="text-muted-foreground">Updated at: {dayjs(forecast.modelrun_utc).format("HH:mm")}</p>
     </div>
