@@ -32,15 +32,14 @@
 <main class="grid h-svh place-items-center">
   {#if $dataQuery.data}
     {@const forecast = $dataQuery.data}
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center my-6">
       <h1 class="font-medium text-4xl">{currentStation?.name}</h1>
-      <h2 class="text-xl font-light text-muted-foreground">{currentStation?.city_name}</h2>
+      <h2 class="text-xl font-light text-muted-foreground mt-1">{currentStation?.city_name}</h2>
     </div>
 
-    <div class="flex flex-col items-center gap-y-4 w-full max-w-xs">
+    <div class="flex flex-col items-center gap-y-8 w-full max-w-xs">
       <Card forecast={forecast.results[0]} stationId={currentStation?.id!}/>
-      <Table forecast={forecast.results} />
-      <p class="text-muted-foreground">Updated at: {dayjs(forecast.modelrun_utc).format("HH:mm")}</p>
+      <Table forecast={forecast.results} updatedDate={forecast.modelrun_utc} />
     </div>
   {/if}
 </main>
