@@ -51,5 +51,7 @@
 		</ul>
 	{/if}
 
-	<StationDialog bind:open={dialogOpen} station={selectedStation} />
+  {#key selectedStation}
+    <StationDialog bind:open={dialogOpen} station={selectedStation} />
+  {/key}
 </main>

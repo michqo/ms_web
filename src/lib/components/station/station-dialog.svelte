@@ -9,8 +9,8 @@
 	import type { Station } from '@/shared/types';
 	import { useQueryClient } from '@tanstack/svelte-query';
 	import { toast } from 'svelte-sonner';
-	import { defaults, superForm } from 'sveltekit-superforms';
-	import { zod, zodClient } from 'sveltekit-superforms/adapters';
+	import { superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	interface Props {
 		open: boolean;
@@ -20,30 +20,37 @@
 	let { open = $bindable(), station }: Props = $props();
 
 	const client = useQueryClient();
-	const isNewStation = $derived(!station);
+	const isNewStation = !station;
 
 	let deleteDialogOpen = $state(false);
 
-	const form = superForm(defaults(zod(stationSchema)), {
-		SPA: true,
-		validators: zodClient(stationSchema),
-		onUpdate: async ({ form: f }) => {
-			if (f.valid) {
-				if (isNewStation) {
-					await api.createStation(f.data);
-					toast.success('Station created successfully');
+	const form = superForm(
+		{
+			name: station?.name || '',
+			latitude: station?.latitude || 0,
+			longitude: station?.longitude || 0
+		},
+		{
+			SPA: true,
+			validators: zodClient(stationSchema),
+			onUpdate: async ({ form: f }) => {
+				if (f.valid) {
+					if (isNewStation) {
+						await api.createStation(f.data);
+						toast.success('Station created successfully');
+					} else {
+						await api.updateStation(station?.id!, f.data);
+						toast.success('Station updated successfully');
+					}
+					await client.invalidateQueries({ queryKey: ['stations'] });
+					open = false;
 				} else {
-					await api.updateStation(station?.id!, f.data);
-					toast.success('Station updated successfully');
+					toast.error(isNewStation ? 'Failed to create station' : 'Failed to update station');
+					open = false;
 				}
-				await client.invalidateQueries({ queryKey: ['stations'] });
-				open = false;
-			} else {
-				toast.error(isNewStation ? 'Failed to create station' : 'Failed to update station');
-				open = false;
 			}
 		}
-	});
+	);
 
 	const { form: formData, enhance } = form;
 
