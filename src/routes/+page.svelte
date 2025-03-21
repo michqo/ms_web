@@ -4,7 +4,9 @@
 	import { api } from '@/shared';
 	import type { Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { Edit, Plus } from 'lucide-svelte';
+	import { Edit, Plus, CheckCircle2 } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
 	const dataQuery = createQuery({
 		queryKey: ['stations'],
@@ -14,10 +16,33 @@
 
 	let selectedStation: Partial<Station> | undefined = $state();
 	let dialogOpen = $state(false);
+	let selectedStationId = $state<number | null>(null);
+
+	onMount(() => {
+		// Load the selected station ID from localStorage on mount
+		const storedStationId = localStorage.getItem('selectedStationId');
+		if (storedStationId) {
+			selectedStationId = parseInt(storedStationId);
+		}
+	});
+
+	$effect(() => {
+		// If stations are loaded and no station is selected, select the first one
+		if ($dataQuery.data?.results.length && selectedStationId === null) {
+			const firstStation = $dataQuery.data.results[0];
+			setSelectedStation(firstStation.id);
+		}
+	});
 
 	function openDialog(station?: Partial<Station>) {
 		selectedStation = station || undefined;
 		dialogOpen = true;
+	}
+
+	function setSelectedStation(stationId: number) {
+		selectedStationId = stationId;
+		localStorage.setItem('selectedStationId', stationId.toString());
+		toast.success('Station selected as default');
 	}
 </script>
 
@@ -35,15 +60,40 @@
 		<ul class="mt-10 flex w-full max-w-xs flex-col items-center gap-y-4">
 			{#each stations as station}
 				<li
-					class="group relative flex w-full flex-col rounded-lg border border-border px-8 py-4 shadow-lg hover:border-primary"
+					class="group relative flex w-full flex-col rounded-lg border {selectedStationId === station.id ? 'border-primary bg-muted/30' : 'border-border'} px-8 py-4 shadow-lg hover:border-primary"
 				>
-					<div class="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100">
-						<Button variant="ghost" size="icon" onclick={() => openDialog(station)}>
+					<div class="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+						<Button 
+							variant={selectedStationId === station.id ? "default" : "ghost"}
+							size="icon" 
+							onclick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								setSelectedStation(station.id);
+							}}
+							title="Set as default station"
+						>
+							<CheckCircle2 class="h-4 w-4" />
+						</Button>
+						<Button 
+							variant="ghost" 
+							size="icon" 
+							onclick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								openDialog(station);
+							}}
+						>
 							<Edit class="h-4 w-4" />
 						</Button>
 					</div>
 					<a href="/measurements?station={station.id}" class="flex flex-col">
-						<span>{station.name}</span>
+						<div class="flex items-center gap-2">
+							<span>{station.name}</span>
+							{#if selectedStationId === station.id}
+								<span class="text-xs text-muted-foreground">(Default)</span>
+							{/if}
+						</div>
 						<span class="text-muted-foreground">{station.city_name}</span>
 					</a>
 				</li>

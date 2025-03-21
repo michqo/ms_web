@@ -1,19 +1,31 @@
 <script lang="ts">
-	import { createQuery } from '@tanstack/svelte-query';
-	import * as Tabs from '@/components/ui/tabs';
-	import { Skeleton } from '@/components/ui/skeleton';
-	import * as Accordion from '@/components/ui/accordion';
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
-	import { toast } from 'svelte-sonner';
-	import Table from '@/components/measurements/table.svelte';
 	import Chart from '@/components/measurements/chart.svelte';
+	import Table from '@/components/measurements/table.svelte';
+	import * as Accordion from '@/components/ui/accordion';
+	import { Skeleton } from '@/components/ui/skeleton';
+	import * as Tabs from '@/components/ui/tabs';
 	import Popover from '@/components/ui/weekday';
-	import type { Measurement } from '@/shared/types';
-	import dayjs from 'dayjs';
 	import { api, setParam } from '@/shared';
+	import type { Measurement } from '@/shared/types';
+	import { createQuery } from '@tanstack/svelte-query';
+	import dayjs from 'dayjs';
+	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
-	const stationParam = $derived(parseInt(page.url.searchParams.get('station') || '1') || 1);
+	let stationIdFromStorage = $state<number | null>(null);
+
+	onMount(() => {
+		// Load the selected station ID from localStorage on mount
+		const storedStationId = localStorage.getItem('selectedStationId');
+		if (storedStationId) {
+			stationIdFromStorage = parseInt(storedStationId);
+		}
+	});
+
+	const stationParam = $derived(
+		parseInt(page.url.searchParams.get('station') || (stationIdFromStorage?.toString() || '1')) || 1
+	);
 	const viewParam = $derived(page.url.searchParams.get('view'));
 	const pageParam = $derived(parseInt(page.url.searchParams.get('page') || '1') || 1);
 	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
