@@ -2,7 +2,7 @@
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import type { DeleteSchema } from '@/shared/schemas';
-	import { CircleUser, LogOut } from 'lucide-svelte';
+	import { CircleUser, LogOut, User } from 'lucide-svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Profile from './profile.svelte';
 
@@ -12,6 +12,8 @@
 	}
 
 	let { user, data }: Props = $props();
+
+	let dialogOpen = $state(false);
 </script>
 
 {#if user}
@@ -21,16 +23,17 @@
 			{user}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
-			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<Profile {user} {data} />
+			<DropdownMenu.Item onclick={() => dialogOpen = true}>
+				<User class="mr-2" /> Profile
 			</DropdownMenu.Item>
-			<DropdownMenu.Item class="text-red-500">
+			<DropdownMenu.Item>
 				<form method="POST" action="?/logout">
-					<button type="submit" class="flex cursor-default items-center gap-2">
+					<button type="submit" class="flex cursor-default items-center gap-2 text-red-500">
 						<LogOut class="mr-2" /> Log out
 					</button>
 				</form>
 			</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
+	<Profile bind:open={dialogOpen} {user} {data} />
 {/if}

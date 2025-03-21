@@ -9,17 +9,14 @@
 
   interface Props {
 		user?: string,
-		data: SuperValidated<DeleteSchema>
+		data: SuperValidated<DeleteSchema>,
+		open: boolean
 	}
   
-  const { user, data }: Props = $props();
+  let { user, data, open = $bindable() }: Props = $props();
 </script>
 
-<Dialog.Root>
-	<Dialog.Trigger class="flex cursor-default items-center gap-2">
-		<User class="mr-2" />
-		<span>Profile</span>
-	</Dialog.Trigger>
+<Dialog.Root bind:open>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>Edit profile</Dialog.Title>
