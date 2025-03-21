@@ -37,7 +37,7 @@
       <h2 class="text-xl font-light text-muted-foreground mt-1">{currentStation?.city_name}</h2>
     </div>
 
-    <div class="flex flex-col items-center gap-y-8 w-full max-w-xs">
+    <div class="flex flex-col items-center gap-y-8 w-full max-w-sm">
       <Card forecast={forecast.results[0]} stationId={currentStation?.id!}/>
       <Table forecast={forecast.results} updatedDate={forecast.modelrun_utc} />
     </div>

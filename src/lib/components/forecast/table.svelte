@@ -14,7 +14,7 @@
 		item.time.isSame(dayjs(), 'day') ? 'Today' : item.time.format('ddd');
 </script>
 
-<div class="overflow-hidden rounded-lg border shadow-sm">
+<div class="overflow-hidden rounded-lg border shadow-sm w-full">
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
@@ -29,11 +29,7 @@
 				<Table.Row class="transition-colors hover:bg-muted/50 {i === 0 ? 'bg-muted/20' : ''}">
 					<Table.Cell class="font-medium">{displayTime(item)}</Table.Cell>
 					<Table.Cell>
-						<div class="flex items-center gap-2">
-							<div class="h-10 w-10">
-								<item.icon />
-							</div>
-						</div>
+						<item.icon class="h-10 w-10" />
 					</Table.Cell>
 					<Table.Cell class="text-base font-semibold text-red-500">
 						{Math.round(item.temperature_max)}°
