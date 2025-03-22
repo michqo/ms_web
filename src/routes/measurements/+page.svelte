@@ -42,7 +42,7 @@
 		createQuery({
 			queryKey: ['measurements', stationId!, pageParam, dateParam],
 			queryFn: () => api.getMeasurements(stationId!, pageParam, dayjs(dateParam)),
-			enabled: stationId != undefined
+			enabled: !!stationId
 		})
 	);
 

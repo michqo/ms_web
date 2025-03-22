@@ -32,7 +32,7 @@
   const dataQuery = $derived(createQuery({
     queryKey: ['forecast'],
     queryFn: () => api.getForecast(defaultStation?.id!),
-    enabled: defaultStation != undefined,
+    enabled: !!defaultStation,
     select: (data) => ({
       id: data.id,
       latitude: data.latitude,
