@@ -7,25 +7,32 @@
 	import * as Tabs from '@/components/ui/tabs';
 	import Popover from '@/components/ui/weekday';
 	import { api, setParam } from '@/shared';
+	import useLocalStorage from '@/shared/runes.svelte';
 	import type { Measurement } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
-	let stationIdFromStorage = $state<number | null>(null);
+	const stationQuery = createQuery({
+		queryKey: ['stations'],
+		queryFn: () => api.getStations(),
+		refetchOnWindowFocus: false
+	});
 
-	onMount(() => {
-		// Load the selected station ID from localStorage on mount
-		const storedStationId = localStorage.getItem('selectedStationId');
-		if (storedStationId) {
-			stationIdFromStorage = parseInt(storedStationId);
+	const defaultStationId = useLocalStorage('defaultStationId', undefined);
+	const stationIdParam = $derived(page.params.station);
+	const stationId: number = $derived(
+		stationIdParam ? parseInt(stationIdParam) : parseInt(defaultStationId.value)
+	);
+
+	$effect(() => {
+		// If stations are loaded and no station is selected, select the first one
+		if ($stationQuery.data?.results.length && !defaultStationId.value) {
+			const firstStation = $stationQuery.data.results[0];
+			setSelectedStation(firstStation.id);
 		}
 	});
 
-	const stationParam = $derived(
-		parseInt(page.url.searchParams.get('station') || (stationIdFromStorage?.toString() || '1')) || 1
-	);
 	const viewParam = $derived(page.url.searchParams.get('view'));
 	const pageParam = $derived(parseInt(page.url.searchParams.get('page') || '1') || 1);
 	const dateParam = $derived(page.url.searchParams.get('date') || new Date().toISOString());
@@ -33,10 +40,16 @@
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['measurements', stationParam, pageParam, dateParam],
-			queryFn: () => api.getMeasurements(stationParam, pageParam, dayjs(dateParam))
+			queryKey: ['measurements', stationId!, pageParam, dateParam],
+			queryFn: () => api.getMeasurements(stationId!, pageParam, dayjs(dateParam)),
+			enabled: stationId != undefined
 		})
 	);
+
+	function setSelectedStation(id: number) {
+		defaultStationId.value = id.toString();
+		toast.success('Station selected as default');
+	}
 
 	const createChartData = (key: keyof Measurement) =>
 		$dataQuery.data?.results.map((data) => ({
