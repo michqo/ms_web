@@ -2,7 +2,6 @@ import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { Dayjs } from 'dayjs';
 import type {
-	DeleteMeasurementSchema,
 	DeleteSchema,
 	LoginSchema,
 	PasswordSchema,
@@ -16,8 +15,6 @@ import type {
 	RefreshJWTResponse,
 	Station
 } from './types';
-import dayjs from 'dayjs';
-import { getLocalTimeZone } from '@internationalized/date';
 
 const instanceConfig: CreateAxiosDefaults = {
 	baseURL: PUBLIC_API_URL,
@@ -82,14 +79,25 @@ class AuthenticatedApi {
 	async getMeasurements(
 		station: number,
 		page: number = 1,
-		date: Dayjs
+		date?: Dayjs
 	): Promise<ListResponse<Measurement>> {
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		params.append('page', page.toString());
-		params.append('timestamp__gt', date.startOf('day').toISOString());
-		params.append('timestamp__lt', date.endOf('day').toISOString());
+		if (date) {
+			params.append('timestamp__gt', date.startOf('day').toISOString());
+			params.append('timestamp__lt', date.endOf('day').toISOString());
+		}
 		const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/', {
+			params
+		});
+		return response.data;
+	}
+
+	async getLatestMeasurement(station: number): Promise<Measurement> {
+		const params = new URLSearchParams();
+		params.append('station', station.toString());
+		const response = await this.instance.get<Measurement>('/api/measurements/latest/', {
 			params
 		});
 		return response.data;
