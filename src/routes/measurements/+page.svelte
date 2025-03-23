@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import Chart from '@/components/measurements/chart.svelte';
 	import Table from '@/components/measurements/table.svelte';
+	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
 	import * as Accordion from '@/components/ui/accordion';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
@@ -12,6 +13,8 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
 	import { toast } from 'svelte-sonner';
+	import { Button } from '@/components/ui/button';
+	import { Trash2 } from 'lucide-svelte';
 
 	const stationQuery = createQuery({
 		queryKey: ['stations'],
@@ -67,60 +70,79 @@
 			toast.error('No measurements found.');
 		}
 	});
+
+	let deleteDialogOpen = $state(false);
+
+	function refreshData() {
+	}
 </script>
 
-<Tabs.Root
-	value={viewParam ? viewParam : 'table'}
-	onValueChange={(value) => setParam('view', value)}
-	class="w-full"
->
-	<Tabs.List class="grid w-full grid-cols-2">
-		<Tabs.Trigger value="table">Table</Tabs.Trigger>
-		<Tabs.Trigger value="graph">Graph</Tabs.Trigger>
-	</Tabs.List>
-	<main class="grid h-svh items-center justify-center">
-		{#if $dataQuery.data}
-			<Tabs.Content value="table">
-				<div class="flex flex-col items-center gap-y-5">
-					<Popover {dates} selected={dateParam} />
+<div class="w-full space-y-4">
+	<Tabs.Root
+		value={viewParam ? viewParam : 'table'}
+		onValueChange={(value) => setParam('view', value)}
+		class="w-full"
+	>
+		<Tabs.List class="grid w-full grid-cols-2">
+			<Tabs.Trigger value="table">Table</Tabs.Trigger>
+			<Tabs.Trigger value="graph">Graph</Tabs.Trigger>
+		</Tabs.List>
+		<main class="flex flex-col h-svh items-center justify-center">
+			{#if $dataQuery.data}
+				<div class="flex items-center justify-between w-full max-w-xs mb-8">
+					<h1 class="text-2xl font-bold tracking-tight">Measurements</h1>
+					<Button
+						variant="secondary"
+						size="sm"
+						onclick={() => (deleteDialogOpen = true)}
+					>
+						<Trash2 class="h-4 w-4" />
+					</Button>
+				</div>
+				<Tabs.Content value="table">
+					<div class="flex flex-col items-center gap-y-5">
+						<Popover {dates} selected={dateParam} />
+						{#if !emptyData}
+							<Table
+								pageNumber={pageParam}
+								onPageChange={(page) => setParam('page', page.toString())}
+								{dataQuery}
+							/>
+						{:else}
+							<div class="flex w-screen max-w-sm flex-col items-center gap-5">
+								<Skeleton class="h-[35px] w-full" />
+								<Skeleton class="h-[300px] w-full rounded" />
+								<Skeleton class="h-[35px] w-full" />
+							</div>
+						{/if}
+					</div>
+				</Tabs.Content>
+				<Tabs.Content value="graph">
 					{#if !emptyData}
-						<Table
-							pageNumber={pageParam}
-							onPageChange={(page) => setParam('page', page.toString())}
-							{dataQuery}
-						/>
+						<Accordion.Root value={['temp']} type="multiple" class="w-screen max-w-xl">
+							<Accordion.Item value="temp">
+								<Accordion.Trigger>Temperature</Accordion.Trigger>
+								<Accordion.Content>
+									<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
+								</Accordion.Content>
+							</Accordion.Item>
+							<Accordion.Item value="hum">
+								<Accordion.Trigger>Humidity</Accordion.Trigger>
+								<Accordion.Content>
+									<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
+								</Accordion.Content>
+							</Accordion.Item>
+						</Accordion.Root>
 					{:else}
-						<div class="flex w-screen max-w-sm flex-col items-center gap-5">
-							<Skeleton class="h-[35px] w-full" />
-							<Skeleton class="h-[300px] w-full rounded" />
-							<Skeleton class="h-[35px] w-full" />
+						<div class="flex w-screen max-w-xl flex-col items-center gap-5">
+							<Skeleton class="h-[40px] w-full" />
+							<Skeleton class="h-[40px] w-full" />
 						</div>
 					{/if}
-				</div>
-			</Tabs.Content>
-			<Tabs.Content value="graph">
-				{#if !emptyData}
-					<Accordion.Root value={['temp']} type="multiple" class="w-screen max-w-xl">
-						<Accordion.Item value="temp">
-							<Accordion.Trigger>Temperature</Accordion.Trigger>
-							<Accordion.Content>
-								<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
-							</Accordion.Content>
-						</Accordion.Item>
-						<Accordion.Item value="hum">
-							<Accordion.Trigger>Humidity</Accordion.Trigger>
-							<Accordion.Content>
-								<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
-							</Accordion.Content>
-						</Accordion.Item>
-					</Accordion.Root>
-				{:else}
-					<div class="flex w-screen max-w-xl flex-col items-center gap-5">
-						<Skeleton class="h-[40px] w-full" />
-						<Skeleton class="h-[40px] w-full" />
-					</div>
-				{/if}
-			</Tabs.Content>
-		{/if}
-	</main>
-</Tabs.Root>
+				</Tabs.Content>
+			{/if}
+		</main>
+	</Tabs.Root>
+
+	<DeleteDialog bind:open={deleteDialogOpen} {stationId} onSuccess={refreshData} />
+</div>

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import {type DateValue} from '@internationalized/date';
 
 const usernameSchema = z.object({
 	current_password: z.string().min(3).max(20),
@@ -42,12 +43,20 @@ const stationSchema = z.object({
 });
 type StationSchema = z.infer<typeof stationSchema>;
 
+const deleteMeasurementSchema = z.object({
+	created_at__gt: z.custom<DateValue>().optional(),
+	created_at__lt: z.custom<DateValue>().optional()
+});
+type DeleteMeasurementSchema = z.infer<typeof deleteMeasurementSchema>;
+
 export {
 	deleteSchema,
 	loginSchema,
 	passwordSchema,
 	stationSchema,
 	usernameSchema,
+	deleteMeasurementSchema,
+	type DeleteMeasurementSchema,
 	type DeleteSchema,
 	type LoginSchema,
 	type PasswordSchema,
