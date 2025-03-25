@@ -77,8 +77,8 @@
 	function refreshData() {}
 </script>
 
-{#snippet title(maxWidth: string)}
-	<div class="mb-8 flex w-full {maxWidth} items-center justify-between">
+{#snippet title(className: string)}
+	<div class="flex w-full {className} items-center justify-between">
 		<h1 class="text-2xl font-bold tracking-tight">Measurements</h1>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
@@ -129,28 +129,31 @@
 					</div>
 				</Tabs.Content>
 				<Tabs.Content value="graph">
-					{@render title('max-w-xl')}
-					{#if !emptyData}
-						<Accordion.Root value={['temp']} type="multiple" class="w-screen max-w-xl">
-							<Accordion.Item value="temp">
-								<Accordion.Trigger>Temperature</Accordion.Trigger>
-								<Accordion.Content>
-									<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
-								</Accordion.Content>
-							</Accordion.Item>
-							<Accordion.Item value="hum">
-								<Accordion.Trigger>Humidity</Accordion.Trigger>
-								<Accordion.Content>
-									<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
-								</Accordion.Content>
-							</Accordion.Item>
-						</Accordion.Root>
-					{:else}
-						<div class="flex w-screen max-w-xl flex-col items-center gap-5">
-							<Skeleton class="h-[40px] w-full" />
-							<Skeleton class="h-[40px] w-full" />
-						</div>
-					{/if}
+					<div class="flex flex-col gap-y-5">
+						{@render title('max-w-xl')}
+						<Popover {dates} selected={dateParam} />
+						{#if !emptyData}
+							<Accordion.Root value={['temp']} type="multiple" class="w-screen max-w-xl">
+								<Accordion.Item value="temp">
+									<Accordion.Trigger>Temperature</Accordion.Trigger>
+									<Accordion.Content>
+										<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
+									</Accordion.Content>
+								</Accordion.Item>
+								<Accordion.Item value="hum">
+									<Accordion.Trigger>Humidity</Accordion.Trigger>
+									<Accordion.Content>
+										<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
+									</Accordion.Content>
+								</Accordion.Item>
+							</Accordion.Root>
+						{:else}
+							<div class="flex w-screen max-w-xl flex-col items-center gap-5">
+								<Skeleton class="h-[40px] w-full" />
+								<Skeleton class="h-[40px] w-full" />
+							</div>
+						{/if}
+					</div>
 				</Tabs.Content>
 			{/if}
 		</main>
