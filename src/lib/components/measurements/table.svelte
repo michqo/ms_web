@@ -14,7 +14,7 @@
   const { pageNumber, onPageChange, dataQuery }: Props = $props();
 </script>
 
-<Table.Root>
+<Table.Root class="w-screen max-w-sm">
   <Table.Header>
     <Table.Row>
       <Table.Cell>Time</Table.Cell>
