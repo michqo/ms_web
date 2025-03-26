@@ -60,7 +60,7 @@
     </div>
 
     <div class="flex flex-col items-center gap-y-8 w-full max-w-sm">
-      <Card forecast={forecast.results[0]} stationId={defaultStation?.id!}/>
+      <Card forecast={forecast.results[0]} {stationId}/>
       <Table forecast={forecast.results} updatedDate={forecast.modelrun_utc} />
     </div>
   {/if}

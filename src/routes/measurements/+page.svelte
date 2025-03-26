@@ -90,7 +90,7 @@
 					class="flex items-center gap-x-2"
 				>
 					<Trash2 />
-					Delete stations
+					Delete measurements
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

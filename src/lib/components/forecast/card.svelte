@@ -16,20 +16,12 @@
 
 	const { forecast, stationId }: Props = $props();
 
-	const measurementsQuery = createQuery({
-		queryKey: ['measurements', stationId, 1, dayjs().toISOString()],
-		queryFn: () => api.getMeasurements(stationId, 1, dayjs()),
-		select: (data) => {
-			// Sort to get the most recent measurement
-      return data.results.sort(
-        (a, b) => dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf()
-      )[0];
-		}
+	const measurementQuery = createQuery({
+		queryKey: ['lastMeasurement', stationId],
+		queryFn: () => api.getLatestMeasurement(stationId),
 	});
 
-	const latestMeasurement = $derived($measurementsQuery.data);
-	const isLoading = $derived($measurementsQuery.isLoading);
-	const isError = $derived($measurementsQuery.isError);
+	const latestMeasurement = $derived($measurementQuery.data);
 </script>
 
 <div class="flex flex-col rounded-lg border border-border px-8 py-6 shadow-lg">
@@ -56,11 +48,11 @@
 
 		<div class="border-l pl-4">
 			<p class="text-center text-sm text-muted-foreground">Current Temperature</p>
-			{#if isLoading}
+			{#if $measurementQuery.isLoading}
 				<div class="flex items-center justify-center">
 					<Skeleton class="h-10 w-20" />
 				</div>
-			{:else if isError}
+			{:else if $measurementQuery.isError}
 				<p class="text-center text-red-500">Failed to load current data</p>
 			{:else if latestMeasurement}
 				<Tooltip.Provider>
@@ -74,7 +66,7 @@
 							</div>
 						</Tooltip.Trigger>
 						<Tooltip.Content>
-							Last updated: {dayjs(latestMeasurement.created_at).format('HH:mm:ss')}
+							Last updated: {dayjs(latestMeasurement.created_at).format('MMM D, YYYY HH:mm:ss')}
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Tooltip.Provider>
