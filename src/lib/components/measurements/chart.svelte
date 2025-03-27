@@ -34,7 +34,7 @@
 			<Axis placement="left" grid rule={{ class: 'stroke-border' }} />
 			<Axis
 				placement="bottom"
-				format={(d) => dayjs(d).format('HH:mm')}
+				format={(d) => dayjs(d).format('HH:00')}
 				rule={{ class: 'stroke-border' }}
 			/>
 			<Spline class="stroke-2 {lineColors[lineColor]}" />
@@ -43,7 +43,7 @@
 		</Svg>
 
 		<Tooltip.Root let:data>
-			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D HH:mm')}</Tooltip.Header>
+			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D HH:00')}</Tooltip.Header>
 			<Tooltip.List>
 				<Tooltip.Item label="value" value={data.value + suffix} />
 			</Tooltip.List>

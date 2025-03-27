@@ -25,7 +25,7 @@
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
 	const stationIdParam = $derived(page.params.station);
-	const stationId: number = $derived(
+	const stationId = $derived(
 		stationIdParam ? parseInt(stationIdParam) : parseInt(defaultStationId.value)
 	);
 
@@ -50,13 +50,21 @@
 		})
 	);
 
+	const dayMeasurementsQuery = $derived(
+		createQuery({
+			queryKey: ['dayMeasurements', stationId, pageParam, dateParam],
+			queryFn: () => api.getMeasurements(stationId, pageParam, dayjs(dateParam), 24),
+			enabled: !!stationId
+		})
+	);
+
 	function setSelectedStation(id: number) {
 		defaultStationId.value = id.toString();
 		toast.success('Station selected as default');
 	}
 
 	const createChartData = (key: keyof Measurement) =>
-		$dataQuery.data?.results.map((data) => ({
+		$dayMeasurementsQuery.data?.results.map((data) => ({
 			date: new Date(data.timestamp),
 			value: data[key]
 		}));
