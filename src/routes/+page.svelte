@@ -128,13 +128,13 @@
 						</div>
 						<span class="text-muted-foreground">{station.city_name}</span>
 
-						<div class="mt-3 grid grid-cols-2 gap-4 border-t pt-2">
+						<div class="mt-3 grid grid-cols-2 gap-2 border-t pt-2">
 							<div class="flex items-center gap-2">
 								<Thermometer class="h-4 w-4 text-muted-foreground" />
 								{#if loading}
 									<Skeleton class="h-5 w-14" />
 								{:else if latest}
-									<span>{Math.round(latest?.temperature!)}°C</span>
+									<span>{Math.round(latest.temperature!)}°C</span>
 								{:else}
 									<span class="text-sm text-muted-foreground">No data</span>
 								{/if}
@@ -144,14 +144,14 @@
 								{#if loading}
 									<Skeleton class="h-5 w-14" />
 								{:else if latest}
-									<span>{latest?.humidity}%</span>
+									<span>{latest.humidity}%</span>
 								{:else}
 									<span class="text-sm text-muted-foreground">No data</span>
 								{/if}
 							</div>
 							{#if latest}
 								<div class="text-xs text-muted-foreground">
-									Last updated: {dayjs(latest?.timestamp).format('HH:mm:ss')}
+									Last updated: {dayjs(latest.timestamp).format('MMM D, HH:mm')}
 								</div>
 							{/if}
 						</div>
