@@ -19,6 +19,7 @@
 	const measurementQuery = createQuery({
 		queryKey: ['lastMeasurement', stationId],
 		queryFn: () => api.getLatestMeasurement(stationId),
+		enabled: !!stationId
 	});
 
 	const latestMeasurement = $derived($measurementQuery.data);
