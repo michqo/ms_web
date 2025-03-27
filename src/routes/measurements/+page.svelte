@@ -73,8 +73,6 @@
 	});
 
 	let deleteDialogOpen = $state(false);
-
-	function refreshData() {}
 </script>
 
 {#snippet title(className: string)}
@@ -118,6 +116,7 @@
 								pageNumber={pageParam}
 								onPageChange={(page) => setParam('page', page.toString())}
 								{dataQuery}
+								{emptyData}
 							/>
 						{:else}
 							<div class="flex w-screen max-w-sm flex-col items-center gap-5">
@@ -159,5 +158,5 @@
 		</main>
 	</Tabs.Root>
 
-	<DeleteDialog bind:open={deleteDialogOpen} {stationId} onSuccess={refreshData} />
+	<DeleteDialog bind:open={deleteDialogOpen} {stationId} />
 </div>

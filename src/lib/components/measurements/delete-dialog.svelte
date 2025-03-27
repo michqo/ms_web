@@ -14,10 +14,9 @@
 	interface Props {
 		open: boolean;
 		stationId: number;
-		onSuccess: () => void;
 	}
 
-	let { open = $bindable(), stationId, onSuccess }: Props = $props();
+	let { open = $bindable(), stationId }: Props = $props();
 
 	const form = superForm(defaults(zod(deleteMeasurementSchema)), {
 		dataType: 'json',
@@ -32,7 +31,6 @@
           const lt = ltDate && dayjs(ltDate).endOf('day').toISOString();
 					await api.deleteMeasurements(stationId, gt, lt);
 					open = false;
-					onSuccess();
 					toast.success('Measurements deleted successfully');
 				} catch (error) {
 					toast.error('Failed to delete measurements');

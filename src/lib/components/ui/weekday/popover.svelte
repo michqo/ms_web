@@ -18,16 +18,21 @@
 <Popover.Root>
   <Popover.Trigger class={cn(buttonVariants({
     variant: "outline",
-  }), 'w-full')}>
+  }), 'w-full hover:bg-muted/50 transition-colors')}>
     {dayjs(selected).format('dddd')}
   </Popover.Trigger>
-  <Popover.Content class="p-0 flex w-full items-center gap-x-1">
+  <Popover.Content class="p-2 flex w-full items-center justify-center gap-x-1.5 rounded-lg">
     {#each dates as date}
       <Button
         variant="ghost"
-        class={cn({
-          'bg-secondary': date.isSame(selected, 'day'),
-        })}
+        size="sm"
+        class={cn(
+          "rounded-md transition-all duration-200",
+          {
+            'bg-secondary font-medium': date.isSame(selected, 'day'),
+            'hover:bg-muted/80': !date.isSame(selected, 'day')
+          }
+        )}
         onclick={() => setParam('date', date.toISOString())}
       >
         {date.format('ddd')}
