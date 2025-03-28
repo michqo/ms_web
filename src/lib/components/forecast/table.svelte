@@ -13,18 +13,25 @@
 	const { forecast, updatedDate }: Props = $props();
 
 	let selectedForecast: ForecastTransformed | null = $state(null);
+	let selectedIndex: number = $state(0);
 	let dialogOpen = $state(false);
 
 	const displayTime = (item: ForecastBase) =>
 		item.time.isSame(dayjs(), 'day') ? 'Today' : item.time.format('ddd');
 
 	function handleRowClick(item: ForecastTransformed) {
+		selectedIndex = forecast.findIndex((f) => f === item);
 		selectedForecast = item;
 		dialogOpen = true;
 	}
+
+	function handleNavigate(index: number) {
+		selectedIndex = index;
+		selectedForecast = forecast[index];
+	}
 </script>
 
-<div class="w-full overflow-hidden rounded-lg border shadow-sm">
+<div class="w-full overflow-hidden rounded-lg border shadow-sm my-10">
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
@@ -73,7 +80,14 @@
 		</Dialog.Header>
 
 		<div class="py-4">
-			<DialogCard forecast={selectedForecast!} />
+			{#if selectedForecast}
+				<DialogCard
+					forecast={selectedForecast}
+					allForecasts={forecast}
+					currentIndex={selectedIndex}
+					onNavigate={handleNavigate}
+				/>
+			{/if}
 		</div>
 
 		<Dialog.Footer>
