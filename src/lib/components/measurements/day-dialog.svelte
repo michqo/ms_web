@@ -58,7 +58,7 @@
 </script>
 
 <Dialog.Root {open} onOpenChange={onOpenChange}>
-	<Dialog.Content class="sm:max-w-[700px]">
+	<Dialog.Content class="sm:max-w-2xl h-screen md:max-h-[700px] overflow-y-auto">
 		<Dialog.Header>
 			<Dialog.Title class="flex items-center gap-2">
 				<Calendar class="size-5" />
