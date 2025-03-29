@@ -32,8 +32,8 @@
 	);
 </script>
 
-<div class="overflow-hidden rounded-lg border shadow-sm">
-	<Table.Root class="w-screen max-w-sm caption-top">
+<div class="overflow-hidden rounded-lg border shadow-sm mb-5">
+	<Table.Root class="caption-top">
     <Table.Caption class="my-4">
       <div class="flex items-center justify-center gap-2">
         <Calendar class="size-4" />

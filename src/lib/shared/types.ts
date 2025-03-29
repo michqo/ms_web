@@ -32,6 +32,14 @@ interface Measurement {
 	created_at: string;
 }
 
+interface MeasurementStat {
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  station: number
+  date: string;
+}
+
 interface ChartData {
 	date: Date;
 	value: string | number;
@@ -83,5 +91,5 @@ interface Station {
   created_at: string;
 }
 
-export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, PostUserErrorResponse, RefreshJWTResponse, Station };
+export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, MeasurementStat, PostUserErrorResponse, RefreshJWTResponse, Station };
 

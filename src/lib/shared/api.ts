@@ -12,6 +12,7 @@ import type {
 	ListResponse,
 	LoginResponse,
 	Measurement,
+	MeasurementStat,
 	RefreshJWTResponse,
 	Station
 } from './types';
@@ -89,6 +90,17 @@ class AuthenticatedApi {
 		params.append('timestamp__lt', date.endOf('day').toISOString());
 		params.append('page_size', pageSize.toString());
 		const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/', {
+			params
+		});
+		return response.data;
+	}
+
+	async getMeasurementStats(station: number, gt: string, lt: string): Promise<MeasurementStat[]> {
+		const params = new URLSearchParams();
+		params.append('station', station.toString());
+		params.append('timestamp__gt', gt);
+		params.append('timestamp__lt', lt);
+		const response = await this.instance.get<MeasurementStat[]>('/api/measurements/stats/', {
 			params
 		});
 		return response.data;
