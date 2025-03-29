@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import DayDialog from '@/components/measurements/day-dialog.svelte';
 	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
 	import StatsChart from '@/components/measurements/stats-chart.svelte';
@@ -35,8 +36,8 @@
 		}
 	});
 
-	const startOfWeek = dayjs().startOf('week');
-	const endOfWeek = dayjs().endOf('week');
+	const startOfWeek = dayjs().subtract(6, 'days').startOf('day');
+	const endOfWeek = dayjs().endOf('day');
 
 	const startDate = startOfWeek.format('YYYY-MM-DD');
 	const endDate = endOfWeek.format('YYYY-MM-DD');
@@ -44,12 +45,7 @@
 	const weekStatsQuery = $derived(
 		createQuery({
 			queryKey: ['weekStats', stationId, startDate, endDate],
-			queryFn: () =>
-				api.getMeasurementStats(
-					stationId!,
-					startDate,
-					endDate
-				),
+			queryFn: () => api.getMeasurementStats(stationId!, startDate, endDate),
 			enabled: !!stationId
 		})
 	);
@@ -68,7 +64,9 @@
 	const weekTempChartData = $derived(createChartData('temperature'));
 	const weekHumChartData = $derived(createChartData('humidity'));
 
-	const emptyWeekStats = $derived($weekStatsQuery.status == 'success' && !$weekStatsQuery.data?.length);
+	const emptyWeekStats = $derived(
+		$weekStatsQuery.status == 'success' && !$weekStatsQuery.data?.length
+	);
 
 	let deleteDialogOpen = $state(false);
 	let measurementsDialogOpen = $state(false);
@@ -78,6 +76,25 @@
 		selectedDate = date;
 		measurementsDialogOpen = true;
 	}
+
+	const today = dayjs().format('YYYY-MM-DD');
+
+	const latestMeasurementQuery = $derived(
+		createQuery({
+			queryKey: ['latestMeasurement', stationId],
+			queryFn: () => api.getLatestMeasurement(stationId),
+			enabled: !!stationId
+		})
+	);
+
+	function getTodayStat(): MeasurementStat | undefined {
+		if ($weekStatsQuery.data) {
+			return $weekStatsQuery.data.find((stat) => dayjs(stat.date).format('YYYY-MM-DD') === today);
+		}
+		return undefined;
+	}
+
+	const todayStat = $derived(getTodayStat());
 </script>
 
 <div class="flex w-full flex-col items-center gap-y-6 py-6">
@@ -99,34 +116,31 @@
 		</DropdownMenu.Root>
 	</div>
 
-	<main class="flex w-full flex-col items-center">
-		<div class="mb-4 text-center">
-			<span class="text-lg font-bold">Weekly Measurement Stats</span>
-			<div class="text-sm">
-				From {startOfWeek.format('MMM D')} to {endOfWeek.format('MMM D')}
-			</div>
-		</div>
+	<main class="flex w-full flex-col items-center gap-6">
+		<CurrentDayCard
+			{todayStat}
+			latestMeasurement={$latestMeasurementQuery.data}
+			isLoading={$weekStatsQuery.isLoading || $latestMeasurementQuery.isLoading}
+			onViewDetails={handleSelectDay}
+		/>
 
 		{#if !emptyWeekStats}
 			<div class="flex w-full max-w-xl flex-col gap-y-6">
-				<StatsTable 
-					weekStats={$weekStatsQuery.data!} 
-					onSelectDay={handleSelectDay} 
-				/>
-				
+				<StatsTable weekStats={$weekStatsQuery.data!} onSelectDay={handleSelectDay} />
+
 				<div class="w-full space-y-6">
 					<div class="grid grid-cols-1 gap-6">
-						<StatsChart 
-							chartData={weekTempChartData!} 
-							lineColor="red" 
-							suffix="°C" 
-							title="Weekly Temperature" 
+						<StatsChart
+							chartData={weekTempChartData!}
+							lineColor="red"
+							suffix="°C"
+							title="Weekly Temperature"
 						/>
-						<StatsChart 
-							chartData={weekHumChartData!} 
-							lineColor="blue" 
-							suffix="%" 
-							title="Weekly Humidity" 
+						<StatsChart
+							chartData={weekHumChartData!}
+							lineColor="blue"
+							suffix="%"
+							title="Weekly Humidity"
 						/>
 					</div>
 				</div>
@@ -139,7 +153,7 @@
 		{/if}
 	</main>
 
-	<DayDialog 
+	<DayDialog
 		open={measurementsDialogOpen}
 		onOpenChange={(open) => (measurementsDialogOpen = open)}
 		date={selectedDate}

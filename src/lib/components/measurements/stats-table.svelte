@@ -24,6 +24,13 @@
 	function formatNumber(value: number): string {
 		return value.toFixed(2);
 	}
+	
+	// Get today's date in YYYY-MM-DD format to compare with stats
+	const today = dayjs().format('YYYY-MM-DD');
+	
+	function isCurrentDay(date: string): boolean {
+		return dayjs(date).format('YYYY-MM-DD') === today;
+	}
 </script>
 
 <div class="overflow-hidden rounded-lg border shadow-sm">
@@ -54,10 +61,20 @@
 		<Table.Body>
 			{#each weekStats as stat}
 				<Table.Row 
-					class="hover:bg-muted/30 cursor-pointer" 
+					class={cn(
+						"hover:bg-muted/30 cursor-pointer", 
+						isCurrentDay(stat.date) && "bg-primary/10 dark:bg-primary/20"
+					)}
 					onclick={() => onSelectDay(stat.date)}
 				>
-					<Table.Cell class="font-medium">{dayjs(stat.date).format('ddd, MMM D')}</Table.Cell>
+					<Table.Cell class="font-medium">
+						<div class="flex items-center gap-2">
+							{dayjs(stat.date).format('ddd, MMM D')}
+							{#if isCurrentDay(stat.date)}
+								<span class="text-xs rounded bg-primary px-1.5 py-0.5 text-primary-foreground font-medium">Today</span>
+							{/if}
+						</div>
+					</Table.Cell>
 					<Table.Cell>
 						<div class="flex flex-col">
 							<span class={cn('font-medium', getTemperatureColor(stat.temperature))}>
