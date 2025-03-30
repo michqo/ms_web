@@ -7,7 +7,7 @@
 
 	interface Props {
 		weekStats: MeasurementStat[];
-		onSelectDay: (date: string) => void;
+		onSelectDay: (index: number) => void;
 	}
 
 	const { weekStats, onSelectDay }: Props = $props();
@@ -59,13 +59,13 @@
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#each weekStats as stat}
+			{#each weekStats as stat, index}
 				<Table.Row 
 					class={cn(
 						"hover:bg-muted/30 cursor-pointer", 
 						isCurrentDay(stat.date) && "bg-primary/10 dark:bg-primary/20"
 					)}
-					onclick={() => onSelectDay(stat.date)}
+					onclick={() => onSelectDay(index)}
 				>
 					<Table.Cell class="font-medium">
 						<div class="flex items-center gap-2">
