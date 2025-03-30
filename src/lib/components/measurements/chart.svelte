@@ -20,7 +20,7 @@
 	const { chartData, lineColor, suffix = '' }: Props = $props();
 </script>
 
-<div class="h-[300px] w-full rounded-lg border shadow-sm bg-background p-5 relative">
+<div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-sm">
 	<Chart
 		data={chartData}
 		x="date"
@@ -39,7 +39,7 @@
 			/>
 			<Spline class="stroke-2 {lineColors[lineColor]}" />
 			<Labels format="integer" />
-			<Highlight points lines />
+			<Highlight points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} lines />
 		</Svg>
 
 		<Tooltip.Root let:data>

@@ -2,46 +2,45 @@
 	import Chart from '@/components/measurements/chart.svelte';
 	import Table from '@/components/measurements/table.svelte';
 	import * as Accordion from '@/components/ui/accordion';
+	import { Button } from '@/components/ui/button';
 	import * as Dialog from '@/components/ui/dialog';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
 	import type { Measurement, MeasurementStat } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
-	import dayjs from 'dayjs';
+	import { type Dayjs } from 'dayjs';
 	import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
-	import { Button } from '@/components/ui/button';
 
 	interface Props {
 		open: boolean;
 		onOpenChange: (open: boolean) => void;
-		date: string;
+		selectedDate?: Dayjs;
 		stationId: number;
 		onNavigate: (index: number) => void;
 		currentIndex: number;
 		weekStats: MeasurementStat[];
 	}
 
-	const { open, onOpenChange, date, stationId, onNavigate, currentIndex, weekStats }: Props =
+	const { open, onOpenChange, selectedDate, stationId, onNavigate, currentIndex, weekStats }: Props =
 		$props();
 
-	const selectedDate = $derived(dayjs(date));
-	const formattedDate = $derived(selectedDate.format('dddd, MMMM D, YYYY'));
+	const formattedDate = $derived(selectedDate?.format('dddd, MMMM D, YYYY'));
 	let currentPage = $state(1);
 
 	const dataQuery = $derived(
 		createQuery({
 			queryKey: ['measurements', stationId, currentPage, selectedDate],
-			queryFn: () => api.getMeasurements(stationId, currentPage, selectedDate),
-			enabled: !!stationId
+			queryFn: () => api.getMeasurements(stationId, currentPage, selectedDate!),
+			enabled: !!stationId && !!selectedDate,
 		})
 	);
 
 	const dayMeasurementsQuery = $derived(
 		createQuery({
-			queryKey: ['dayMeasurements', stationId, selectedDate.format('YYYY-MM-DD')],
-			queryFn: () => api.getMeasurements(stationId, 1, selectedDate, 24),
-			enabled: open && !!stationId && !!date
+			queryKey: ['dayMeasurements', stationId, selectedDate?.format('YYYY-MM-DD')],
+			queryFn: () => api.getMeasurements(stationId, 1, selectedDate!, 24),
+			enabled: open && !!stationId && !!selectedDate
 		})
 	);
 

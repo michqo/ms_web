@@ -70,11 +70,11 @@
 
 	let deleteDialogOpen = $state(false);
 	let measurementsDialogOpen = $state(false);
-	let currentStatIndex = $state(0);
+	let currentStatIndex = $state(-1);
 	const selectedDate = $derived(
-		$weekStatsQuery.data
-			? dayjs($weekStatsQuery.data[currentStatIndex].date).format('YYYY-MM-DD')
-			: ''
+		currentStatIndex > -1 && $weekStatsQuery.data
+			? dayjs($weekStatsQuery.data![currentStatIndex].date)
+			: undefined
 	);
 
 	function handleSelectDay(index: number) {
@@ -88,7 +88,7 @@
 		}
 	}
 
-	const today = dayjs().format('YYYY-MM-DD');
+	const today = dayjs();
 
 	const latestMeasurementQuery = $derived(
 		createQuery({
@@ -100,7 +100,7 @@
 
 	function getTodayStat(): MeasurementStat | undefined {
 		if ($weekStatsQuery.data) {
-			return $weekStatsQuery.data.find((stat) => dayjs(stat.date).format('YYYY-MM-DD') === today);
+			return $weekStatsQuery.data.find((stat) => dayjs(stat.date).isSame(today, 'day'));
 		}
 		return undefined;
 	}
@@ -168,7 +168,7 @@
 	<DayDialog
 		open={measurementsDialogOpen}
 		onOpenChange={(open) => (measurementsDialogOpen = open)}
-		date={selectedDate}
+		{selectedDate}
 		{stationId}
 		onNavigate={handleNavigate}
 		currentIndex={currentStatIndex}

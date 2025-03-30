@@ -28,13 +28,13 @@
 	}
 </script>
 
-<div class="h-[300px] w-full rounded-lg border shadow-sm bg-background p-5 relative">
+<div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-sm">
 	{#if title}
-		<div class="absolute top-2 left-3 text-sm font-medium text-muted-foreground">
+		<div class="absolute left-3 top-2 text-sm font-medium text-muted-foreground">
 			{title}
 		</div>
 	{/if}
-	
+
 	<Chart
 		data={chartData}
 		x="date"
@@ -45,10 +45,10 @@
 		tooltip={{ mode: 'bisect-x' }}
 	>
 		<Svg>
-			<Axis 
-				placement="left" 
-				grid 
-				rule={{ class: 'stroke-border' }} 
+			<Axis
+				placement="left"
+				grid
+				rule={{ class: 'stroke-border' }}
 				format={(v) => formatValue(v)}
 			/>
 			<Axis
@@ -58,11 +58,8 @@
 				ticks={7}
 			/>
 			<Spline class="stroke-2 {lineColors[lineColor]}" />
-			<Labels format={(v) => formatValue(v)} placement="outside" />
-			<Highlight 
-				points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} 
-				lines={{ class: 'stroke-gray-300 stroke-dashed' }} 
-			/>
+			<Labels format="integer" />
+			<Highlight points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} lines />
 		</Svg>
 
 		<Tooltip.Root let:data>

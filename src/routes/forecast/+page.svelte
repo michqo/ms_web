@@ -41,6 +41,7 @@
       modelrun_utc: data.modelrun_utc,
       utc_timeoffset: data.utc_timeoffset,
       generation_time_ms: data.generation_time_ms,
+      created_at: data.created_at,
       results: transformForecast(data),
     })
   }));
@@ -61,7 +62,7 @@
 
     <div class="flex flex-col items-center gap-y-8 w-full max-w-sm">
       <Card forecast={forecast.results[0]} {stationId}/>
-      <Table forecast={forecast.results} updatedDate={forecast.modelrun_utc} />
+      <Table forecast={forecast.results} updatedDate={forecast.created_at} />
     </div>
   {/if}
 </main>
