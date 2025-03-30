@@ -6,19 +6,24 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
-	import type { Measurement } from '@/shared/types';
+	import type { Measurement, MeasurementStat } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { Calendar } from 'lucide-svelte';
+	import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import { Button } from '@/components/ui/button';
 
 	interface Props {
 		open: boolean;
 		onOpenChange: (open: boolean) => void;
 		date: string;
 		stationId: number;
+		onNavigate: (index: number) => void;
+		currentIndex: number;
+		weekStats: MeasurementStat[];
 	}
 
-	const { open, onOpenChange, date, stationId }: Props = $props();
+	const { open, onOpenChange, date, stationId, onNavigate, currentIndex, weekStats }: Props =
+		$props();
 
 	const selectedDate = $derived(dayjs(date));
 	const formattedDate = $derived(selectedDate.format('dddd, MMMM D, YYYY'));
@@ -26,11 +31,12 @@
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['measurements', stationId!, currentPage, selectedDate],
-			queryFn: () => api.getMeasurements(stationId!, currentPage, selectedDate),
+			queryKey: ['measurements', stationId, currentPage, selectedDate],
+			queryFn: () => api.getMeasurements(stationId, currentPage, selectedDate),
 			enabled: !!stationId
 		})
 	);
+
 	const dayMeasurementsQuery = $derived(
 		createQuery({
 			queryKey: ['dayMeasurements', stationId, selectedDate.format('YYYY-MM-DD')],
@@ -48,28 +54,63 @@
 	const tempChartData = $derived(createChartData('temperature'));
 	const humChartData = $derived(createChartData('humidity'));
 
-	const emptyData = $derived($dataQuery.status == 'success' && $dataQuery.data?.results.length == 0);
+	const emptyData = $derived(
+		$dataQuery.status == 'success' && $dataQuery.data?.results.length == 0
+	);
 
 	function handlePageChange(page: number) {
 		currentPage = page;
 	}
 
 	let activeTab = $state('chart');
+
+	function goToPrevious() {
+		if (currentIndex > 0) {
+			onNavigate(currentIndex - 1);
+		}
+	}
+
+	function goToNext() {
+		if (currentIndex < weekStats.length - 1) {
+			onNavigate(currentIndex + 1);
+		}
+	}
 </script>
 
-<Dialog.Root {open} onOpenChange={onOpenChange}>
-	<Dialog.Content class="sm:max-w-2xl h-screen md:max-h-[700px] overflow-y-auto">
+<Dialog.Root {open} {onOpenChange}>
+	<Dialog.Content class="h-screen overflow-y-auto sm:max-w-2xl md:max-h-[700px]">
 		<Dialog.Header>
-			<Dialog.Title class="flex items-center gap-2">
-				<Calendar class="size-5" />
-				{formattedDate}
-			</Dialog.Title>
-			<Dialog.Description>
-				Daily temperature and humidity measurements
-			</Dialog.Description>
+			<div class="flex items-center justify-between">
+				<Button
+					variant="ghost"
+					size="icon"
+					class="h-10 w-10 rounded-full"
+					onclick={goToPrevious}
+					disabled={currentIndex == 0}
+					aria-label="Previous day"
+				>
+					<ChevronLeft class="h-5 w-5" />
+				</Button>
+
+				<Dialog.Title class="flex items-center gap-2">
+					<Calendar class="size-5" />
+					{formattedDate}
+				</Dialog.Title>
+
+				<Button
+					variant="ghost"
+					size="icon"
+					class="h-10 w-10 rounded-full"
+					onclick={goToNext}
+					disabled={currentIndex == weekStats.length - 1}
+					aria-label="Next day"
+				>
+					<ChevronRight class="h-5 w-5" />
+				</Button>
+			</div>
 		</Dialog.Header>
 
-		<div class="mt-4 space-y-6">
+		<div class="space-y-6">
 			{#if $dayMeasurementsQuery.isLoading}
 				<div class="flex flex-col gap-4">
 					<Skeleton class="h-[40px] w-full" />
@@ -85,7 +126,7 @@
 						<Tabs.Trigger value="chart">Charts</Tabs.Trigger>
 						<Tabs.Trigger value="table">Table</Tabs.Trigger>
 					</Tabs.List>
-					
+
 					<Tabs.Content value="chart" class="pt-4">
 						<Accordion.Root value={['temp']} type="multiple" class="w-full">
 							<Accordion.Item value="temp">
@@ -102,7 +143,7 @@
 							</Accordion.Item>
 						</Accordion.Root>
 					</Tabs.Content>
-					
+
 					<Tabs.Content value="table" class="pt-4">
 						{#if $dataQuery.data}
 							<Table

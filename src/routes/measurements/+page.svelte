@@ -71,10 +71,27 @@
 	let deleteDialogOpen = $state(false);
 	let measurementsDialogOpen = $state(false);
 	let selectedDate = $state('');
+	let currentStatIndex = $state(0);
 
 	function handleSelectDay(date: string) {
 		selectedDate = date;
+		// Find the index of the selected date in weekStats
+		if ($weekStatsQuery.data) {
+			const index = $weekStatsQuery.data.findIndex(
+				(stat) => dayjs(stat.date).format('YYYY-MM-DD') === date
+			);
+			if (index !== -1) {
+				currentStatIndex = index;
+			}
+		}
 		measurementsDialogOpen = true;
+	}
+
+	function handleNavigate(index: number) {
+		if ($weekStatsQuery.data && index >= 0 && index < $weekStatsQuery.data.length) {
+			currentStatIndex = index;
+			selectedDate = dayjs($weekStatsQuery.data[index].date).format('YYYY-MM-DD');
+		}
 	}
 
 	const today = dayjs().format('YYYY-MM-DD');
@@ -158,6 +175,9 @@
 		onOpenChange={(open) => (measurementsDialogOpen = open)}
 		date={selectedDate}
 		{stationId}
+		onNavigate={handleNavigate}
+		currentIndex={currentStatIndex}
+		weekStats={$weekStatsQuery.data!}
 	/>
 
 	<DeleteDialog bind:open={deleteDialogOpen} {stationId} />
