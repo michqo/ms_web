@@ -4,6 +4,7 @@
 	import * as Dialog from '@/components/ui/dialog';
 	import * as Form from '@/components/ui/form';
 	import { Input } from '@/components/ui/input';
+	import { Map } from '@/components/ui/map';
 	import { api } from '@/shared';
 	import { stationSchema } from '@/shared/schemas';
 	import type { Station } from '@/shared/types';
@@ -11,6 +12,7 @@
 	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { Label } from '../ui/label';
 
 	interface Props {
 		open: boolean;
@@ -27,8 +29,8 @@
 	const form = superForm(
 		{
 			name: station?.name || '',
-			latitude: station?.latitude || 0,
-			longitude: station?.longitude || 0
+			latitude: station?.latitude || 48.1,
+			longitude: station?.longitude || 17.1
 		},
 		{
 			SPA: true,
@@ -89,26 +91,9 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
-			<div class="grid grid-cols-2 gap-4">
-				<Form.Field {form} name="latitude">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Latitude</Form.Label>
-							<Input {...props} bind:value={$formData.latitude} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-
-				<Form.Field {form} name="longitude">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Longitude</Form.Label>
-							<Input {...props} bind:value={$formData.longitude} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
+			<div class="mt-4 space-y-2">
+				<Label>Location</Label>
+				<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
 			</div>
 
 			<Dialog.Footer class="flex-col sm:flex-row sm:justify-between">

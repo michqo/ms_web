@@ -26,6 +26,9 @@ importers:
       layerchart:
         specifier: ^0.60.3
         version: 0.60.3(svelte@5.16.0)(typescript@5.7.2)
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
     devDependencies:
       '@internationalized/date':
         specifier: ^3.7.0
@@ -48,6 +51,9 @@ importers:
       '@types/d3-scale':
         specifier: ^4.0.8
         version: 4.0.8
+      '@types/leaflet':
+        specifier: ^1.9.17
+        version: 1.9.17
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -674,8 +680,14 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/leaflet@1.9.17':
+    resolution: {integrity: sha512-IJ4K6t7I3Fh5qXbQ1uwL3CFVbCi6haW9+53oLWgdKlLP7EaS21byWFJxxqOx9y8I0AP0actXSJLVMbyvxhkUTA==}
 
   '@types/validator@13.12.2':
     resolution: {integrity: sha512-6SlHBzUW8Jhf3liqrGGXyTJSIFe4nqlJ5A5KaMZ2l/vbM3Wh3KSybots/wfWVzNLK4D1NZluDlSQIbIEPx6oyA==}
@@ -1200,6 +1212,9 @@ packages:
     resolution: {integrity: sha512-3CzEdDgPvFTWKzTNF5Wlv+xOGIAUhzbHCMgi6zAC8n99jKGpHkEUI06m8F4Jm93rJvJYirEBsrWK5hZWsNk90A==}
     peerDependencies:
       svelte: ^3.56.0 || ^4.0.0 || ^5.0.0
+
+  leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
 
   libphonenumber-js@1.11.9:
     resolution: {integrity: sha512-Zs5wf5HaWzW2/inlupe2tstl0I/Tbqo7lH20ZLr6Is58u7Dz2n+gRFGNlj9/gWxFvNfp9+YyDsiegjNhdixB9A==}
@@ -2229,8 +2244,14 @@ snapshots:
 
   '@types/estree@1.0.6': {}
 
+  '@types/geojson@7946.0.16': {}
+
   '@types/json-schema@7.0.15':
     optional: true
+
+  '@types/leaflet@1.9.17':
+    dependencies:
+      '@types/geojson': 7946.0.16
 
   '@types/validator@13.12.2':
     optional: true
@@ -2804,6 +2825,8 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
       - typescript
+
+  leaflet@1.9.4: {}
 
   libphonenumber-js@1.11.9:
     optional: true
