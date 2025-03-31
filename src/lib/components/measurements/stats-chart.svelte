@@ -55,18 +55,9 @@
 				placement="bottom"
 				format={(d) => dayjs(d).format('ddd')}
 				rule={{ class: 'stroke-border' }}
-				ticks={7}
 			/>
 			<Spline class="stroke-2 {lineColors[lineColor]}" />
-			<Labels format="integer" />
-			<Highlight points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} lines />
+			<Labels format="decimal" />
 		</Svg>
-
-		<Tooltip.Root let:data>
-			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D')}</Tooltip.Header>
-			<Tooltip.List>
-				<Tooltip.Item label="Value" value={formatValue(data.value)} />
-			</Tooltip.List>
-		</Tooltip.Root>
 	</Chart>
 </div>
