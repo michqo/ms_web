@@ -3,7 +3,7 @@
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { api } from '@/shared';
-	import useLocalStorage from '@/shared/runes.svelte';
+	import useLocalStorage, { globalState } from '@/shared/runes.svelte';
 	import type { Measurement, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
@@ -19,14 +19,6 @@
 	let selectedStation: Partial<Station> | undefined = $state();
 	let dialogOpen = $state(false);
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
-
-	$effect(() => {
-		// If stations are loaded and no station is selected, select the first one
-		if ($dataQuery.data?.results.length && defaultStationId === null) {
-			const firstStation = $dataQuery.data.results[0];
-			setSelectedStation(firstStation.id);
-		}
-	});
 
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
@@ -66,7 +58,6 @@
 
 	function setSelectedStation(stationId: number) {
 		defaultStationId.value = stationId.toString();
-		localStorage.setItem('selectedStationId', stationId.toString());
 		toast.success('Station selected as default');
 	}
 </script>
@@ -87,8 +78,8 @@
 				{@const latest = latestMeasurements[station.id]}
 				{@const loading = loadingMeasurements[station.id]}
 				<li
-					class="group relative flex w-full flex-col rounded-lg border {defaultStationId.value ==
-					station.id.toString()
+					class="group relative flex w-full flex-col rounded-lg border {globalState.stationId ==
+					station.id
 						? 'border-primary bg-muted/30'
 						: 'border-border'} px-8 py-4 shadow-lg hover:border-primary"
 				>
@@ -96,7 +87,7 @@
 						class="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
 					>
 						<Button
-							variant={defaultStationId.value == station.id.toString() ? 'default' : 'ghost'}
+							variant={globalState.stationId == station.id ? 'default' : 'ghost'}
 							size="icon"
 							onclick={(e) => {
 								e.preventDefault();

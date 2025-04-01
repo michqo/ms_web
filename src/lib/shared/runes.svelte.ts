@@ -3,6 +3,7 @@
  */
 
 import { onMount } from 'svelte';
+import type { Station } from './types';
 
 const useLocalStorage = (key: string, initialValue: any) => {
 	let value = $state<any>(initialValue);
@@ -30,5 +31,15 @@ const useLocalStorage = (key: string, initialValue: any) => {
 		}
 	};
 };
+
+interface GlobalState {
+	stationId: number;
+	station?: Station;
+}
+
+export const globalState: GlobalState = $state({
+	stationId: NaN,
+	station: undefined
+});
 
 export default useLocalStorage;

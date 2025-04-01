@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import DayDialog from '@/components/measurements/day-dialog.svelte';
 	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
@@ -9,32 +8,11 @@
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { api } from '@/shared';
-	import useLocalStorage from '@/shared/runes.svelte';
+	import { globalState } from '@/shared/runes.svelte';
 	import type { MeasurementStat } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
 	import { Ellipsis, Trash2 } from 'lucide-svelte';
-	import { toast } from 'svelte-sonner';
-
-	const stationQuery = createQuery({
-		queryKey: ['stations'],
-		queryFn: () => api.getStations(),
-		refetchOnWindowFocus: false
-	});
-
-	const defaultStationId = useLocalStorage('defaultStationId', undefined);
-	const stationIdParam = $derived(page.params.station);
-	const stationId = $derived(
-		stationIdParam ? parseInt(stationIdParam) : parseInt(defaultStationId.value)
-	);
-
-	$effect(() => {
-		// If stations are loaded and no station is selected, select the first one
-		if ($stationQuery.data?.results.length && !defaultStationId.value) {
-			const firstStation = $stationQuery.data.results[0];
-			setSelectedStation(firstStation.id);
-		}
-	});
 
 	const startOfWeek = dayjs().subtract(6, 'days').startOf('day');
 	const endOfWeek = dayjs().endOf('day');
@@ -44,16 +22,11 @@
 
 	const weekStatsQuery = $derived(
 		createQuery({
-			queryKey: ['weekStats', stationId, startDate, endDate],
-			queryFn: () => api.getMeasurementStats(stationId!, startDate, endDate),
-			enabled: !!stationId
+			queryKey: ['weekStats', globalState.stationId, startDate, endDate],
+			queryFn: () => api.getMeasurementStats(globalState.stationId!, startDate, endDate),
+			enabled: !!globalState.stationId
 		})
 	);
-
-	function setSelectedStation(id: number) {
-		defaultStationId.value = id.toString();
-		toast.success('Station selected as default');
-	}
 
 	const createChartData = (key: keyof MeasurementStat) =>
 		$weekStatsQuery.data?.map((data) => ({
@@ -92,9 +65,9 @@
 
 	const latestMeasurementQuery = $derived(
 		createQuery({
-			queryKey: ['latestMeasurement', stationId],
-			queryFn: () => api.getLatestMeasurement(stationId),
-			enabled: !!stationId
+			queryKey: ['latestMeasurement', globalState.stationId],
+			queryFn: () => api.getLatestMeasurement(globalState.stationId),
+			enabled: !!globalState.stationId
 		})
 	);
 
@@ -169,11 +142,11 @@
 		open={measurementsDialogOpen}
 		onOpenChange={(open) => (measurementsDialogOpen = open)}
 		{selectedDate}
-		{stationId}
+		stationId={globalState.stationId}
 		onNavigate={handleNavigate}
 		currentIndex={currentStatIndex}
 		weekStats={$weekStatsQuery.data!}
 	/>
 
-	<DeleteDialog bind:open={deleteDialogOpen} {stationId} />
+	<DeleteDialog bind:open={deleteDialogOpen} stationId={globalState.stationId} />
 </div>
