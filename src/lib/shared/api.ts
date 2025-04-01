@@ -122,8 +122,8 @@ class AuthenticatedApi {
 	async deleteMeasurements(stationId: number, gt?: string, lt?: string): Promise<void> {
 		const params = new URLSearchParams();
 		params.append('station', stationId.toString());
-		if (gt) params.append('created_at__gt', gt);
-		if (lt) params.append('created_at__lt', lt);
+		if (gt) params.append('timestamp__gt', gt);
+		if (lt) params.append('timestamp__lt', lt);
 
 		await this.instance.delete('/api/measurements/bulk-delete/', { params });
 	}
