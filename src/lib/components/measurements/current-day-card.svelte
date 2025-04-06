@@ -10,11 +10,10 @@
 		todayStat?: MeasurementStat;
 		latestMeasurement?: Measurement;
 		isLoading: boolean;
-		currentIndex: number;
-		onViewDetails: (index: number) => void;
+		handleLastDay: () => void;
 	}
 
-	const { todayStat, latestMeasurement, isLoading, currentIndex, onViewDetails }: Props = $props();
+	const { todayStat, latestMeasurement, isLoading, handleLastDay }: Props = $props();
 
 	function getTemperatureColor(temp: number): string {
 		if (temp <= 0) return 'text-blue-600';
@@ -32,7 +31,7 @@
 
 <Card.Root
 	class="w-full max-w-xl cursor-pointer transition-colors hover:bg-muted/10"
-	onclick={() => todayStat && onViewDetails(currentIndex)}
+	onclick={() => todayStat && handleLastDay()}
 >
 	<Card.Header class="pb-2">
 		<Card.Title class="flex items-center justify-between">

@@ -79,6 +79,11 @@
 	}
 
 	const todayStat = $derived(getTodayStat());
+
+	function handleLastDay() {
+		currentStatIndex = todayStat ? $weekStatsQuery.data!.indexOf(todayStat) : -1;
+		measurementsDialogOpen = true;
+	}
 </script>
 
 <div class="flex w-full flex-col items-center gap-y-6 py-6">
@@ -105,8 +110,7 @@
 			{todayStat}
 			latestMeasurement={$latestMeasurementQuery.data}
 			isLoading={$weekStatsQuery.isLoading || $latestMeasurementQuery.isLoading}
-			currentIndex={currentStatIndex}
-			onViewDetails={handleSelectDay}
+			{handleLastDay}
 		/>
 
 		{#if !emptyWeekStats}
