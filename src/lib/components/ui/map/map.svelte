@@ -3,10 +3,13 @@
 	import { browser } from '$app/environment';
 	import { cn } from '@/utils.js';
 	import type { Map as LeafletMap, Marker, TileLayer, LeafletMouseEvent } from 'leaflet';
+	import { Button } from '../button';
 
 	let mapElement: HTMLDivElement;
 	let map = $state<LeafletMap | null>(null);
 	let marker = $state<Marker | null>(null);
+	let locating = $state(false);
+	let locationError = $state<string | null>(null);
 
 	interface Props {
 		latitude: number;
@@ -58,6 +61,39 @@
 		longitude = latlng.lng;
 	}
 
+	function getCurrentLocation(): void {
+		if (!browser || !navigator.geolocation) {
+			locationError = 'Geolocation is not supported by your browser';
+			return;
+		}
+
+		locating = true;
+		locationError = null;
+
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				latitude = position.coords.latitude;
+				longitude = position.coords.longitude;
+
+				if (map && marker) {
+					marker.setLatLng([latitude, longitude]);
+					map.setView([latitude, longitude], 14); // Closer zoom level (14) when locating user
+				}
+				locating = false;
+			},
+			(error) => {
+				console.error('Error getting location:', error);
+				locationError = `Couldn't get your location: ${error.message}`;
+				locating = false;
+			},
+			{
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 0
+			}
+		);
+	}
+
 	$effect(() => {
 		if (!map || !marker) return;
 
@@ -84,7 +120,55 @@
 	{/if}
 </svelte:head>
 
-<div bind:this={mapElement} class={cn('h-[300px] w-full rounded-md border', className)}></div>
-<div class="mt-2 text-xs text-muted-foreground">
-	Current coordinates: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+<div>
+	<div bind:this={mapElement} class={cn('h-[300px] w-full rounded-md border', className)}></div>
+
+	<div class="mt-2 flex items-center justify-between">
+		<div class="text-xs text-muted-foreground">
+			Current coordinates: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+		</div>
+
+		<Button
+			variant="outline"
+			size="sm"
+			onclick={getCurrentLocation}
+			disabled={locating}
+			class="flex items-center gap-1"
+		>
+			{#if locating}
+				<svg
+					class="h-3 w-3 animate-spin text-muted-foreground"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+				>
+					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+					></circle>
+					<path
+						class="opacity-75"
+						fill="currentColor"
+						d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+					></path>
+				</svg>
+			{:else}
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-3 w-3 text-muted-foreground"
+					viewBox="0 0 20 20"
+					fill="currentColor"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+			{/if}
+			<span class="text-xs">{locating ? 'Locating...' : 'My Location'}</span>
+		</Button>
+	</div>
+
+	{#if locationError}
+		<div class="mt-1 text-xs text-red-500">{locationError}</div>
+	{/if}
 </div>
