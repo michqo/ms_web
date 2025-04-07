@@ -79,8 +79,8 @@
 				{@const latest = latestMeasurements[station.id]}
 				{@const loading = loadingMeasurements[station.id]}
 				<li
-					class="group relative flex w-full flex-col rounded-lg border {globalState.stationId ==
-					station.id
+					class="group relative flex w-full flex-col rounded-lg border {defaultStationId.value ==
+					station.id.toString()
 						? 'border-primary bg-muted/30'
 						: 'border-border'} px-8 py-4 shadow-lg hover:border-primary"
 				>
