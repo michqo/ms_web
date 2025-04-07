@@ -2,6 +2,7 @@
 	import StationDialog from '@/components/station/station-dialog.svelte';
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
+	import { Map } from '@/components/ui/map';
 	import { api } from '@/shared';
 	import useLocalStorage, { globalState } from '@/shared/runes.svelte';
 	import type { Measurement, Station } from '@/shared/types';
@@ -118,6 +119,18 @@
 							{/if}
 						</div>
 						<span class="text-muted-foreground">{station.city_name}</span>
+
+						{#if station.latitude && station.longitude}
+							<div class="mt-3 mb-2 h-[100px] w-full overflow-hidden rounded-md">
+								<Map 
+									latitude={station.latitude} 
+									longitude={station.longitude}
+									zoom={13}
+									class="h-[100px]"
+									preview={true}
+								/>
+							</div>
+						{/if}
 
 						<div class="mt-3 grid grid-cols-2 gap-2 border-t pt-2">
 							<div class="flex items-center gap-2">
