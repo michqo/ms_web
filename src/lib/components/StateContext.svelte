@@ -8,13 +8,15 @@
 
 	interface Props {
 		children: Snippet;
+		isUser: boolean
 	}
 
-	let { children }: Props = $props();
+	let { children, isUser }: Props = $props();
 
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
-		queryFn: () => api.getStations()
+		queryFn: () => api.getStations(),
+		enabled: isUser
 	});
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);

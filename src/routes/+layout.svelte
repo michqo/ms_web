@@ -24,7 +24,7 @@
 <Toaster />
 
 <QueryClientProvider client={data.queryClient}>
-	<StateContext>
+	<StateContext isUser={data.user != undefined}>
 		<Nav user={data?.user} data={data.form} />
 		{#key page.url}
 			<Loading />
