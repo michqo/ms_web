@@ -19,14 +19,31 @@
 		<span class="sr-only">Toggle theme</span>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
-		<DropdownMenu.Item onclick={() => setMode('light')} class={{ 'bg-secondary': $mode === 'light' }}>
-			<Sun class="mr-2" /> Light
+		<DropdownMenu.Label>Appearance</DropdownMenu.Label>
+		<DropdownMenu.Separator />
+		<DropdownMenu.Item 
+			onclick={() => setMode('light')} 
+			class={{ 'bg-secondary font-medium': $mode === 'light' }}
+		>
+			<Sun class="mr-2 h-4 w-4" /> Light
+			{#if $mode === 'light'}
+				<DropdownMenu.Shortcut>Active</DropdownMenu.Shortcut>
+			{/if}
 		</DropdownMenu.Item>
-		<DropdownMenu.Item onclick={() => setMode('dark')} class={{ 'bg-secondary': $mode === 'dark' }}>
-			<Moon class="mr-2" /> Dark
+		<DropdownMenu.Item 
+			onclick={() => setMode('dark')} 
+			class={{ 'bg-secondary font-medium': $mode === 'dark' }}
+		>
+			<Moon class="mr-2 h-4 w-4" /> Dark
+			{#if $mode === 'dark'}
+				<DropdownMenu.Shortcut>Active</DropdownMenu.Shortcut>
+			{/if}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={() => resetMode()}>
-			<SunMoon class="mr-2" /> System
+			<SunMoon class="mr-2 h-4 w-4" /> System
+			{#if !$mode}
+				<DropdownMenu.Shortcut>Active</DropdownMenu.Shortcut>
+			{/if}
 		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

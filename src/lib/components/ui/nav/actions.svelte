@@ -19,17 +19,19 @@
 {#if user}
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class={buttonVariants({ variant: 'outline' })}>
-			<CircleUser />
+			<CircleUser class="mr-2 h-4 w-4" />
 			{user}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
+			<DropdownMenu.Label>Account</DropdownMenu.Label>
+			<DropdownMenu.Separator />
 			<DropdownMenu.Item onclick={() => dialogOpen = true}>
-				<User class="mr-2" /> Profile
+				<User class="mr-2 h-4 w-4" /> Profile
 			</DropdownMenu.Item>
 			<DropdownMenu.Item>
-				<form method="POST" action="?/logout">
-					<button type="submit" class="flex cursor-default items-center gap-2 text-red-500">
-						<LogOut class="mr-2" /> Log out
+				<form method="POST" action="?/logout" class="w-full">
+					<button type="submit" class="flex cursor-default items-center gap-2 text-red-500 w-full text-left">
+						<LogOut class="mr-2 h-4 w-4" /> Log out
 					</button>
 				</form>
 			</DropdownMenu.Item>
