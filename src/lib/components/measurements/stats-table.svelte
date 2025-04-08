@@ -22,7 +22,7 @@
 	}
 
 	function formatNumber(value: number): string {
-		return value.toFixed(2);
+		return value?.toFixed(2);
 	}
 	
 	// Get today's date in YYYY-MM-DD format to compare with stats

@@ -24,7 +24,7 @@
 	const { chartData, lineColor, suffix = '', title = '' }: Props = $props();
 
 	function formatValue(value: number): string {
-		return `${value.toFixed(2)}${suffix}`;
+		return `${value?.toFixed(2)}${suffix}`;
 	}
 </script>
 

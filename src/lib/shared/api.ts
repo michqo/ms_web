@@ -86,8 +86,7 @@ class AuthenticatedApi {
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		params.append('page', page.toString());
-		params.append('timestamp__gt', date.startOf('day').toISOString());
-		params.append('timestamp__lt', date.endOf('day').toISOString());
+		params.append('timestamp_date', date.format('YYYY-MM-DD'));
 		params.append('page_size', pageSize.toString());
 		const response = await this.instance.get<ListResponse<Measurement>>('/api/measurements/', {
 			params
