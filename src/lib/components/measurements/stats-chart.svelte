@@ -22,10 +22,6 @@
 	};
 
 	const { chartData, lineColor, suffix = '', title = '' }: Props = $props();
-
-	function formatValue(value: number): string {
-		return `${value?.toFixed(2)}${suffix}`;
-	}
 </script>
 
 <div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-sm">
@@ -49,7 +45,7 @@
 				placement="left"
 				grid
 				rule={{ class: 'stroke-border' }}
-				format={(v) => formatValue(v)}
+				format={(v) => `${v}${suffix}`}
 			/>
 			<Axis
 				placement="bottom"

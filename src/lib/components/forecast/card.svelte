@@ -19,33 +19,39 @@
 	const measurementQuery = createQuery({
 		queryKey: ['lastMeasurement', stationId],
 		queryFn: () => api.getLatestMeasurement(stationId),
-		enabled: !!stationId
+		enabled: !!stationId,
+		select: (data) => ({
+			...data,
+			created_at: dayjs(data.created_at),
+			temperature: Math.round(data.temperature),
+			humidity: Math.round(data.humidity)
+		})
 	});
 
 	const latestMeasurement = $derived($measurementQuery.data);
 </script>
 
 <div class="flex flex-col rounded-lg border border-border px-8 py-6 shadow-lg">
-	<div class="mb-4 gap-x-2 flex items-center justify-center">
+	<div class="mb-4 flex items-center justify-center gap-x-2">
 		<Calendar class="inline h-4 w-4" />
 		<p class="text-sm text-muted-foreground">{forecast.time.format('MMM D, YYYY')}</p>
 	</div>
 
 	<div class="grid grid-cols-2 gap-4">
-    <div class="flex flex-col">
-      <p class="text-center text-sm text-muted-foreground">Forecast</p>
-      <div class="flex items-center justify-center gap-x-2">
-        <forecast.icon width={100} height={100} />
-        <div class="flex flex-col items-center">
-          <p class="text-4xl font-medium">{Math.round(forecast.temperature_max)}°</p>
-          <div class="flex items-center">
-            <span class="text-base text-muted-foreground"
-              >{Math.round(forecast.temperature_min)}°</span
-            >
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="flex flex-col">
+			<p class="text-center text-sm text-muted-foreground">Forecast</p>
+			<div class="flex items-center justify-center gap-x-2">
+				<forecast.icon width={100} height={100} />
+				<div class="flex flex-col items-center">
+					<p class="text-4xl font-medium">{Math.round(forecast.temperature_max)}°</p>
+					<div class="flex items-center">
+						<span class="text-base text-muted-foreground"
+							>{Math.round(forecast.temperature_min)}°</span
+						>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="border-l pl-4">
 			<p class="text-center text-sm text-muted-foreground">Current Temperature</p>
@@ -61,13 +67,11 @@
 						<Tooltip.Trigger>
 							<div class="flex items-center justify-center">
 								<Thermometer width={32} height={32} />
-								<p class="ml-2 text-4xl font-medium">
-									{Math.round(latestMeasurement.temperature)}°
-								</p>
+								<p class="ml-2 text-4xl font-medium">{latestMeasurement.temperature}°</p>
 							</div>
 						</Tooltip.Trigger>
 						<Tooltip.Content>
-							Last updated: {dayjs(latestMeasurement.created_at).format('MMM D, YYYY HH:mm:ss')}
+							Last updated: {latestMeasurement.created_at.format('MMM D, YYYY HH:mm:ss')}
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Tooltip.Provider>

@@ -4,6 +4,7 @@
 	import { api, transformForecast } from "@/shared";
 	import { globalState } from "@/shared/runes.svelte";
 	import { createQuery } from "@tanstack/svelte-query";
+	import dayjs from 'dayjs';
 
   const dataQuery = $derived(createQuery({
     queryKey: ['forecast'],
@@ -17,7 +18,7 @@
       modelrun_utc: data.modelrun_utc,
       utc_timeoffset: data.utc_timeoffset,
       generation_time_ms: data.generation_time_ms,
-      created_at: data.created_at,
+      created_at: dayjs(data.created_at),
       results: transformForecast(data),
     })
   }));

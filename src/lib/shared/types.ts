@@ -22,7 +22,7 @@ interface ListResponse<T> {
 }
 
 interface Measurement {
-	timestamp: string;
+	timestamp: Dayjs;
 	temperature: number;
 	humidity: number;
 	pressure: number;
@@ -35,9 +35,8 @@ interface Measurement {
 interface MeasurementStat {
   temperature: number;
   humidity: number;
-  pressure: number;
   station: number
-  date: string;
+  date: Dayjs;
 }
 
 interface ChartData {

@@ -24,13 +24,20 @@
 		createQuery({
 			queryKey: ['weekStats', globalState.stationId, startDate, endDate],
 			queryFn: () => api.getMeasurementStats(globalState.stationId!, startDate, endDate),
-			enabled: !!globalState.stationId
+			enabled: !!globalState.stationId,
+			select: (data) =>
+				data.map((stat) => ({
+					...stat,
+					date: dayjs(stat.date),
+					temperature: parseFloat(stat.temperature.toFixed(2)),
+					humidity: parseFloat(stat.humidity.toFixed(2))
+				}))
 		})
 	);
 
-	const createChartData = (key: keyof MeasurementStat) =>
+	const createChartData = (key: 'temperature' | 'humidity') =>
 		$weekStatsQuery.data?.map((data) => ({
-			date: new Date(data.date),
+			date: data.date.toDate(),
 			value: data[key]
 		}));
 
@@ -46,7 +53,7 @@
 	let currentStatIndex = $state(-1);
 	const selectedDate = $derived(
 		currentStatIndex > -1 && $weekStatsQuery.data
-			? dayjs($weekStatsQuery.data![currentStatIndex].date)
+			? $weekStatsQuery.data![currentStatIndex].date
 			: undefined
 	);
 
@@ -67,13 +74,19 @@
 		createQuery({
 			queryKey: ['latestMeasurement', globalState.stationId],
 			queryFn: () => api.getLatestMeasurement(globalState.stationId),
-			enabled: !!globalState.stationId
+			enabled: !!globalState.stationId,
+			select: (data) => ({
+				...data,
+				temperature: parseFloat(data.temperature.toFixed(2)),
+				humidity: parseFloat(data.humidity.toFixed(2)),
+				timestamp: dayjs(data.timestamp)
+			})
 		})
 	);
 
 	function getTodayStat(): MeasurementStat | undefined {
 		if ($weekStatsQuery.data) {
-			return $weekStatsQuery.data.find((stat) => dayjs(stat.date).isSame(today, 'day'));
+			return $weekStatsQuery.data.find((stat) => stat.date.isSame(today, 'day'));
 		}
 		return undefined;
 	}

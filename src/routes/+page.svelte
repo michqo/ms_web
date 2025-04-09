@@ -11,7 +11,7 @@
 	import { CheckCircle2, Droplets, Edit, Plus, Thermometer } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 
-	const dataQuery = createQuery({
+	const stationsQuery = createQuery({
 		queryKey: ['stations'],
 		queryFn: () => api.getStations(),
 		refetchOnWindowFocus: false
@@ -26,19 +26,20 @@
 
 	$effect(() => {
 		// When stations load, fetch measurements for all stations
-		if ($dataQuery.data?.results.length) {
+		if ($stationsQuery.data?.results.length) {
 			fetchAllLatestMeasurements();
 		}
 	});
 
 	async function fetchAllLatestMeasurements() {
-		if (!$dataQuery.data?.results.length) return;
+		if (!$stationsQuery.data?.results.length) return;
 
 		try {
-			for (const station of $dataQuery.data.results) {
+			for (const station of $stationsQuery.data.results) {
 				try {
 					loadingMeasurements[station.id] = true;
 					const measurement = await api.getLatestMeasurement(station.id);
+					measurement.timestamp = dayjs(measurement.timestamp);
 					latestMeasurements[station.id] = measurement || null;
 				} catch (error) {
 					console.error(`Error fetching measurement for station ${station.id}:`, error);
@@ -64,8 +65,8 @@
 </script>
 
 <main class="flex w-screen flex-col items-center">
-	{#if $dataQuery.data}
-		{@const stations = $dataQuery.data.results}
+	{#if $stationsQuery.data}
+		{@const stations = $stationsQuery.data.results}
 		<div class="mt-24 flex w-full max-w-md items-center justify-between">
 			<h1 class="text-3xl font-medium">Stations</h1>
 			<Button onclick={() => openDialog()} variant="outline" size="sm">
@@ -155,7 +156,7 @@
 							</div>
 							{#if latest}
 								<div class="text-xs text-muted-foreground">
-									Last updated: {dayjs(latest.timestamp).format('MMM D, HH:mm')}
+									Last updated: {latest.timestamp.format('MMM D, HH:mm')}
 								</div>
 							{/if}
 						</div>

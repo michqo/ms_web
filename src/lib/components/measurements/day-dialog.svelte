@@ -7,9 +7,9 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
-	import type { Measurement, MeasurementStat } from '@/shared/types';
+	import type { ListResponse, Measurement, MeasurementStat } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { type Dayjs } from 'dayjs';
+	import dayjs, { type Dayjs } from 'dayjs';
 	import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
 
 	interface Props {
@@ -22,31 +22,50 @@
 		weekStats: MeasurementStat[];
 	}
 
-	const { open, onOpenChange, selectedDate, stationId, onNavigate, currentIndex, weekStats }: Props =
-		$props();
+	const {
+		open,
+		onOpenChange,
+		selectedDate,
+		stationId,
+		onNavigate,
+		currentIndex,
+		weekStats
+	}: Props = $props();
 
 	const formattedDate = $derived(selectedDate?.format('dddd, MMMM D, YYYY'));
 	let currentPage = $state(1);
+
+	const select = (data: ListResponse<Measurement>) => ({
+		...data,
+		results: data.results.map((measurement) => ({
+			...measurement,
+			timestamp: dayjs(measurement.timestamp),
+			temperature: parseFloat(measurement.temperature.toFixed(2)),
+			humidity: parseFloat(measurement.humidity.toFixed(2))
+		}))
+	});
 
 	const dataQuery = $derived(
 		createQuery({
 			queryKey: ['measurements', stationId, currentPage, selectedDate],
 			queryFn: () => api.getMeasurements(stationId, currentPage, selectedDate!),
 			enabled: !!stationId && !!selectedDate,
+			select
 		})
 	);
 
 	const dayMeasurementsQuery = $derived(
 		createQuery({
-			queryKey: ['dayMeasurements', stationId, selectedDate?.format('YYYY-MM-DD')],
+			queryKey: ['dayMeasurements', stationId, selectedDate],
 			queryFn: () => api.getMeasurements(stationId, 1, selectedDate!, 24),
-			enabled: open && !!stationId && !!selectedDate
+			enabled: !!stationId && !!selectedDate,
+			select
 		})
 	);
 
-	const createChartData = (key: keyof Measurement) =>
+	const createChartData = (key: 'temperature' | 'humidity') =>
 		$dayMeasurementsQuery.data?.results.map((data) => ({
-			date: new Date(data.timestamp),
+			date: data.timestamp.toDate(),
 			value: data[key]
 		}));
 

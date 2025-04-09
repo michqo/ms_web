@@ -2,7 +2,7 @@
 	import * as Table from '@/components/ui/table';
 	import { cn } from '@/utils';
 	import type { MeasurementStat } from '@/shared/types';
-	import dayjs from 'dayjs';
+	import dayjs, { type Dayjs } from 'dayjs';
 	import { Calendar, Droplets, Thermometer } from 'lucide-svelte';
 
 	interface Props {
@@ -21,16 +21,9 @@
 		return 'text-red-600';
 	}
 
-	function formatNumber(value: number): string {
-		return value?.toFixed(2);
-	}
-	
-	// Get today's date in YYYY-MM-DD format to compare with stats
-	const today = dayjs().format('YYYY-MM-DD');
-	
-	function isCurrentDay(date: string): boolean {
-		return dayjs(date).format('YYYY-MM-DD') === today;
-	}
+	const today = dayjs();
+
+	const isCurrentDay = (date: Dayjs) => date.isSame(today, 'day');
 </script>
 
 <div class="overflow-hidden rounded-lg border shadow-sm">
@@ -60,32 +53,35 @@
 		</Table.Header>
 		<Table.Body>
 			{#each weekStats as stat, index}
-				<Table.Row 
+				<Table.Row
 					class={cn(
-						"hover:bg-muted/30 cursor-pointer", 
-						isCurrentDay(stat.date) && "bg-primary/10 dark:bg-primary/20"
+						'cursor-pointer hover:bg-muted/30',
+						isCurrentDay(stat.date) && 'bg-primary/10 dark:bg-primary/20'
 					)}
 					onclick={() => onSelectDay(index)}
 				>
 					<Table.Cell class="font-medium">
 						<div class="flex items-center gap-2">
-							{dayjs(stat.date).format('ddd, MMM D')}
+							{stat.date.format('ddd, MMM D')}
 							{#if isCurrentDay(stat.date)}
-								<span class="text-xs rounded bg-primary px-1.5 py-0.5 text-primary-foreground font-medium">Today</span>
+								<span
+									class="rounded bg-primary px-1.5 py-0.5 text-xs font-medium text-primary-foreground"
+									>Today</span
+								>
 							{/if}
 						</div>
 					</Table.Cell>
 					<Table.Cell>
 						<div class="flex flex-col">
 							<span class={cn('font-medium', getTemperatureColor(stat.temperature))}>
-									{formatNumber(stat.temperature)}°C
+								{stat.temperature}°C
 							</span>
 						</div>
 					</Table.Cell>
 					<Table.Cell>
 						<div class="flex flex-col">
-							<span class="font-medium text-blue-500">{formatNumber(stat.humidity)}%</span>
-							<div class="h-2 w-full overflow-hidden rounded-full bg-muted mt-1">
+							<span class="font-medium text-blue-500">{stat.humidity}%</span>
+							<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-muted">
 								<div
 									class="h-full bg-blue-500"
 									style={`width: ${stat.humidity}%; opacity: 0.7`}

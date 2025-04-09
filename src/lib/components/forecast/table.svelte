@@ -1,13 +1,13 @@
 <script lang="ts">
+	import * as Dialog from '@/components/ui/dialog';
 	import * as Table from '@/components/ui/table';
 	import type { ForecastBase, ForecastTransformed } from '@/shared/types';
-	import dayjs from 'dayjs';
-	import * as Dialog from '@/components/ui/dialog';
+	import dayjs, { type Dayjs } from 'dayjs';
 	import DialogCard from './dialog-card.svelte';
 
 	interface Props {
 		forecast: ForecastTransformed[];
-		updatedDate: string;
+		updatedDate: Dayjs;
 	}
 
 	const { forecast, updatedDate }: Props = $props();
@@ -63,7 +63,7 @@
 		<Table.Footer>
 			<Table.Row>
 				<Table.Cell colspan={4} class="py-2 text-center text-xs text-muted-foreground">
-					Updated {dayjs(updatedDate).format('MMM D, HH:mm')}
+					Updated {updatedDate.format('MMM D, HH:mm')}
 				</Table.Cell>
 			</Table.Row>
 		</Table.Footer>

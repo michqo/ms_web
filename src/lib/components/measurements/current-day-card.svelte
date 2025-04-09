@@ -23,10 +23,6 @@
 		if (temp <= 30) return 'text-orange-500';
 		return 'text-red-600';
 	}
-
-	function formatNumber(value: number): string {
-		return value?.toFixed(2);
-	}
 </script>
 
 <Card.Root
@@ -61,13 +57,13 @@
 					<div class="flex items-center gap-2">
 						<Thermometer class="size-4 text-primary" />
 						<span class={cn('text-lg font-semibold', getTemperatureColor(todayStat.temperature))}>
-							{formatNumber(todayStat.temperature)}°C
+							{todayStat.temperature}°C
 						</span>
 					</div>
 					<div class="flex items-center gap-2">
 						<Droplets class="size-4 text-blue-500" />
 						<span class="text-lg font-semibold text-blue-500">
-							{formatNumber(todayStat.humidity)}%
+							{todayStat.humidity}%
 						</span>
 					</div>
 				</div>
@@ -76,7 +72,7 @@
 					<div class="space-y-2">
 						<h3 class="flex items-center gap-1 text-sm font-medium text-muted-foreground">
 							<Clock class="size-3" />
-							Latest ({dayjs(latestMeasurement.timestamp).format('HH:mm')})
+							Latest ({latestMeasurement.timestamp.format('HH:mm')})
 						</h3>
 						<div class="flex items-center gap-2">
 							<Thermometer class="size-4 text-primary" />

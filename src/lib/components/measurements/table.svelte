@@ -11,7 +11,7 @@
 		pageNumber: number;
 		onPageChange: (page: number) => void;
 		dataQuery: CreateQueryResult<ListResponse<Measurement>, Error>;
-    emptyData: boolean;
+		emptyData: boolean;
 	}
 
 	const { pageNumber, onPageChange, dataQuery, emptyData }: Props = $props();
@@ -25,21 +25,21 @@
 		return 'text-red-600';
 	}
 
-  const currentDate = $derived(
+	const currentDate = $derived(
 		!emptyData
-			? dayjs($dataQuery.data!.results[0].timestamp).format('dddd, MMMM D, YYYY')
+			? $dataQuery.data!.results[0].timestamp.format('dddd, MMMM D, YYYY')
 			: 'No data available'
 	);
 </script>
 
-<div class="overflow-hidden rounded-lg border shadow-sm mb-5">
+<div class="mb-5 overflow-hidden rounded-lg border shadow-sm">
 	<Table.Root class="caption-top">
-    <Table.Caption class="my-4">
-      <div class="flex items-center justify-center gap-2">
-        <Calendar class="size-4" />
-        <span>{currentDate}</span>
-      </div>
-    </Table.Caption>
+		<Table.Caption class="my-4">
+			<div class="flex items-center justify-center gap-2">
+				<Calendar class="size-4" />
+				<span>{currentDate}</span>
+			</div>
+		</Table.Caption>
 		<Table.Header class="bg-muted/50">
 			<Table.Row>
 				<Table.Head class="font-medium">
@@ -66,7 +66,7 @@
 			{#each $dataQuery.data!.results as measurement}
 				<Table.Row class="hover:bg-muted/30">
 					<Table.Cell class="font-medium">
-						{dayjs(measurement.timestamp).format('HH')}:00
+						{measurement.timestamp.format('HH')}:00
 					</Table.Cell>
 					<Table.Cell>
 						<span class={cn('text-lg font-medium', getTemperatureColor(measurement.temperature))}>
