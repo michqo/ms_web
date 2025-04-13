@@ -4,6 +4,7 @@
 	import type { ForecastBase, ForecastTransformed } from '@/shared/types';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import DialogCard from './dialog-card.svelte';
+	import { t } from '@/translations';
 
 	interface Props {
 		forecast: ForecastTransformed[];
@@ -17,7 +18,7 @@
 	let dialogOpen = $state(false);
 
 	const displayTime = (item: ForecastBase) =>
-		item.time.isSame(dayjs(), 'day') ? 'Today' : item.time.format('ddd');
+		item.time.isSame(dayjs(), 'day') ? $t('forecast.table.today') : item.time.format('ddd');
 
 	function handleRowClick(item: ForecastTransformed) {
 		selectedIndex = forecast.findIndex((f) => f === item);
@@ -35,10 +36,10 @@
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="w-[100px]">Day</Table.Head>
-				<Table.Head>Weather</Table.Head>
-				<Table.Head>High</Table.Head>
-				<Table.Head>Low</Table.Head>
+				<Table.Head class="w-[100px]">{$t('forecast.table.header.day')}</Table.Head>
+				<Table.Head>{$t('forecast.table.header.weather')}</Table.Head>
+				<Table.Head>{$t('forecast.table.header.high')}</Table.Head>
+				<Table.Head>{$t('forecast.table.header.low')}</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
@@ -63,7 +64,7 @@
 		<Table.Footer>
 			<Table.Row>
 				<Table.Cell colspan={4} class="py-2 text-center text-xs text-muted-foreground">
-					Updated {updatedDate.format('MMM D, HH:mm')}
+					{$t('forecast.table.updated')} {updatedDate.format('MMM D, HH:mm')}
 				</Table.Cell>
 			</Table.Row>
 		</Table.Footer>
@@ -76,7 +77,7 @@
 			<Dialog.Title>
 				{selectedForecast?.time.format('dddd, MMMM D')}
 			</Dialog.Title>
-			<Dialog.Description>Forecast details</Dialog.Description>
+			<Dialog.Description>{$t('forecast.table.dialog.description')}</Dialog.Description>
 		</Dialog.Header>
 
 		<div class="py-4">
@@ -91,7 +92,7 @@
 		</div>
 
 		<Dialog.Footer>
-			<Dialog.Close>Close</Dialog.Close>
+			<Dialog.Close>{$t('forecast.table.dialog.close')}</Dialog.Close>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

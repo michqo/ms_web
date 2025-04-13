@@ -1,0 +1,30 @@
+{
+    "card": {
+        "title": "Forecast",
+        "error_current": "Failed to load current data",
+        "last_updated": "Last updated",
+        "no_current_data": "No current data available",
+        "current_temperature": "Current Temperature",
+        "wind": "Wind",
+        "humidity": "Humidity",
+        "precipitation": "Precipitation",
+        "pressure": "Pressure",
+        "predictability": "Predictability"
+    },
+    "table": {
+        "header": {
+            "day": "Day",
+            "weather": "Weather",
+            "high": "High",
+            "low": "Low"
+        },
+        "today": "Today",
+        "updated": "Updated",
+        "dialog": {
+            "description": "Forecast details",
+            "close": "Close",
+            "previous": "Previous day",
+            "next": "Next day"
+        }
+    }
+}

@@ -31,6 +31,12 @@ export const config: Config = {
       loader: async () => (await import('./en/measurements.json')).default,
     },
     {
+      locale: 'en',
+      key: 'forecast',
+      routes: ['/forecast'],
+      loader: async () => (await import('./en/forecast.json')).default,
+    },
+    {
       locale: 'sk',
       key: 'menu',
       loader: async () => (await import('./sk/menu.json')).default,
@@ -46,6 +52,12 @@ export const config: Config = {
       key: 'measurements',
       routes: ['/measurements'],
       loader: async () => (await import('./sk/measurements.json')).default,
+    },
+    {
+      locale: 'sk',
+      key: 'forecast',
+      routes: ['/forecast'],
+      loader: async () => (await import('./sk/forecast.json')).default,
     },
   ],
 };

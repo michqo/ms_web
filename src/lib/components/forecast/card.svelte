@@ -8,6 +8,7 @@
 	import dayjs from 'dayjs';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tooltip from '@/components/ui/tooltip/index';
+	import { t } from '@/translations';
 
 	interface Props {
 		forecast: ForecastTransformed;
@@ -39,7 +40,7 @@
 
 	<div class="grid grid-cols-2 gap-4">
 		<div class="flex flex-col">
-			<p class="text-center text-sm text-muted-foreground">Forecast</p>
+			<p class="text-center text-sm text-muted-foreground">{$t('forecast.card.title')}</p>
 			<div class="flex items-center justify-center gap-x-2">
 				<forecast.icon width={100} height={100} />
 				<div class="flex flex-col items-center">
@@ -54,13 +55,13 @@
 		</div>
 
 		<div class="border-l pl-4">
-			<p class="text-center text-sm text-muted-foreground">Current Temperature</p>
+			<p class="text-center text-sm text-muted-foreground">{$t('forecast.card.current_temperature')}</p>
 			{#if $measurementQuery.isLoading}
 				<div class="flex items-center justify-center">
 					<Skeleton class="h-10 w-20" />
 				</div>
 			{:else if $measurementQuery.isError}
-				<p class="text-center text-red-500">Failed to load current data</p>
+				<p class="text-center text-red-500">{$t('forecast.card.error_current')}</p>
 			{:else if latestMeasurement}
 				<Tooltip.Provider>
 					<Tooltip.Root>
@@ -71,12 +72,12 @@
 							</div>
 						</Tooltip.Trigger>
 						<Tooltip.Content>
-							Last updated: {latestMeasurement.created_at.format('MMM D, YYYY HH:mm:ss')}
+							{$t('forecast.card.last_updated')}: {latestMeasurement.created_at.format('MMM D, YYYY HH:mm:ss')}
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Tooltip.Provider>
 			{:else}
-				<p class="text-center text-sm">No current data available</p>
+				<p class="text-center text-sm">{$t('forecast.card.no_current_data')}</p>
 			{/if}
 		</div>
 	</div>
@@ -84,19 +85,19 @@
 	<div class="mt-4 grid grid-cols-3 gap-4 border-t pt-4">
 		<div class="flex flex-col items-center">
 			<Wind width={28} height={28} />
-			<p class="mt-1 text-sm text-muted-foreground">Wind</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.wind')}</p>
 			<p class="font-medium">{Math.floor(forecast.windspeed_mean)} m/s</p>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<Droplets class="h-7 w-7" />
-			<p class="mt-1 text-sm text-muted-foreground">Humidity</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.humidity')}</p>
 			<p class="font-medium">{forecast.relativehumidity_mean}%</p>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<Umbrella class="h-7 w-7" />
-			<p class="mt-1 text-sm text-muted-foreground">Precipitation</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.precipitation')}</p>
 			<p class="font-medium">{forecast.precipitation} mm</p>
 		</div>
 	</div>
@@ -104,13 +105,13 @@
 	<div class="mt-4 grid grid-cols-2 gap-4">
 		<div class="flex flex-col items-center">
 			<Gauge class="h-5 w-5" />
-			<span class="text-sm text-muted-foreground">Pressure</span>
+			<span class="text-sm text-muted-foreground">{$t('forecast.card.pressure')}</span>
 			<span class="font-medium">{Math.round(forecast.sealevelpressure_mean)} hPa</span>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<CloudFog class="h-5 w-5" />
-			<span class="text-sm text-muted-foreground">Predictability</span>
+			<span class="text-sm text-muted-foreground">{$t('forecast.card.predictability')}</span>
 			<span class="font-medium">{forecast.predictability}%</span>
 		</div>
 	</div>

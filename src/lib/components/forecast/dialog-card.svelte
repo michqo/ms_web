@@ -4,6 +4,7 @@
 	import { Droplets, Umbrella, Gauge, CloudFog, ChevronLeft, ChevronRight } from 'lucide-svelte';
 	import { cn } from '@/utils';
 	import { Button } from '../ui/button';
+	import { t } from '@/translations';
 
 	interface Props {
 		forecast: ForecastTransformed;
@@ -35,7 +36,7 @@
 			class="rounded-full w-12 h-12"
 			onclick={goToPrevious}
 			disabled={currentIndex == 0}
-			aria-label="Previous day"
+			aria-label={$t('forecast.table.dialog.previous')}
 		>
 			<ChevronLeft class="h-6 w-6" />
 		</Button>
@@ -57,7 +58,7 @@
 			class="rounded-full w-12 h-12"
 			onclick={goToNext}
 			disabled={currentIndex == allForecasts.length - 1}
-			aria-label="Next day"
+			aria-label={$t('forecast.table.dialog.previous')}
 		>
 			<ChevronRight class="h-6 w-6" />
 		</Button>
@@ -66,19 +67,19 @@
 	<div class="grid grid-cols-3 gap-4 border-t pt-6">
 		<div class="flex flex-col items-center">
 			<Wind width={28} height={28} />
-			<p class="mt-1 text-sm text-muted-foreground">Wind</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.wind')}</p>
 			<p class="font-medium">{Math.floor(forecast.windspeed_mean)} m/s</p>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<Droplets class="h-7 w-7" />
-			<p class="mt-1 text-sm text-muted-foreground">Humidity</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.humidity')}</p>
 			<p class="font-medium">{forecast.relativehumidity_mean}%</p>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<Umbrella class="h-7 w-7" />
-			<p class="mt-1 text-sm text-muted-foreground">Precipitation</p>
+			<p class="mt-1 text-sm text-muted-foreground">{$t('forecast.card.precipitation')}</p>
 			<p class="font-medium">{forecast.precipitation} mm</p>
 		</div>
 	</div>
@@ -86,13 +87,13 @@
 	<div class="mt-6 grid grid-cols-2 gap-4">
 		<div class="flex flex-col items-center">
 			<Gauge class="h-5 w-5" />
-			<span class="text-sm text-muted-foreground">Pressure</span>
+			<span class="text-sm text-muted-foreground">{$t('forecast.card.pressure')}</span>
 			<span class="font-medium">{Math.round(forecast.sealevelpressure_mean)} hPa</span>
 		</div>
 
 		<div class="flex flex-col items-center">
 			<CloudFog class="h-5 w-5" />
-			<span class="text-sm text-muted-foreground">Predictability</span>
+			<span class="text-sm text-muted-foreground">{$t('forecast.card.predictability')}</span>
 			<span class="font-medium">{forecast.predictability}%</span>
 		</div>
 	</div>

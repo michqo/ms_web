@@ -1,0 +1,30 @@
+{
+    "card": {
+        "title": "Predpoveď",
+        "error_current": "Nepodarilo sa načítať aktuálne dáta",
+        "last_updated": "Naposledy aktualizované",
+        "no_current_data": "Žiadne aktuálne údaje",
+        "current_temperature": "Aktuálna teplota",
+        "wind": "Vietor",
+        "humidity": "Vlhkosť",
+        "precipitation": "Zrážky",
+        "pressure": "Tlak",
+        "predictability": "Predvídateľnosť"
+    },
+    "table": {
+        "header": {
+            "day": "Deň",
+            "weather": "Počasie",
+            "high": "Maximálna",
+            "low": "Minimálna"
+        },
+        "today": "Dnes",
+        "updated": "Aktualizované",
+        "dialog": {
+            "description": "Detaily predpovede",
+            "close": "Zatvoriť",
+            "previous": "Predošlý deň",
+            "next": "Nasledujúci deň"
+        }
+    }
+}
