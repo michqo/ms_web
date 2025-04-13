@@ -13,6 +13,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Label } from '../ui/label';
+	import { t } from '@/translations';
 
 	interface Props {
 		open: boolean;
@@ -72,11 +73,11 @@
 <Dialog.Root bind:open>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title>{isNewStation ? 'Create Station' : 'Manage Station'}</Dialog.Title>
+			<Dialog.Title>{isNewStation ? $t('home.dialog.createStation.title') : $t('home.dialog.manageStation.title')}</Dialog.Title>
 			<Dialog.Description>
 				{isNewStation
-					? 'Add a new station to your system'
-					: 'Update station details or delete the station'}
+					? $t('home.dialog.createStation.description')
+					: $t('home.dialog.manageStation.description')}
 			</Dialog.Description>
 		</Dialog.Header>
 
@@ -84,7 +85,7 @@
 			<Form.Field {form} name="name">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Name</Form.Label>
+						<Form.Label>{$t('home.dialog.createStation.form_name')}</Form.Label>
 						<Input {...props} bind:value={$formData.name} />
 					{/snippet}
 				</Form.Control>
@@ -92,14 +93,14 @@
 			</Form.Field>
 
 			<div class="mt-4 space-y-2">
-				<Label>Location</Label>
+				<Label>{$t('home.dialog.createStation.form_location')}</Label>
 				<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
 			</div>
 
 			<Dialog.Footer class="flex-col sm:flex-row sm:justify-between">
 				{#if !isNewStation}
 					<Button type="button" variant="destructive" onclick={() => (deleteDialogOpen = true)}>
-						Delete Station
+						{$t('home.dialog.manageStation.delete')}
 					</Button>
 				{:else}
 					<div></div>
@@ -107,9 +108,9 @@
 
 				<div class="mt-2 flex gap-2 sm:mt-0">
 					<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
-						Cancel
+						{$t('home.dialog.manageStation.cancel')}
 					</Dialog.Close>
-					<Form.Button type="submit">{isNewStation ? 'Create' : 'Save Changes'}</Form.Button>
+					<Form.Button type="submit">{isNewStation ? $t('home.dialog.createStation.create') : $t('home.dialog.manageStation.update')}</Form.Button>
 				</div>
 			</Dialog.Footer>
 		</form>
@@ -120,18 +121,18 @@
 	<AlertDialog.Root bind:open={deleteDialogOpen}>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Delete Station</AlertDialog.Title>
+				<AlertDialog.Title>{$t('home.dialog.manageStation.confirm_title')}</AlertDialog.Title>
 				<AlertDialog.Description>
-					Are you sure you want to delete this station? This action cannot be undone.
+					{$t('home.dialog.manageStation.confirm_description')}
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('home.dialog.manageStation.cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					onclick={deleteStation}
 					class="bg-destructive text-destructive-foreground"
 				>
-					Delete
+					{$t('home.dialog.manageStation.delete')}
 				</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>

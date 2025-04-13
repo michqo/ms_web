@@ -4,6 +4,7 @@
 	import { cn } from '@/utils.js';
 	import type { Map as LeafletMap, Marker, TileLayer, LeafletMouseEvent } from 'leaflet';
 	import { Button } from '../button';
+	import { t } from '@/translations';
 
 	let mapElement: HTMLDivElement;
 	let map = $state<LeafletMap | null>(null);
@@ -75,7 +76,7 @@
 
 	function getCurrentLocation(): void {
 		if (!browser || !navigator.geolocation) {
-			locationError = 'Geolocation is not supported by your browser';
+			locationError = $t('home.dialog.map.notSupported');
 			return;
 		}
 
@@ -95,7 +96,7 @@
 			},
 			(error) => {
 				console.error('Error getting location:', error);
-				locationError = `Couldn't get your location: ${error.message}`;
+				locationError = `${$t('home.map.error')}: ${error.message}`;
 				locating = false;
 			},
 			{
@@ -138,7 +139,7 @@
 	{#if !preview}
 		<div class="mt-2 flex items-center justify-between">
 			<div class="text-xs text-muted-foreground">
-				Current coordinates: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+				{$t('home.map.currentCoords')}: {latitude.toFixed(6)}, {longitude.toFixed(6)}
 			</div>
 
 			<Button
@@ -177,7 +178,7 @@
 						/>
 					</svg>
 				{/if}
-				<span class="text-xs">{locating ? 'Locating...' : 'My Location'}</span>
+				<span class="text-xs">{locating ? $t('home.map.locating') : $t('home.map.retrieve_location')}</span>
 			</Button>
 		</div>
 

@@ -10,6 +10,7 @@
 	import dayjs from 'dayjs';
 	import { CheckCircle2, Droplets, Edit, Plus, Thermometer } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
+	import { t } from '@/translations';
 
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
@@ -68,10 +69,10 @@
 	{#if $stationsQuery.data}
 		{@const stations = $stationsQuery.data.results}
 		<div class="mt-24 flex w-full max-w-md items-center justify-between">
-			<h1 class="text-3xl font-medium">Stations</h1>
+			<h1 class="text-3xl font-medium">{$t('home.title')}</h1>
 			<Button onclick={() => openDialog()} variant="outline" size="sm">
 				<Plus class="mr-2 h-4 w-4" />
-				Add
+				{$t('home.dialog.createStation.trigger')}
 			</Button>
 		</div>
 
@@ -96,7 +97,7 @@
 								e.stopPropagation();
 								setSelectedStation(station.id);
 							}}
-							title="Set as default station"
+							title={$t('home.setDefault')}
 						>
 							<CheckCircle2 class="h-4 w-4" />
 						</Button>
@@ -116,7 +117,7 @@
 						<div class="flex items-center gap-2">
 							<span>{station.name}</span>
 							{#if defaultStationId.value == station.id.toString()}
-								<span class="text-xs text-muted-foreground">(Default)</span>
+								<span class="text-xs text-muted-foreground">({$t('home.default')})</span>
 							{/if}
 						</div>
 						<span class="text-muted-foreground">{station.city_name}</span>
@@ -141,7 +142,7 @@
 								{:else if latest}
 									<span>{Math.round(latest.temperature!)}°C</span>
 								{:else}
-									<span class="text-sm text-muted-foreground">No data</span>
+									<span class="text-sm text-muted-foreground">{$t('home.noData')}</span>
 								{/if}
 							</div>
 							<div class="flex items-center gap-2">
@@ -151,12 +152,12 @@
 								{:else if latest}
 									<span>{latest.humidity}%</span>
 								{:else}
-									<span class="text-sm text-muted-foreground">No data</span>
+									<span class="text-sm text-muted-foreground">{$t('home.noData')}</span>
 								{/if}
 							</div>
 							{#if latest}
 								<div class="text-xs text-muted-foreground">
-									Last updated: {latest.timestamp.format('MMM D, HH:mm')}
+									{$t('home.lastUpdated')}: {latest.timestamp.format('MMM D, HH:mm')}
 								</div>
 							{/if}
 						</div>
