@@ -7,41 +7,47 @@
 	import * as Dialog from '../dialog';
 	import * as Form from '../form';
 	import { Input } from '../input';
+	import { t } from '@/translations';
 
 	const { user }: { user?: string } = $props();
 
 	let open = $state(false);
 
-	const form = superForm({
-		new_username: user || '',
-		current_password: ''
-	}, {
-		SPA: true,
-		validators: zodClient(usernameSchema),
-		onUpdate: async ({ form: f }) => {
-			if (f.valid) {
-				await api.setUsername(f.data);
-				open = false;
-			} else {
-				console.error('Please fix the errors in the form.');
+	const form = superForm(
+		{
+			new_username: user || '',
+			current_password: ''
+		},
+		{
+			SPA: true,
+			validators: zodClient(usernameSchema),
+			onUpdate: async ({ form: f }) => {
+				if (f.valid) {
+					await api.setUsername(f.data);
+					open = false;
+				} else {
+					console.error('Please fix the errors in the form.');
+				}
 			}
 		}
-	});
+	);
 
 	const { form: formData, enhance } = form;
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Change Username</Dialog.Trigger>
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+		>{$t('menu.actions.account.dialog.username_action')}</Dialog.Trigger
+	>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title>Change username</Dialog.Title>
+			<Dialog.Title>{$t('menu.actions.account.dialog.username_action')}</Dialog.Title>
 		</Dialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
 			<Form.Field {form} name="new_username">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>New Username</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_new_username')}</Form.Label>
 						<Input {...props} bind:value={$formData.new_username} />
 					{/snippet}
 				</Form.Control>
@@ -50,14 +56,14 @@
 			<Form.Field {form} name="current_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Current Password</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_current_password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.current_password} />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
 			<Dialog.Footer>
-				<Form.Button>Save changes</Form.Button>
+				<Form.Button>{$t('menu.actions.account.dialog.form_save_changes')}</Form.Button>
 			</Dialog.Footer>
 		</form>
 	</Dialog.Content>

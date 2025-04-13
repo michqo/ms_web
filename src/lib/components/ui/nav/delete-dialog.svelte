@@ -7,6 +7,7 @@
 	import * as Form from '../form';
 	import { Input } from '../input';
 	import { toast } from 'svelte-sonner';
+	import { t } from '@/translations';
 
   interface Props {
 		data: SuperValidated<DeleteSchema>
@@ -32,27 +33,26 @@
 
 <AlertDialog.Root bind:open>
 	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' })}
-		>Delete Account</AlertDialog.Trigger
+		>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Trigger
 	>
 	<AlertDialog.Content class="sm:max-w-md">
 		<AlertDialog.Header>
-			<AlertDialog.Title>Delete account</AlertDialog.Title>
-			<AlertDialog.Description>Enter your current password.</AlertDialog.Description>
+			<AlertDialog.Title>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Title>
 		</AlertDialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
 			<Form.Field {form} name="current_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Current Password</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_confirm_password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.current_password} />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel type="button">{$t('menu.actions.account.dialog.form_cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action type="submit" formaction="?/delete" class={buttonVariants({ variant: 'destructive' })}
-					>Delete</AlertDialog.Action
+					>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</form>

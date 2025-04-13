@@ -7,6 +7,7 @@
 	import * as Dialog from '../dialog';
 	import * as Form from '../form';
 	import { Input } from '../input';
+	import { t } from '@/translations';
 
 	let open = $state(false);
 
@@ -28,16 +29,16 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Change Password</Dialog.Trigger>
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>{$t('menu.actions.account.dialog.password_action')}</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title>Change password</Dialog.Title>
+			<Dialog.Title>{$t('menu.actions.account.dialog.password_action')}</Dialog.Title>
 		</Dialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
 			<Form.Field {form} name="current_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Current Password</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_current_password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.current_password} />
 					{/snippet}
 				</Form.Control>
@@ -46,7 +47,7 @@
 			<Form.Field {form} name="new_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>New Password</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_new_password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.new_password} />
 					{/snippet}
 				</Form.Control>
@@ -55,14 +56,14 @@
 			<Form.Field {form} name="confirm_password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Confirm New Password</Form.Label>
+						<Form.Label>{$t('menu.actions.account.dialog.form_confirm_new_password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.confirm_password} />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
 			<Dialog.Footer>
-				<Form.Button>Save changes</Form.Button>
+				<Form.Button>{$t('menu.actions.account.dialog.form_save_changes')}</Form.Button>
 			</Dialog.Footer>
 		</form>
 	</Dialog.Content>

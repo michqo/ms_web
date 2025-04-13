@@ -1,0 +1,52 @@
+{
+    "routes": {
+        "home": "Domov",
+        "measurements": "Merania",
+        "forecast": "Predpoveď",
+        "unknown": "Neznáme",
+        "action": "Menu",
+        "label": "Navigácia"
+    },
+    "theme": {
+        "action": "Zmeniť tému",
+        "active": "Aktívna",
+        "label": "Vzhľad",
+        "light": "Svetlý",
+        "dark": "Tmavý",
+        "system": "Systém"
+    },
+    "language": {
+        "label": "Jazyk",
+        "en": "Anglicky",
+        "sk": "Slovensky"
+    },
+    "actions": {
+        "account": {
+            "label": "Účet",
+            "item": "Profil",
+            "login": "Prihlásiť sa",
+            "logout": "Odhlásiť sa",
+            "register": "Registrovať",
+            "title": "Upraviť profil",
+            "dialog": {
+                "description": "Aktualizujte svoje profilové informácie tu",
+                "username": "Používateľské meno",
+                "username_action": "Zmeniť používateľské meno",
+                "password": "Heslo",
+                "password_action": "Zmeniť heslo",
+                "delete": "Účet",
+                "delete_action": "Zmazať účet",
+                "delete_confirm": "Ste si istý, že chcete zmazať svoj účet? Tento krok nie je možné vrátiť späť.",
+                "delete_success": "Váš účet bol úspešne zmazaný.",
+                "delete_error": "Prišlo k chybe pri mazaní vášho účtu. Skúste to prosím neskôr ešte raz.",
+                "form_new_username": "Nové používateľské meno",
+                "form_current_password": "Aktuálne heslo",
+                "form_save_changes": "Uložiť zmeny",
+                "form_new_password": "Nové heslo",
+                "form_confirm_password": "Potvrdiť heslo",
+                "form_confirm_new_password": "Potvrdiť nové heslo",
+                "form_cancel": "Zrušiť"
+            }
+        }
+    }
+}

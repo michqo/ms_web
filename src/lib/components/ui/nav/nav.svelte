@@ -13,6 +13,7 @@
   import ThemeToggle from './themetoggle.svelte';
   import Actions from './actions.svelte';
   import Links from './links.svelte';
+  import I18n from './i18n.svelte';
   import type { SuperValidated } from 'sveltekit-superforms';
   import type { DeleteSchema } from '@/shared/schemas';
 
@@ -50,6 +51,7 @@
       <Button variant="ghost" size="icon" href="https://github.com/michqo/ms_web" target="_blank">
         <Github />
       </Button>
+      <I18n />
       <Actions {user} {data} />
     </div>
   </div>

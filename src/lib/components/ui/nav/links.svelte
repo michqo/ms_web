@@ -2,24 +2,24 @@
 	import { page } from '$app/state';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Cloud, Home, Thermometer, Menu } from 'lucide-svelte';
+	import { Cloud, Home, Menu, Thermometer } from 'lucide-svelte';
 	import { type Route } from './nav.svelte';
-	import type { Snippet } from 'svelte';
+	import { t } from '@/translations';
 
-	const routesMap: Record<string, Route> = {
+	const routesMap: Record<string, Route> = $derived({
 		'/': {
-			name: 'Home',
+			name: $t('menu.routes.home'),
 			icon: Home
 		},
 		'/measurements': {
-			name: 'Measurements',
+			name: $t('menu.routes.measurements'),
 			icon: Thermometer
 		},
 		'/forecast': {
-			name: 'Forecast',
+			name: $t('menu.routes.forecast'),
 			icon: Cloud
 		}
-	};
+	});
 
 	const unknownRoute = {
 		name: 'Unknown',
@@ -51,10 +51,10 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
 			<Menu class="mr-2 h-4 w-4" />
-			<span>Menu</span>
+			<span>{$t('menu.routes.action')}</span>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content class="min-w-[180px]">
-			<DropdownMenu.Label>Navigation</DropdownMenu.Label>
+			<DropdownMenu.Label>{$t('menu.routes.label')}</DropdownMenu.Label>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Group>
 				{#each Object.entries(routesMap) as [route, data]}
