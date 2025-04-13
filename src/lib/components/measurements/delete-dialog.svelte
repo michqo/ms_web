@@ -10,6 +10,7 @@
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import FormPicker from '../ui/calendar/form-picker.svelte';
+	import { t } from '@/translations';
 
 	interface Props {
 		open: boolean;
@@ -31,12 +32,12 @@
           const lt = ltDate && dayjs(ltDate).endOf('day').toISOString();
 					await api.deleteMeasurements(stationId, gt, lt);
 					open = false;
-					toast.success('Measurements deleted successfully');
+					toast.success($t('measurements.dialog.delete.success'));
 				} catch (error) {
-					toast.error('Failed to delete measurements');
+					toast.error($t('measurements.dialog.delete.error'));
 				}
 			} else {
-        toast.error('Failed to delete measurements');
+        toast.error($t('measurements.dialog.delete.error'));
 				console.log(f.errors);
 			}
 		}
@@ -52,10 +53,9 @@
 <AlertDialog.Root bind:open>
 	<AlertDialog.Content class="sm:max-w-md">
 		<AlertDialog.Header>
-			<AlertDialog.Title>Delete Measurements</AlertDialog.Title>
+			<AlertDialog.Title>{$t('measurements.dialog.delete.title')}</AlertDialog.Title>
 			<AlertDialog.Description>
-				This will permanently delete measurements that match the criteria below. This action cannot
-				be undone.
+				{$t('measurements.dialog.delete.description')}
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
@@ -63,25 +63,25 @@
 			<FormPicker
         form={form}
         name="created_at__gt"
-        label="Newer than"
+        label={$t('measurements.dialog.delete.form_label_newer')}
         optional
       />
       <FormPicker
         form={form}
         name="created_at__lt"
-        label="Older than"
+        label={$t('measurements.dialog.delete.form_label_older')}
         optional
       />
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel type="button" onclick={handleClose} disabled={$submitting}
-					>Cancel</AlertDialog.Cancel
+					>{$t('measurements.dialog.delete.cancel')}</AlertDialog.Cancel
 				>
 				<Button type="submit" variant="destructive" disabled={$submitting} class="gap-2">
 					{#if $submitting}
 						<Loader2 class="h-4 w-4 animate-spin" />
-						<span>Deleting...</span>
+						<span>{$t('measurements.dialog.delete.submit_button_loading')}</span>
 					{:else}
-						<span>Delete Measurements</span>
+						<span>{$t('measurements.dialog.delete.submit_button')}</span>
 					{/if}
 				</Button>
 			</AlertDialog.Footer>

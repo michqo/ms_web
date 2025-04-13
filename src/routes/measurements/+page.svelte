@@ -10,6 +10,7 @@
 	import { api } from '@/shared';
 	import { globalState } from '@/shared/runes.svelte';
 	import type { MeasurementStat } from '@/shared/types';
+	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
 	import { Ellipsis, Trash2 } from 'lucide-svelte';
@@ -101,7 +102,7 @@
 
 <div class="flex w-full flex-col items-center gap-y-6 py-6">
 	<div class="flex w-full max-w-xl items-center justify-between">
-		<h1 class="text-2xl font-bold tracking-tight">Measurements</h1>
+		<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
 				<Ellipsis />
@@ -112,7 +113,7 @@
 					class="flex items-center gap-x-2"
 				>
 					<Trash2 />
-					Delete measurements
+					{$t('measurements.dialog.delete.title')}
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
@@ -136,13 +137,13 @@
 							chartData={weekTempChartData!}
 							lineColor="red"
 							suffix="°C"
-							title="Weekly Temperature"
+							title={$t('measurements.chart.temperature')}
 						/>
 						<StatsChart
 							chartData={weekHumChartData!}
 							lineColor="blue"
 							suffix="%"
-							title="Weekly Humidity"
+							title={$t('measurements.chart.humidity')}
 						/>
 					</div>
 				</div>

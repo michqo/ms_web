@@ -6,6 +6,7 @@
 	import { Calendar } from '../calendar';
 	import * as Form from '../form';
 	import * as Popover from '../popover';
+	import { t } from '@/translations';
 
 	interface Props {
 		form: any;
@@ -31,7 +32,7 @@
 			<Form.Label>
 				{label}
 				{#if optional}
-					<span class="ml-1 text-sm text-muted-foreground">(Optional)</span>
+					<span class="ml-1 text-sm text-muted-foreground">({$t('measurements.dialog.delete.optional')})</span>
 				{/if}
 			</Form.Label>
 			<Popover.Root>

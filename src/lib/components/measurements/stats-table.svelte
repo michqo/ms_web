@@ -4,6 +4,7 @@
 	import type { MeasurementStat } from '@/shared/types';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { Calendar, Droplets, Thermometer } from 'lucide-svelte';
+	import { t } from '@/translations';
 
 	interface Props {
 		weekStats: MeasurementStat[];
@@ -31,22 +32,22 @@
 		<Table.Caption class="my-4">
 			<div class="flex items-center justify-center gap-2">
 				<Calendar class="size-4" />
-				<span>Daily Statistics</span>
+				<span>{$t('measurements.table.caption')}</span>
 			</div>
 		</Table.Caption>
 		<Table.Header class="bg-muted/50">
 			<Table.Row>
-				<Table.Head class="font-medium">Day</Table.Head>
+				<Table.Head class="font-medium">{$t('measurements.table.date')}</Table.Head>
 				<Table.Head class="font-medium">
 					<div class="flex items-center gap-2">
 						<Thermometer class="size-4" />
-						<span>Temperature (°C)</span>
+						<span>{$t('measurements.table.temperature')} (°C)</span>
 					</div>
 				</Table.Head>
 				<Table.Head class="font-medium">
 					<div class="flex items-center gap-2">
 						<Droplets class="size-4" />
-						<span>Humidity (%)</span>
+						<span>{$t('measurements.table.humidity')} (%)</span>
 					</div>
 				</Table.Head>
 			</Table.Row>
@@ -66,7 +67,7 @@
 							{#if isCurrentDay(stat.date)}
 								<span
 									class="rounded bg-primary px-1.5 py-0.5 text-xs font-medium text-primary-foreground"
-									>Today</span
+									>{$t('measurements.table.today')}</span
 								>
 							{/if}
 						</div>

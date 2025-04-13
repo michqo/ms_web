@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ChartData } from '@/shared/types';
+	import { t } from '@/translations';
 	import { scaleTime } from 'd3-scale';
 	import dayjs from 'dayjs';
 	import { Axis, Chart, Highlight, Labels, Spline, Svg, Tooltip } from 'layerchart';
@@ -45,7 +46,7 @@
 		<Tooltip.Root let:data>
 			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D HH:00')}</Tooltip.Header>
 			<Tooltip.List>
-				<Tooltip.Item label="value" value={data.value + suffix} />
+				<Tooltip.Item label={$t('measurements.chart.label')} value={data.value + suffix} />
 			</Tooltip.List>
 		</Tooltip.Root>
 	</Chart>

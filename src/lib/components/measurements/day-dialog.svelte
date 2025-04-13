@@ -8,6 +8,7 @@
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
 	import type { ListResponse, Measurement, MeasurementStat } from '@/shared/types';
+	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs, { type Dayjs } from 'dayjs';
 	import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
@@ -105,7 +106,7 @@
 					class="h-10 w-10 rounded-full"
 					onclick={goToPrevious}
 					disabled={currentIndex == 0}
-					aria-label="Previous day"
+					aria-label={$t('measurements.dialog.previous')}
 				>
 					<ChevronLeft class="h-5 w-5" />
 				</Button>
@@ -121,7 +122,7 @@
 					class="h-10 w-10 rounded-full"
 					onclick={goToNext}
 					disabled={currentIndex == weekStats.length - 1}
-					aria-label="Next day"
+					aria-label={$t('measurements.dialog.next')}
 				>
 					<ChevronRight class="h-5 w-5" />
 				</Button>
@@ -136,25 +137,25 @@
 				</div>
 			{:else if emptyData}
 				<div class="py-6 text-center">
-					<p class="text-muted-foreground">No measurements found for this day.</p>
+					<p class="text-muted-foreground">{$t('measurements.dialog.day.noData')}</p>
 				</div>
 			{:else}
 				<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
 					<Tabs.List class="grid w-full grid-cols-2">
-						<Tabs.Trigger value="chart">Charts</Tabs.Trigger>
-						<Tabs.Trigger value="table">Table</Tabs.Trigger>
+						<Tabs.Trigger value="chart">{$t('measurements.dialog.day.tabs_chart')}</Tabs.Trigger>
+						<Tabs.Trigger value="table">{$t('measurements.dialog.day.tabs_table')}</Tabs.Trigger>
 					</Tabs.List>
 
 					<Tabs.Content value="chart" class="pt-4">
 						<Accordion.Root value={['temp']} type="multiple" class="w-full">
 							<Accordion.Item value="temp">
-								<Accordion.Trigger>Temperature</Accordion.Trigger>
+								<Accordion.Trigger>{$t('measurements.dialog.day.tabs_chart_temperature')}</Accordion.Trigger>
 								<Accordion.Content>
 									<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
 								</Accordion.Content>
 							</Accordion.Item>
 							<Accordion.Item value="hum">
-								<Accordion.Trigger>Humidity</Accordion.Trigger>
+								<Accordion.Trigger>{$t('measurements.dialog.day.tabs_chart_humidity')}</Accordion.Trigger>
 								<Accordion.Content>
 									<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
 								</Accordion.Content>

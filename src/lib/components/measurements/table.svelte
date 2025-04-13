@@ -2,6 +2,7 @@
 	import Pagination from '@/components/Pagination.svelte';
 	import * as Table from '@/components/ui/table';
 	import type { ListResponse, Measurement } from '@/shared/types';
+	import { t } from '@/translations';
 	import { cn } from '@/utils';
 	import type { CreateQueryResult } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
@@ -45,19 +46,19 @@
 				<Table.Head class="font-medium">
 					<div class="flex items-center gap-2">
 						<Clock class="size-4" />
-						<span>Time</span>
+						<span>{$t('measurements.table.time')}</span>
 					</div>
 				</Table.Head>
 				<Table.Head class="font-medium">
 					<div class="flex items-center gap-2">
 						<Thermometer class="size-4" />
-						<span>Temperature</span>
+						<span>{$t('measurements.table.temperature')}</span>
 					</div>
 				</Table.Head>
 				<Table.Head class="font-medium">
 					<div class="flex items-center gap-2">
 						<Droplets class="size-4" />
-						<span>Humidity</span>
+						<span>{$t('measurements.table.humidity')}</span>
 					</div>
 				</Table.Head>
 			</Table.Row>

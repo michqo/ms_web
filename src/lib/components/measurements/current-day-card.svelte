@@ -2,6 +2,7 @@
 	import * as Card from '@/components/ui/card';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import type { Measurement, MeasurementStat } from '@/shared/types';
+	import { t } from '@/translations';
 	import { cn } from '@/utils';
 	import dayjs from 'dayjs';
 	import { Calendar, Clock, Droplets, Thermometer } from 'lucide-svelte';
@@ -33,7 +34,7 @@
 		<Card.Title class="flex items-center justify-between">
 			<div class="flex items-center gap-2">
 				<Calendar class="size-5" />
-				<span>Today's Stats</span>
+				<span>{$t('measurements.current_day.caption')}</span>
 			</div>
 			<span class="text-sm font-normal text-muted-foreground">
 				{dayjs().format('dddd, MMMM D')}
@@ -48,12 +49,12 @@
 			</div>
 		{:else if !todayStat}
 			<div class="flex h-24 items-center justify-center">
-				<p class="text-muted-foreground">No data available for today</p>
+				<p class="text-muted-foreground">{$t('measurements.current_day.noData')}</p>
 			</div>
 		{:else}
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
-					<h3 class="text-sm font-medium text-muted-foreground">Daily Averages</h3>
+					<h3 class="text-sm font-medium text-muted-foreground">{$t('measurements.current_day.label')}</h3>
 					<div class="flex items-center gap-2">
 						<Thermometer class="size-4 text-primary" />
 						<span class={cn('text-lg font-semibold', getTemperatureColor(todayStat.temperature))}>
@@ -72,7 +73,7 @@
 					<div class="space-y-2">
 						<h3 class="flex items-center gap-1 text-sm font-medium text-muted-foreground">
 							<Clock class="size-3" />
-							Latest ({latestMeasurement.timestamp.format('HH:mm')})
+							{$t('measurements.current_day.latest')} ({latestMeasurement.timestamp.format('HH:mm')})
 						</h3>
 						<div class="flex items-center gap-2">
 							<Thermometer class="size-4 text-primary" />
