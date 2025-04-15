@@ -20,6 +20,12 @@ export const config: Config = {
     },
     {
       locale: 'en',
+      key: 'auth',
+      routes: ['/auth'],
+      loader: async () => (await import('./en/auth.json')).default,
+    },
+    {
+      locale: 'en',
       key: 'home',
       routes: ['/'],
       loader: async () => (await import('./en/home.json')).default,
@@ -40,6 +46,12 @@ export const config: Config = {
       locale: 'sk',
       key: 'menu',
       loader: async () => (await import('./sk/menu.json')).default,
+    },
+    {
+      locale: 'sk',
+      key: 'auth',
+      routes: ['/auth'],
+      loader: async () => (await import('./sk/auth.json')).default,
     },
     {
       locale: 'sk',

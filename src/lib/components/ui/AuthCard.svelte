@@ -5,6 +5,7 @@
 	import * as Card from './card';
 	import * as Form from './form';
 	import { Input } from './input';
+	import { t } from '@/translations';
 
 	interface Props {
 		id: 'login' | 'register';
@@ -16,8 +17,8 @@
 	let { id, data, success, failed }: Props = $props();
 
 	const actionWords = {
-		login: 'Log In',
-		register: 'Register'
+		login: $t('auth.login'),
+		register: $t('auth.register')
 	};
 	const actionWord = actionWords[id];
 
@@ -39,15 +40,15 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>{actionWord} to meteostation</Card.Title>
-		<Card.Description>Enter your credentials.</Card.Description>
+		<Card.Title>{actionWord} {$t('auth.card_title')}</Card.Title>
+		<Card.Description>{$t('auth.card_description')}</Card.Description>
 	</Card.Header>
 	<form method="POST" use:enhance>
 		<Card.Content>
 			<Form.Field {form} name="username">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Username</Form.Label>
+						<Form.Label>{$t('auth.username')}</Form.Label>
 						<Input {...props} bind:value={$formData.username} />
 					{/snippet}
 				</Form.Control>
@@ -56,7 +57,7 @@
 			<Form.Field {form} name="password">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Password</Form.Label>
+						<Form.Label>{$t('auth.password')}</Form.Label>
 						<Input {...props} type="password" bind:value={$formData.password} />
 					{/snippet}
 				</Form.Control>
