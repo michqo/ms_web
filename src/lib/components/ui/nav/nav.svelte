@@ -16,13 +16,13 @@
   import I18n from './i18n.svelte';
   import type { SuperValidated } from 'sveltekit-superforms';
   import type { DeleteSchema } from '@/shared/schemas';
+  import { page } from '$app/state';
 
   interface Props {
-    user?: string,
     data: SuperValidated<DeleteSchema>
   }
-  
-  let { user, data }: Props = $props();
+
+  let { data }: Props = $props();
 
   const authLink = {
     name: 'Auth',
@@ -39,20 +39,19 @@
   class="sticky inset-0 z-50 flex w-full justify-center border-b border-border/40 bg-primary-foreground/60 p-4 backdrop-blur-md"
 >
   <div class="flex w-full max-w-xl items-center justify-between">
-    {#if user}
-      <Links />
-    {:else}
+    {#if page.url.pathname === '/auth'}
       <div class={buttonVariants({ variant: 'secondary' })}>
         {@render link(authLink)}
       </div>
     {/if}
+    <Links />
     <div class="flex items-center gap-x-2">
       <ThemeToggle />
       <Button variant="ghost" size="icon" href="https://github.com/michqo/ms_web" target="_blank">
         <Github />
       </Button>
       <I18n />
-      <Actions {user} {data} />
+      <Actions {data} />
     </div>
   </div>
 </div>

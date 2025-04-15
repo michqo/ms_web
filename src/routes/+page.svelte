@@ -70,10 +70,12 @@
 		{@const stations = $stationsQuery.data.results}
 		<div class="mt-24 flex w-full max-w-md items-center justify-between">
 			<h1 class="text-3xl font-medium">{$t('home.title')}</h1>
-			<Button onclick={() => openDialog()} variant="outline" size="sm">
-				<Plus class="mr-2 h-4 w-4" />
-				{$t('home.dialog.createStation.trigger')}
-			</Button>
+			{#if globalState.user}
+				<Button onclick={() => openDialog()} variant="outline" size="sm">
+					<Plus class="mr-2 h-4 w-4" />
+					{$t('home.dialog.createStation.trigger')}
+				</Button>
+			{/if}
 		</div>
 
 		<ul class="mt-10 flex w-full max-w-md flex-col items-center gap-y-4">
@@ -86,33 +88,35 @@
 						? 'border-primary bg-muted/30'
 						: 'border-border'} px-8 py-4 shadow-lg hover:border-primary"
 				>
-					<div
-						class="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
-					>
-						<Button
-							variant={globalState.stationId == station.id ? 'default' : 'ghost'}
-							size="icon"
-							onclick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								setSelectedStation(station.id);
-							}}
-							title={$t('home.setDefault')}
+					{#if globalState.user}
+						<div
+							class="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
 						>
-							<CheckCircle2 class="h-4 w-4" />
-						</Button>
-						<Button
-							variant="ghost"
-							size="icon"
-							onclick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								openDialog(station);
-							}}
-						>
-							<Edit class="h-4 w-4" />
-						</Button>
-					</div>
+							<Button
+								variant={globalState.stationId == station.id ? 'default' : 'ghost'}
+								size="icon"
+								onclick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									setSelectedStation(station.id);
+								}}
+								title={$t('home.setDefault')}
+							>
+								<CheckCircle2 class="h-4 w-4" />
+							</Button>
+								<Button
+									variant="ghost"
+									size="icon"
+									onclick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										openDialog(station);
+									}}
+								>
+									<Edit class="h-4 w-4" />
+								</Button>
+							</div>
+						{/if}
 					<a href="/measurements?station={station.id}" class="flex flex-col">
 						<div class="flex items-center gap-2">
 							<span>{station.name}</span>

@@ -35,11 +35,13 @@ const useLocalStorage = (key: string, initialValue: any) => {
 interface GlobalState {
 	stationId: number;
 	station?: Station;
+	user?: string;
 }
 
 export const globalState: GlobalState = $state({
 	stationId: NaN,
-	station: undefined
+	station: undefined,
+	user: undefined
 });
 
 export default useLocalStorage;

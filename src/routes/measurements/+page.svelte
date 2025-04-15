@@ -103,20 +103,22 @@
 <div class="flex w-full flex-col items-center gap-y-6 py-6">
 	<div class="flex w-full max-w-xl items-center justify-between">
 		<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
-				<Ellipsis />
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
-				<DropdownMenu.Item
-					onclick={() => (deleteDialogOpen = true)}
-					class="flex items-center gap-x-2"
-				>
-					<Trash2 />
-					{$t('measurements.dialog.delete.title')}
-				</DropdownMenu.Item>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+		{#if globalState.user}
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
+					<Ellipsis />
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.Item
+						onclick={() => (deleteDialogOpen = true)}
+						class="flex items-center gap-x-2"
+					>
+						<Trash2 />
+						{$t('measurements.dialog.delete.title')}
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		{/if}
 	</div>
 
 	<main class="flex w-full flex-col items-center gap-6">

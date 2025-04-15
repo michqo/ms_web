@@ -24,8 +24,8 @@
 <Toaster />
 
 <QueryClientProvider client={data.queryClient}>
-	<StateContext isUser={data.user != undefined}>
-		<Nav user={data?.user} data={data.form} />
+	<StateContext user={data.user}>
+		<Nav data={data.form} />
 		{#key page.url}
 			<Loading />
 			<div class="h-full w-full" in:fade>

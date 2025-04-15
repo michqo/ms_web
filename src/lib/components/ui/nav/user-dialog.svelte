@@ -8,14 +8,13 @@
 	import * as Form from '../form';
 	import { Input } from '../input';
 	import { t } from '@/translations';
-
-	const { user }: { user?: string } = $props();
+	import { globalState } from '@/shared/runes.svelte';
 
 	let open = $state(false);
 
 	const form = superForm(
 		{
-			new_username: user || '',
+			new_username: globalState.user || '',
 			current_password: ''
 		},
 		{

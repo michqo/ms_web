@@ -6,22 +6,22 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Profile from './profile.svelte';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
-		user?: string;
 		data: SuperValidated<DeleteSchema>;
 	}
 
-	let { user, data }: Props = $props();
+	let { data }: Props = $props();
 
 	let dialogOpen = $state(false);
 </script>
 
-{#if user}
+{#if globalState.user}
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class={buttonVariants({ variant: 'outline' })}>
 			<CircleUser class="mr-2 h-4 w-4" />
-			{user}
+			{globalState.user}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
 			<DropdownMenu.Label>{$t('menu.actions.account.label')}</DropdownMenu.Label>
@@ -38,5 +38,10 @@
 			</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
-	<Profile bind:open={dialogOpen} {user} {data} />
+	<Profile bind:open={dialogOpen} {data} />
+{:else}
+	<a href="/auth" class={buttonVariants({ variant: 'outline' })}>
+		<CircleUser class="mr-2 h-4 w-4" />
+		{$t('menu.actions.account.login')}
+	</a>
 {/if}

@@ -7,14 +7,14 @@
 	import type { DeleteSchema } from '@/shared/schemas';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
   interface Props {
-		user?: string,
 		data: SuperValidated<DeleteSchema>,
 		open: boolean
 	}
   
-  let { user, data, open = $bindable() }: Props = $props();
+  let { data, open = $bindable() }: Props = $props();
 </script>
 
 <Dialog.Root bind:open>
@@ -27,9 +27,9 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
           <span class="text-sm">{$t('menu.actions.account.dialog.username')}</span>
-          <span class="text-sm text-muted-foreground">{user}</span>
+          <span class="text-sm text-muted-foreground">{globalState.user}</span>
         </div>
-        <UserDialog {user} />
+        <UserDialog />
       </div>
       <div class="flex justify-between items-center">
         <span class="text-sm">{$t('menu.actions.account.dialog.password')}</span>

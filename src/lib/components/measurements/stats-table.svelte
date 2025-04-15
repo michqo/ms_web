@@ -28,7 +28,7 @@
 </script>
 
 <div class="overflow-hidden rounded-lg border shadow-xs">
-	<Table.Root class="w-screen max-w-xl caption-top">
+	<Table.Root class="caption-top">
 		<Table.Caption class="my-4">
 			<div class="flex items-center justify-center gap-2">
 				<Calendar class="size-4" />

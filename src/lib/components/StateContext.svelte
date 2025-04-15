@@ -8,15 +8,15 @@
 
 	interface Props {
 		children: Snippet;
-		isUser: boolean
+		user?: string
 	}
 
-	let { children, isUser }: Props = $props();
+	let { children, user }: Props = $props();
 
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
 		queryFn: () => api.getStations(),
-		enabled: isUser
+		enabled: !!user
 	});
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
@@ -28,6 +28,10 @@
 		globalState.station = $stationsQuery.data?.results.find(
 			(station) => station.id === globalState.stationId
 		);
+	});
+
+	$effect(() => {
+		globalState.user = user;
 	});
 
 	$effect(() => {
