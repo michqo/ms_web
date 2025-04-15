@@ -21,7 +21,7 @@
 	const { chartData, lineColor, suffix = '' }: Props = $props();
 </script>
 
-<div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-sm">
+<div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-xs">
 	<Chart
 		data={chartData}
 		x="date"

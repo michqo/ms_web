@@ -33,7 +33,7 @@
 	);
 </script>
 
-<div class="mb-5 overflow-hidden rounded-lg border shadow-sm">
+<div class="mb-5 overflow-hidden rounded-lg border shadow-xs">
 	<Table.Root class="caption-top">
 		<Table.Caption class="my-4">
 			<div class="flex items-center justify-center gap-2">

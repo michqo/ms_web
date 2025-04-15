@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="w-full overflow-hidden rounded-lg border shadow-sm my-10">
+<div class="w-full overflow-hidden rounded-lg border shadow-xs my-10">
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
