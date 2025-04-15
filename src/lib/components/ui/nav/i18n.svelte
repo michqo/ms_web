@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import { buttonVariants } from '@/components/ui/button/index.js';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { locale, t } from '@/translations';
+	import dayjs from 'dayjs';
 	import Cookies from 'js-cookie';
 
-  function setLocale(lang: string) {
+  async function setLocale(lang: string) {
     locale.set(lang);
+		dayjs.locale(lang);
     Cookies.set('lang', lang, { path: '/' });
+		await invalidateAll();
   }
 </script>
 

@@ -3,15 +3,17 @@
 	import { api } from '@/shared';
 	import useLocalStorage, { globalState } from '@/shared/runes.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
+	import dayjs from 'dayjs';
 	import type { Snippet } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
 	interface Props {
 		children: Snippet;
+		locale: string;
 		user?: string
 	}
 
-	let { children, user }: Props = $props();
+	let { children, locale, user }: Props = $props();
 
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
@@ -32,6 +34,7 @@
 
 	$effect(() => {
 		globalState.user = user;
+		dayjs.locale(locale);
 	});
 
 	$effect(() => {

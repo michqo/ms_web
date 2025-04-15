@@ -10,6 +10,7 @@
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import StateContext from '@/components/StateContext.svelte';
+	import 'dayjs/locale/sk';
 
 	interface Props {
 		data: LayoutData;
@@ -24,7 +25,7 @@
 <Toaster />
 
 <QueryClientProvider client={data.queryClient}>
-	<StateContext user={data.user}>
+	<StateContext locale={data.locale} user={data.user}>
 		<Nav data={data.form} />
 		{#key page.url}
 			<Loading />
