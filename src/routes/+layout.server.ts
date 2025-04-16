@@ -1,4 +1,4 @@
-import { deleteSchema } from '@/shared/schemas';
+import { deleteSchema, loginSchema } from '@/shared/schemas';
 import { defaultLocale, loadTranslations, locales, translations } from '@/translations';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -29,7 +29,8 @@ export const load = (async ({ url, locals, cookies, request }) => {
 
 	return {
 		...locals,
-		form: await superValidate(zod(deleteSchema)),
+		deleteForm: await superValidate(zod(deleteSchema)),
+		authForm: await superValidate(zod(loginSchema)),
 		i18n: { locale, route: pathname },
 		translations: translations.get()
 	};

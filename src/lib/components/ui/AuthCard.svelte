@@ -43,7 +43,7 @@
 		<Card.Title>{actionWord} {$t('auth.card_title')}</Card.Title>
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
 	</Card.Header>
-	<form method="POST" use:enhance>
+	<form method="POST" action="?/auth" use:enhance>
 		<Card.Content>
 			<Form.Field {form} name="username">
 				<Form.Control>

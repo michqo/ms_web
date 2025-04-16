@@ -8,42 +8,27 @@
 </script>
 
 <script lang="ts">
-  import { Button, buttonVariants } from '@/components/ui/button';
-  import { Github, User } from 'lucide-svelte';
-  import ThemeToggle from './themetoggle.svelte';
-  import Actions from './actions.svelte';
-  import Links from './links.svelte';
-  import I18n from './i18n.svelte';
+  import { Button } from '@/components/ui/button';
+  import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
+  import { Github } from 'lucide-svelte';
   import type { SuperValidated } from 'sveltekit-superforms';
-  import type { DeleteSchema } from '@/shared/schemas';
-  import { page } from '$app/state';
+  import Actions from './actions.svelte';
+  import I18n from './i18n.svelte';
+  import Links from './links.svelte';
+  import ThemeToggle from './themetoggle.svelte';
 
   interface Props {
-    data: SuperValidated<DeleteSchema>
+    authForm: SuperValidated<LoginSchema>
+    deleteForm: SuperValidated<DeleteSchema>
   }
 
-  let { data }: Props = $props();
-
-  const authLink = {
-    name: 'Auth',
-    icon: User,
-  };
+  let { authForm, deleteForm }: Props = $props();
 </script>
-
-{#snippet link(data: Route)}
-  <data.icon />
-  <span>{data.name}</span>
-{/snippet}
 
 <div
   class="sticky inset-0 z-50 flex w-full justify-center border-b border-border/40 bg-primary-foreground/60 p-4 backdrop-blur-md"
 >
   <div class="flex w-full max-w-xl items-center justify-between">
-    {#if page.url.pathname === '/auth'}
-      <div class={buttonVariants({ variant: 'secondary' })}>
-        {@render link(authLink)}
-      </div>
-    {/if}
     <Links />
     <div class="flex items-center gap-x-2">
       <ThemeToggle />
@@ -51,7 +36,7 @@
         <Github />
       </Button>
       <I18n />
-      <Actions {data} />
+      <Actions {authForm} {deleteForm} />
     </div>
   </div>
 </div>

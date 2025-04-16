@@ -4,11 +4,6 @@ import { redirect, type Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
   const accessToken = event.cookies.get('access_token');
   const refreshToken = event.cookies.get('refresh_token');
-  const isAuth = event.url.pathname.startsWith('/auth');
-
-  if (accessToken && isAuth) {
-    redirect(308, '/');
-  }
 
   if (accessToken) {
     try {

@@ -26,7 +26,7 @@
 
 <QueryClientProvider client={data.queryClient}>
 	<StateContext locale={data.locale} user={data.user}>
-		<Nav data={data.form} />
+		<Nav authForm={data.authForm} deleteForm={data.deleteForm} />
 		{#key page.url}
 			<Loading />
 			<div class="h-full w-full" in:fade>
