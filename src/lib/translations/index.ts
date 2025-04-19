@@ -21,7 +21,6 @@ export const config: Config = {
 		{
 			locale: 'en',
 			key: 'auth',
-			routes: ['/auth'],
 			loader: async () => (await import('./en/auth.json')).default
 		},
 		{
@@ -50,7 +49,6 @@ export const config: Config = {
 		{
 			locale: 'sk',
 			key: 'auth',
-			routes: ['/auth'],
 			loader: async () => (await import('./sk/auth.json')).default
 		},
 		{
