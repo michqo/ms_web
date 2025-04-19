@@ -1,45 +1,45 @@
 {
-    "title": "Merania",
-    "dialog": {
-        "delete": {
-            "title": "Zmazať merania",
-            "description": "Týmto krokom trvalo odstránite merania, ktoré spĺňajú nižšie uvedené kritériá. Túto akciu nie je možné vrátiť späť.",
-            "form_label_newer": "Novšie ako",
-            "form_label_older": "Staršie ako",
-            "cancel": "Zrušiť",
-            "submit_button": "Zmazať merania",
-            "submit_button_loading": "Maže sa...",
-            "success": "Merania boli úspešne zmazané",
-            "error": "Zmazanie meraní sa nepodarilo",
-            "optional": "Nepovinné"
-        },
-        "day": {
-            "previous": "Predchádzajúci deň",
-            "next": "Nasledujúci deň",
-            "noData": "Pre tento deň nie sú k dispozícii žiadne merania",
-            "tabs_chart": "Graf",
-            "tabs_table": "Tabuľka",
-            "tabs_chart_temperature": "Teplota",
-            "tabs_chart_humidity": "Vlhkosť"
-        }
-    },
-    "chart": {
-        "temperature": "Týždenná teplota",
-        "humidity": "Týždenná vlhkosť",
-        "label": "Hodnota"
-    },
-    "table": {
-        "caption": "Denné štatistiky",
-        "date": "Deň",
-        "time": "Čas",
-        "temperature": "Teplota",
-        "humidity": "Vlhkosť",
-        "today": "Dnes"
-    },
-    "current_day": {
-        "caption": "Štatistiky dnes",
-        "noData": "Pre dnešok nie sú k dispozícii žiadne údaje",
-        "label": "Denné priemery",
-        "latest": "Najnovšie"
-    }
+	"title": "Merania",
+	"dialog": {
+		"delete": {
+			"title": "Zmazať merania",
+			"description": "Týmto krokom trvalo odstránite merania, ktoré spĺňajú nižšie uvedené kritériá. Túto akciu nie je možné vrátiť späť.",
+			"form_label_newer": "Novšie ako",
+			"form_label_older": "Staršie ako",
+			"cancel": "Zrušiť",
+			"submit_button": "Zmazať merania",
+			"submit_button_loading": "Maže sa...",
+			"success": "Merania boli úspešne zmazané",
+			"error": "Zmazanie meraní sa nepodarilo",
+			"optional": "Nepovinné"
+		},
+		"day": {
+			"previous": "Predchádzajúci deň",
+			"next": "Nasledujúci deň",
+			"noData": "Pre tento deň nie sú k dispozícii žiadne merania",
+			"tabs_chart": "Graf",
+			"tabs_table": "Tabuľka",
+			"tabs_chart_temperature": "Teplota",
+			"tabs_chart_humidity": "Vlhkosť"
+		}
+	},
+	"chart": {
+		"temperature": "Týždenná teplota",
+		"humidity": "Týždenná vlhkosť",
+		"label": "Hodnota"
+	},
+	"table": {
+		"caption": "Denné štatistiky",
+		"date": "Deň",
+		"time": "Čas",
+		"temperature": "Teplota",
+		"humidity": "Vlhkosť",
+		"today": "Dnes"
+	},
+	"current_day": {
+		"caption": "Štatistiky dnes",
+		"noData": "Pre dnešok nie sú k dispozícii žiadne údaje",
+		"label": "Denné priemery",
+		"latest": "Najnovšie"
+	}
 }

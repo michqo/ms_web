@@ -34,7 +34,7 @@
 		>
 			<Sun class="mr-2 h-4 w-4" />
 			{$t('menu.theme.light')}
-				{@render active($mode, 'light')}
+			{@render active($mode, 'light')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => setMode('dark')}

@@ -45,12 +45,14 @@
 
 		// Add tile layer
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: preview ? '' : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			attribution: preview
+				? ''
+				: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
 		// Add marker at initial position
-		marker = L.marker([latitude, longitude], { 
-			draggable: !preview 
+		marker = L.marker([latitude, longitude], {
+			draggable: !preview
 		}).addTo(map);
 
 		// Only add event listeners if not in preview mode
@@ -138,7 +140,7 @@
 
 	{#if !preview}
 		<div class="mt-2 flex items-center justify-between">
-			<div class="text-xs text-muted-foreground">
+			<div class="text-muted-foreground text-xs">
 				{$t('home.map.currentCoords')}: {latitude.toFixed(6)}, {longitude.toFixed(6)}
 			</div>
 
@@ -151,7 +153,7 @@
 			>
 				{#if locating}
 					<svg
-						class="h-3 w-3 animate-spin text-muted-foreground"
+						class="text-muted-foreground h-3 w-3 animate-spin"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
@@ -167,7 +169,7 @@
 				{:else}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						class="h-3 w-3 text-muted-foreground"
+						class="text-muted-foreground h-3 w-3"
 						viewBox="0 0 20 20"
 						fill="currentColor"
 					>
@@ -178,7 +180,9 @@
 						/>
 					</svg>
 				{/if}
-				<span class="text-xs">{locating ? $t('home.map.locating') : $t('home.map.retrieve_location')}</span>
+				<span class="text-xs"
+					>{locating ? $t('home.map.locating') : $t('home.map.retrieve_location')}</span
+				>
 			</Button>
 		</div>
 

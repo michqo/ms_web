@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="w-full overflow-hidden rounded-lg border shadow-xs my-10">
+<div class="my-10 w-full overflow-hidden rounded-lg border shadow-xs">
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
@@ -45,7 +45,7 @@
 		<Table.Body>
 			{#each forecast as item, i}
 				<Table.Row
-					class="transition-colors hover:bg-muted/50 {i == 0 ? 'bg-muted/20' : ''} cursor-pointer"
+					class="hover:bg-muted/50 transition-colors {i == 0 ? 'bg-muted/20' : ''} cursor-pointer"
 					onclick={() => handleRowClick(item)}
 				>
 					<Table.Cell class="font-medium">{displayTime(item)}</Table.Cell>
@@ -63,8 +63,9 @@
 		</Table.Body>
 		<Table.Footer>
 			<Table.Row>
-				<Table.Cell colspan={4} class="py-2 text-center text-xs text-muted-foreground">
-					{$t('forecast.table.updated')} {updatedDate.format('MMM D, HH:mm')}
+				<Table.Cell colspan={4} class="text-muted-foreground py-2 text-center text-xs">
+					{$t('forecast.table.updated')}
+					{updatedDate.format('MMM D, HH:mm')}
 				</Table.Cell>
 			</Table.Row>
 		</Table.Footer>

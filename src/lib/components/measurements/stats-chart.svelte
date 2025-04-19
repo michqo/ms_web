@@ -24,9 +24,9 @@
 	const { chartData, lineColor, suffix = '', title = '' }: Props = $props();
 </script>
 
-<div class="relative h-[300px] w-full rounded-lg border bg-background p-5 shadow-xs">
+<div class="bg-background relative h-[300px] w-full rounded-lg border p-5 shadow-xs">
 	{#if title}
-		<div class="absolute left-3 top-2 text-sm font-medium text-muted-foreground">
+		<div class="text-muted-foreground absolute top-2 left-3 text-sm font-medium">
 			{title}
 		</div>
 	{/if}

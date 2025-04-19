@@ -29,7 +29,9 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>{$t('menu.actions.account.dialog.password_action')}</Dialog.Trigger>
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+		>{$t('menu.actions.account.dialog.password_action')}</Dialog.Trigger
+	>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>{$t('menu.actions.account.dialog.password_action')}</Dialog.Title>

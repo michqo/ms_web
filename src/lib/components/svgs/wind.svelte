@@ -1,12 +1,12 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-  {width}
-  {height}
+	{width}
+	{height}
 	viewBox="0 0 64 64"
 	><defs
 		><linearGradient
@@ -20,7 +20,14 @@
 				offset="1"
 				stop-color="#bec1c6"
 			/></linearGradient
-		><linearGradient id="wind_b" x1="19.96" x2="31.37" y1="29.03" y2="48.8" xlink:href="#wind_a" /></defs
+		><linearGradient
+			id="wind_b"
+			x1="19.96"
+			x2="31.37"
+			y1="29.03"
+			y2="48.8"
+			xlink:href="#wind_a"
+		/></defs
 	><path
 		fill="none"
 		stroke="url(#wind_a)"

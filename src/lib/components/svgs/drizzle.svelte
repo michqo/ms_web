@@ -1,20 +1,32 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 64 64"
-  {width}
-  {height}
+	{width}
+	{height}
 	><defs
-		><linearGradient id="drizzle-b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="drizzle-b"
+			x1="22.56"
+			x2="39.2"
+			y1="21.96"
+			y2="50.8"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
 			/></linearGradient
-		><linearGradient id="drizzle-a" x1="23.31" x2="24.69" y1="44.3" y2="46.7" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="drizzle-a"
+			x1="23.31"
+			x2="24.69"
+			y1="44.3"
+			y2="46.7"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#4286ee" /><stop offset=".45" stop-color="#4286ee" /><stop
 				offset="1"
 				stop-color="#0950bc"
@@ -26,7 +38,14 @@
 			y1="44.3"
 			y2="46.7"
 			xlink:href="#drizzle-a"
-		/><linearGradient id="drizzle-d" x1="37.31" x2="38.69" y1="44.3" y2="46.7" xlink:href="#drizzle-a" /></defs
+		/><linearGradient
+			id="drizzle-d"
+			x1="37.31"
+			x2="38.69"
+			y1="44.3"
+			y2="46.7"
+			xlink:href="#drizzle-a"
+		/></defs
 	><path
 		fill="url(#drizzle-b)"
 		stroke="#e6effc"

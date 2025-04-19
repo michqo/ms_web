@@ -6,12 +6,12 @@
 	import dayjs from 'dayjs';
 	import Cookies from 'js-cookie';
 
-  async function setLocale(lang: string) {
-    locale.set(lang);
+	async function setLocale(lang: string) {
+		locale.set(lang);
 		dayjs.locale(lang);
-    Cookies.set('lang', lang, { path: '/' });
+		Cookies.set('lang', lang, { path: '/' });
 		await invalidateAll();
-  }
+	}
 </script>
 
 <DropdownMenu.Root>

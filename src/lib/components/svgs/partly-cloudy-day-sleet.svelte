@@ -1,20 +1,32 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 64 64"
-  {width}
-  {height}
+	{width}
+	{height}
 	><defs
-		><linearGradient id="partly-cloudy-day-sleet-c" x1="16.5" x2="21.5" y1="19.67" y2="28.33" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="partly-cloudy-day-sleet-c"
+			x1="16.5"
+			x2="21.5"
+			y1="19.67"
+			y2="28.33"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#fbbf24" /><stop offset=".45" stop-color="#fbbf24" /><stop
 				offset="1"
 				stop-color="#f59e0b"
 			/></linearGradient
-		><linearGradient id="partly-cloudy-day-sleet-d" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="partly-cloudy-day-sleet-d"
+			x1="22.56"
+			x2="39.2"
+			y1="21.96"
+			y2="50.8"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
@@ -69,7 +81,14 @@
 			y1="44.3"
 			y2="46.7"
 			xlink:href="#partly-cloudy-day-sleet-b"
-		/><linearGradient id="partly-cloudy-day-sleet-i" x1="37.31" x2="38.69" y1="44.3" y2="46.7" xlink:href="#partly-cloudy-day-sleet-b" /></defs
+		/><linearGradient
+			id="partly-cloudy-day-sleet-i"
+			x1="37.31"
+			x2="38.69"
+			y1="44.3"
+			y2="46.7"
+			xlink:href="#partly-cloudy-day-sleet-b"
+		/></defs
 	><circle
 		cx="19"
 		cy="24"
@@ -99,7 +118,14 @@
 		stroke-width=".5"
 		d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"
 	/><g
-		><circle cx="24" cy="45" r="1.25" fill="none" stroke="url(#partly-cloudy-day-sleet-a)" stroke-miterlimit="10" /><path
+		><circle
+			cx="24"
+			cy="45"
+			r="1.25"
+			fill="none"
+			stroke="url(#partly-cloudy-day-sleet-a)"
+			stroke-miterlimit="10"
+		/><path
 			fill="none"
 			stroke="url(#partly-cloudy-day-sleet-e)"
 			stroke-linecap="round"
@@ -128,7 +154,14 @@
 			values="0;1;1;1;0"
 		/></g
 	><g
-		><circle cx="38" cy="45" r="1.25" fill="none" stroke="url(#partly-cloudy-day-sleet-f)" stroke-miterlimit="10" /><path
+		><circle
+			cx="38"
+			cy="45"
+			r="1.25"
+			fill="none"
+			stroke="url(#partly-cloudy-day-sleet-f)"
+			stroke-miterlimit="10"
+		/><path
 			fill="none"
 			stroke="url(#partly-cloudy-day-sleet-g)"
 			stroke-linecap="round"

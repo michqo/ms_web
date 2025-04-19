@@ -79,7 +79,7 @@
 							<span class="text-blue-500">
 								{measurement.humidity}%
 							</span>
-							<div class="h-2 w-10 overflow-hidden rounded-full bg-muted">
+							<div class="bg-muted h-2 w-10 overflow-hidden rounded-full">
 								<div
 									class="h-full bg-blue-500"
 									style={`width: ${measurement.humidity}%; opacity: 0.7`}

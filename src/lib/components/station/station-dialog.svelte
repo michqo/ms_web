@@ -73,7 +73,11 @@
 <Dialog.Root bind:open>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
-			<Dialog.Title>{isNewStation ? $t('home.dialog.createStation.title') : $t('home.dialog.manageStation.title')}</Dialog.Title>
+			<Dialog.Title
+				>{isNewStation
+					? $t('home.dialog.createStation.title')
+					: $t('home.dialog.manageStation.title')}</Dialog.Title
+			>
 			<Dialog.Description>
 				{isNewStation
 					? $t('home.dialog.createStation.description')
@@ -110,7 +114,11 @@
 					<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
 						{$t('home.dialog.manageStation.cancel')}
 					</Dialog.Close>
-					<Form.Button type="submit">{isNewStation ? $t('home.dialog.createStation.create') : $t('home.dialog.manageStation.update')}</Form.Button>
+					<Form.Button type="submit"
+						>{isNewStation
+							? $t('home.dialog.createStation.create')
+							: $t('home.dialog.manageStation.update')}</Form.Button
+					>
 				</div>
 			</Dialog.Footer>
 		</form>

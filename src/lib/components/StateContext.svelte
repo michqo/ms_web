@@ -10,7 +10,7 @@
 	interface Props {
 		children: Snippet;
 		locale: string;
-		user?: string
+		user?: string;
 	}
 
 	let { children, locale, user }: Props = $props();

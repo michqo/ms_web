@@ -56,7 +56,7 @@
 			{#each weekStats as stat, index}
 				<Table.Row
 					class={cn(
-						'cursor-pointer hover:bg-muted/30',
+						'hover:bg-muted/30 cursor-pointer',
 						isCurrentDay(stat.date) && 'bg-primary/10 dark:bg-primary/20'
 					)}
 					onclick={() => onSelectDay(index)}
@@ -66,7 +66,7 @@
 							{stat.date.format('ddd, MMM D')}
 							{#if isCurrentDay(stat.date)}
 								<span
-									class="rounded bg-primary px-1.5 py-0.5 text-xs font-medium text-primary-foreground"
+									class="bg-primary text-primary-foreground rounded px-1.5 py-0.5 text-xs font-medium"
 									>{$t('measurements.table.today')}</span
 								>
 							{/if}
@@ -82,7 +82,7 @@
 					<Table.Cell>
 						<div class="flex flex-col">
 							<span class="font-medium text-blue-500">{stat.humidity}%</span>
-							<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-muted">
+							<div class="bg-muted mt-1 h-2 w-full overflow-hidden rounded-full">
 								<div
 									class="h-full bg-blue-500"
 									style={`width: ${stat.humidity}%; opacity: 0.7`}

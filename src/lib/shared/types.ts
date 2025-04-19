@@ -1,4 +1,4 @@
-import type { Dayjs } from "dayjs";
+import type { Dayjs } from 'dayjs';
 
 interface LoginResponse {
 	refresh: string;
@@ -33,10 +33,10 @@ interface Measurement {
 }
 
 interface MeasurementStat {
-  temperature: number;
-  humidity: number;
-  station: number
-  date: Dayjs;
+	temperature: number;
+	humidity: number;
+	station: number;
+	date: Dayjs;
 }
 
 interface ChartData {
@@ -45,50 +45,61 @@ interface ChartData {
 }
 
 interface ForecastBase {
-  time: Dayjs;
-  temperature_mean: number;
-  temperature_instant: number;
-  temperature_max: number;
-  temperature_min: number;
-  relativehumidity_mean: number;
-  windspeed_mean: number;
-  sealevelpressure_mean: number;
-  precipitation: number;
-  precipitation_hours: number;
-  predictability: number;
-  pictocode: number;
-  winddirection: number;
-  uvindex: number;
+	time: Dayjs;
+	temperature_mean: number;
+	temperature_instant: number;
+	temperature_max: number;
+	temperature_min: number;
+	relativehumidity_mean: number;
+	windspeed_mean: number;
+	sealevelpressure_mean: number;
+	precipitation: number;
+	precipitation_hours: number;
+	predictability: number;
+	pictocode: number;
+	winddirection: number;
+	uvindex: number;
 }
 
 interface ForecastTransformed extends ForecastBase {
-  icon: any;
-};
+	icon: any;
+}
 
 type ForecastArray = {
-  [K in keyof ForecastBase]: ForecastBase[K][];
+	[K in keyof ForecastBase]: ForecastBase[K][];
 };
 
 interface Forecast extends ForecastArray {
-  id: number;
-  latitude: number;
-  longitude: number;
-  city_name: string;
-  modelrun_utc: string;
-  utc_timeoffset: number;
-  generation_time_ms: number;
-  created_at: string;
+	id: number;
+	latitude: number;
+	longitude: number;
+	city_name: string;
+	modelrun_utc: string;
+	utc_timeoffset: number;
+	generation_time_ms: number;
+	created_at: string;
 }
 
 interface Station {
-  id: number;
-  user: number
-  name: string;
-  city_name: string;
-  latitude: number;
-  longitude: number;
-  created_at: string;
+	id: number;
+	user: number;
+	name: string;
+	city_name: string;
+	latitude: number;
+	longitude: number;
+	created_at: string;
 }
 
-export type { ChartData, Forecast, ForecastBase, ForecastTransformed, ListResponse, LoginResponse, Measurement, MeasurementStat, PostUserErrorResponse, RefreshJWTResponse, Station };
-
+export type {
+	ChartData,
+	Forecast,
+	ForecastBase,
+	ForecastTransformed,
+	ListResponse,
+	LoginResponse,
+	Measurement,
+	MeasurementStat,
+	PostUserErrorResponse,
+	RefreshJWTResponse,
+	Station
+};

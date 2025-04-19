@@ -9,11 +9,11 @@
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
 
-  interface Props {
-		data: SuperValidated<DeleteSchema>
+	interface Props {
+		data: SuperValidated<DeleteSchema>;
 	}
 
-  const { data }: Props = $props();
+	const { data }: Props = $props();
 
 	let open = $state(false);
 
@@ -21,7 +21,7 @@
 		validators: zodClient(deleteSchema),
 		onUpdate: async ({ form: f }) => {
 			if (f.valid) {
-        toast.success('Successfully deleted account.')
+				toast.success('Successfully deleted account.');
 			} else {
 				toast.error('Failed to delete account.');
 			}
@@ -50,8 +50,13 @@
 				<Form.FieldErrors />
 			</Form.Field>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel type="button">{$t('menu.actions.account.dialog.form_cancel')}</AlertDialog.Cancel>
-				<AlertDialog.Action type="submit" formaction="?/delete" class={buttonVariants({ variant: 'destructive' })}
+				<AlertDialog.Cancel type="button"
+					>{$t('menu.actions.account.dialog.form_cancel')}</AlertDialog.Cancel
+				>
+				<AlertDialog.Action
+					type="submit"
+					formaction="?/delete"
+					class={buttonVariants({ variant: 'destructive' })}
 					>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>

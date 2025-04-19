@@ -86,11 +86,11 @@
 					class="group relative flex w-full flex-col rounded-lg border {defaultStationId.value ==
 					station.id.toString()
 						? 'border-primary bg-muted/30'
-						: 'border-border'} px-8 py-4 shadow-lg hover:border-primary"
+						: 'border-border'} hover:border-primary px-8 py-4 shadow-lg"
 				>
 					{#if globalState.user}
 						<div
-							class="absolute right-3 top-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
+							class="absolute top-3 right-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
 						>
 							<Button
 								variant={globalState.stationId == station.id ? 'default' : 'ghost'}
@@ -104,32 +104,32 @@
 							>
 								<CheckCircle2 class="h-4 w-4" />
 							</Button>
-								<Button
-									variant="ghost"
-									size="icon"
-									onclick={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										openDialog(station);
-									}}
-								>
-									<Edit class="h-4 w-4" />
-								</Button>
-							</div>
-						{/if}
+							<Button
+								variant="ghost"
+								size="icon"
+								onclick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									openDialog(station);
+								}}
+							>
+								<Edit class="h-4 w-4" />
+							</Button>
+						</div>
+					{/if}
 					<a href="/measurements?station={station.id}" class="flex flex-col">
 						<div class="flex items-center gap-2">
 							<span>{station.name}</span>
 							{#if defaultStationId.value == station.id.toString()}
-								<span class="text-xs text-muted-foreground">({$t('home.default')})</span>
+								<span class="text-muted-foreground text-xs">({$t('home.default')})</span>
 							{/if}
 						</div>
 						<span class="text-muted-foreground">{station.city_name}</span>
 
 						{#if station.latitude && station.longitude}
 							<div class="mt-3 mb-2 h-[100px] w-full overflow-hidden rounded-md">
-								<Map 
-									latitude={station.latitude} 
+								<Map
+									latitude={station.latitude}
 									longitude={station.longitude}
 									zoom={13}
 									class="h-[100px]"
@@ -140,27 +140,27 @@
 
 						<div class="mt-3 grid grid-cols-2 gap-2 border-t pt-2">
 							<div class="flex items-center gap-2">
-								<Thermometer class="h-4 w-4 text-muted-foreground" />
+								<Thermometer class="text-muted-foreground h-4 w-4" />
 								{#if loading}
 									<Skeleton class="h-5 w-14" />
 								{:else if latest}
 									<span>{Math.round(latest.temperature!)}°C</span>
 								{:else}
-									<span class="text-sm text-muted-foreground">{$t('home.noData')}</span>
+									<span class="text-muted-foreground text-sm">{$t('home.noData')}</span>
 								{/if}
 							</div>
 							<div class="flex items-center gap-2">
-								<Droplets class="h-4 w-4 text-muted-foreground" />
+								<Droplets class="text-muted-foreground h-4 w-4" />
 								{#if loading}
 									<Skeleton class="h-5 w-14" />
 								{:else if latest}
 									<span>{latest.humidity}%</span>
 								{:else}
-									<span class="text-sm text-muted-foreground">{$t('home.noData')}</span>
+									<span class="text-muted-foreground text-sm">{$t('home.noData')}</span>
 								{/if}
 							</div>
 							{#if latest}
-								<div class="text-xs text-muted-foreground">
+								<div class="text-muted-foreground text-xs">
 									{$t('home.lastUpdated')}: {latest.timestamp.format('MMM D, HH:mm')}
 								</div>
 							{/if}

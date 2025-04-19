@@ -1,20 +1,32 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-  {width}
-  {height}
+	{width}
+	{height}
 	viewBox="0 0 64 64"
 	><defs
-		><linearGradient id="partly-cloudy-day-rain-b" x1="16.5" x2="21.5" y1="19.67" y2="28.33" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="partly-cloudy-day-rain-b"
+			x1="16.5"
+			x2="21.5"
+			y1="19.67"
+			y2="28.33"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#fbbf24" /><stop offset=".45" stop-color="#fbbf24" /><stop
 				offset="1"
 				stop-color="#f59e0b"
 			/></linearGradient
-		><linearGradient id="partly-cloudy-day-rain-c" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="partly-cloudy-day-rain-c"
+			x1="22.56"
+			x2="39.2"
+			y1="21.96"
+			y2="50.8"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
@@ -37,7 +49,14 @@
 			y1="42.95"
 			y2="48.05"
 			xlink:href="#partly-cloudy-day-rain-a"
-		/><linearGradient id="partly-cloudy-day-rain-e" x1="36.53" x2="39.47" y1="42.95" y2="48.05" xlink:href="#partly-cloudy-day-rain-a" /></defs
+		/><linearGradient
+			id="partly-cloudy-day-rain-e"
+			x1="36.53"
+			x2="39.47"
+			y1="42.95"
+			y2="48.05"
+			xlink:href="#partly-cloudy-day-rain-a"
+		/></defs
 	><circle
 		cx="19"
 		cy="24"

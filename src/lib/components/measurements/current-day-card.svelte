@@ -27,7 +27,7 @@
 </script>
 
 <Card.Root
-	class="w-full max-w-xl cursor-pointer transition-colors hover:bg-muted/10"
+	class="hover:bg-muted/10 w-full max-w-xl cursor-pointer transition-colors"
 	onclick={() => todayStat && handleLastDay()}
 >
 	<Card.Header class="pb-2">
@@ -36,7 +36,7 @@
 				<Calendar class="size-5" />
 				<span>{$t('measurements.current_day.caption')}</span>
 			</div>
-			<span class="text-sm font-normal text-muted-foreground">
+			<span class="text-muted-foreground text-sm font-normal">
 				{dayjs().format('dddd, MMMM D')}
 			</span>
 		</Card.Title>
@@ -54,9 +54,11 @@
 		{:else}
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
-					<h3 class="text-sm font-medium text-muted-foreground">{$t('measurements.current_day.label')}</h3>
+					<h3 class="text-muted-foreground text-sm font-medium">
+						{$t('measurements.current_day.label')}
+					</h3>
 					<div class="flex items-center gap-2">
-						<Thermometer class="size-4 text-primary" />
+						<Thermometer class="text-primary size-4" />
 						<span class={cn('text-lg font-semibold', getTemperatureColor(todayStat.temperature))}>
 							{todayStat.temperature}°C
 						</span>
@@ -71,12 +73,14 @@
 
 				{#if latestMeasurement}
 					<div class="space-y-2">
-						<h3 class="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+						<h3 class="text-muted-foreground flex items-center gap-1 text-sm font-medium">
 							<Clock class="size-3" />
-							{$t('measurements.current_day.latest')} ({latestMeasurement.timestamp.format('HH:mm')})
+							{$t('measurements.current_day.latest')} ({latestMeasurement.timestamp.format(
+								'HH:mm'
+							)})
 						</h3>
 						<div class="flex items-center gap-2">
-							<Thermometer class="size-4 text-primary" />
+							<Thermometer class="text-primary size-4" />
 							<span
 								class={cn(
 									'text-lg font-semibold',

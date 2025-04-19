@@ -9,12 +9,12 @@
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
 
-  interface Props {
-		data: SuperValidated<DeleteSchema>,
-		open: boolean
+	interface Props {
+		data: SuperValidated<DeleteSchema>;
+		open: boolean;
 	}
-  
-  let { data, open = $bindable() }: Props = $props();
+
+	let { data, open = $bindable() }: Props = $props();
 </script>
 
 <Dialog.Root bind:open>
@@ -23,22 +23,22 @@
 			<Dialog.Title>{$t('menu.actions.account.title')}</Dialog.Title>
 			<Dialog.Description>{$t('menu.actions.account.dialog.description')}</Dialog.Description>
 		</Dialog.Header>
-    <div class="flex flex-col gap-3">
-      <div class="flex justify-between items-center">
-        <div class="flex flex-col">
-          <span class="text-sm">{$t('menu.actions.account.dialog.username')}</span>
-          <span class="text-sm text-muted-foreground">{globalState.user}</span>
-        </div>
-        <UserDialog />
-      </div>
-      <div class="flex justify-between items-center">
-        <span class="text-sm">{$t('menu.actions.account.dialog.password')}</span>
-        <PasswordDialog />
-      </div>
-      <div class="flex justify-between items-center">
-        <span class="text-sm">{$t('menu.actions.account.dialog.delete')}</span>
-        <DeleteDialog {data} />
-      </div>
-    </div>
+		<div class="flex flex-col gap-3">
+			<div class="flex items-center justify-between">
+				<div class="flex flex-col">
+					<span class="text-sm">{$t('menu.actions.account.dialog.username')}</span>
+					<span class="text-muted-foreground text-sm">{globalState.user}</span>
+				</div>
+				<UserDialog />
+			</div>
+			<div class="flex items-center justify-between">
+				<span class="text-sm">{$t('menu.actions.account.dialog.password')}</span>
+				<PasswordDialog />
+			</div>
+			<div class="flex items-center justify-between">
+				<span class="text-sm">{$t('menu.actions.account.dialog.delete')}</span>
+				<DeleteDialog {data} />
+			</div>
+		</div>
 	</Dialog.Content>
 </Dialog.Root>

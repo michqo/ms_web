@@ -1,20 +1,32 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 64 64"
-  {width}
-  {height}
+	{width}
+	{height}
 	><defs
-		><linearGradient id="fog-b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="fog-b"
+			x1="22.56"
+			x2="39.2"
+			y1="21.96"
+			y2="50.8"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
 			/></linearGradient
-		><linearGradient id="fog-a" x1="27.5" x2="36.5" y1="50.21" y2="65.79" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="fog-a"
+			x1="27.5"
+			x2="36.5"
+			y1="50.21"
+			y2="65.79"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#d4d7dd" /><stop offset=".45" stop-color="#d4d7dd" /><stop
 				offset="1"
 				stop-color="#bec1c6"

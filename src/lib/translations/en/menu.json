@@ -1,52 +1,52 @@
 {
-    "routes": {
-        "home": "Home",
-        "measurements": "Measurements",
-        "forecast": "Forecast",
-        "unknown": "Unknown",
-        "action": "Menu",
-        "label": "Navigation"
-    },
-    "theme": {
-        "action": "Toggle theme",
-        "active": "Active",
-        "label": "Appearance",
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
-    },
-    "language": {
-        "label": "Language",
-        "en": "English",
-        "sk": "Slovak"
-    },
-    "actions": {
-        "account": {
-            "label": "Account",
-            "item": "Profile",
-            "login": "Login",
-            "logout": "Logout",
-            "register": "Register",
-            "title": "Edit profile",
-            "dialog": {
-                "description": "Update your profile information here",
-                "username": "Username",
-                "username_action": "Change username",
-                "password": "Password",
-                "password_action": "Change password",
-                "delete": "Account",
-                "delete_action": "Delete account",
-                "delete_confirm": "Are you sure you want to delete your account? This action cannot be undone.",
-                "delete_success": "Your account has been deleted successfully.",
-                "delete_error": "An error occurred while deleting your account. Please try again later.",
-                "form_new_username": "New Username",
-                "form_current_password": "Current Password",
-                "form_save_changes": "Save changes",
-                "form_new_password": "New Password",
-                "form_configm_password": "Confirm Password",
-                "form_confirm_new_password": "Confirm New Password",
-                "form_cancel": "Cancel"
-            }
-        }
-    }
+	"routes": {
+		"home": "Home",
+		"measurements": "Measurements",
+		"forecast": "Forecast",
+		"unknown": "Unknown",
+		"action": "Menu",
+		"label": "Navigation"
+	},
+	"theme": {
+		"action": "Toggle theme",
+		"active": "Active",
+		"label": "Appearance",
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System"
+	},
+	"language": {
+		"label": "Language",
+		"en": "English",
+		"sk": "Slovak"
+	},
+	"actions": {
+		"account": {
+			"label": "Account",
+			"item": "Profile",
+			"login": "Login",
+			"logout": "Logout",
+			"register": "Register",
+			"title": "Edit profile",
+			"dialog": {
+				"description": "Update your profile information here",
+				"username": "Username",
+				"username_action": "Change username",
+				"password": "Password",
+				"password_action": "Change password",
+				"delete": "Account",
+				"delete_action": "Delete account",
+				"delete_confirm": "Are you sure you want to delete your account? This action cannot be undone.",
+				"delete_success": "Your account has been deleted successfully.",
+				"delete_error": "An error occurred while deleting your account. Please try again later.",
+				"form_new_username": "New Username",
+				"form_current_password": "Current Password",
+				"form_save_changes": "Save changes",
+				"form_new_password": "New Password",
+				"form_configm_password": "Confirm Password",
+				"form_confirm_new_password": "Confirm New Password",
+				"form_cancel": "Cancel"
+			}
+		}
+	}
 }

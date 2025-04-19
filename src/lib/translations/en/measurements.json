@@ -1,45 +1,45 @@
 {
-    "title": "Measurements",
-    "dialog": {
-        "delete": {
-            "title": "Delete measurements",
-            "description": "This will permanently delete measurements that match the criteria below. This action cannot be undone.",
-            "form_label_newer": "Newer than",
-            "form_label_older": "Older than",
-            "cancel": "Cancel",
-            "submit_button": "Delete measurements",
-            "submit_button_loading": "Deleting...",
-            "success": "Measurements deleted successfully",
-            "error": "Failed to delete measurements",
-            "optional": "Optional"
-        },
-        "day": {
-            "previous": "Previous day",
-            "next": "Next day",
-            "noData": "No measurements available for this day",
-            "tabs_chart": "Chart",
-            "tabs_table": "Table",
-            "tabs_chart_temperature": "Temperature",
-            "tabs_chart_humidity": "Humidity"
-        }
-    },
-    "chart": {
-        "temperature": "Weekly Temperature",
-        "humidity": "Weekly Humidity",
-        "label": "Value"
-    },
-    "table": {
-        "caption": "Daily Statistics",
-        "date": "Day",
-        "time": "Time",
-        "temperature": "Temperature",
-        "humidity": "Humidity",
-        "today": "Today"
-    },
-    "current_day": {
-        "caption": "Today's Stats",
-        "noData": "No data available for today",
-        "label": "Daily Averages",
-        "latest": "Latest"
-    }
+	"title": "Measurements",
+	"dialog": {
+		"delete": {
+			"title": "Delete measurements",
+			"description": "This will permanently delete measurements that match the criteria below. This action cannot be undone.",
+			"form_label_newer": "Newer than",
+			"form_label_older": "Older than",
+			"cancel": "Cancel",
+			"submit_button": "Delete measurements",
+			"submit_button_loading": "Deleting...",
+			"success": "Measurements deleted successfully",
+			"error": "Failed to delete measurements",
+			"optional": "Optional"
+		},
+		"day": {
+			"previous": "Previous day",
+			"next": "Next day",
+			"noData": "No measurements available for this day",
+			"tabs_chart": "Chart",
+			"tabs_table": "Table",
+			"tabs_chart_temperature": "Temperature",
+			"tabs_chart_humidity": "Humidity"
+		}
+	},
+	"chart": {
+		"temperature": "Weekly Temperature",
+		"humidity": "Weekly Humidity",
+		"label": "Value"
+	},
+	"table": {
+		"caption": "Daily Statistics",
+		"date": "Day",
+		"time": "Time",
+		"temperature": "Temperature",
+		"humidity": "Humidity",
+		"today": "Today"
+	},
+	"current_day": {
+		"caption": "Today's Stats",
+		"noData": "No data available for today",
+		"label": "Daily Averages",
+		"latest": "Latest"
+	}
 }

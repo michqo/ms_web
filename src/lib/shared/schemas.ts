@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {type DateValue} from '@internationalized/date';
+import { type DateValue } from '@internationalized/date';
 
 const usernameSchema = z.object({
 	current_password: z.string().min(3).max(20),

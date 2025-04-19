@@ -13,7 +13,7 @@
 	import AuthCard from '../AuthCard.svelte';
 
 	interface Props {
-		authForm : SuperValidated<LoginSchema>;
+		authForm: SuperValidated<LoginSchema>;
 		deleteForm: SuperValidated<DeleteSchema>;
 	}
 

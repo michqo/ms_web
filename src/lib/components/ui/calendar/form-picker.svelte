@@ -32,7 +32,9 @@
 			<Form.Label>
 				{label}
 				{#if optional}
-					<span class="ml-1 text-sm text-muted-foreground">({$t('measurements.dialog.delete.optional')})</span>
+					<span class="text-muted-foreground ml-1 text-sm"
+						>({$t('measurements.dialog.delete.optional')})</span
+					>
 				{/if}
 			</Form.Label>
 			<Popover.Root>

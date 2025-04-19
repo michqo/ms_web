@@ -1,15 +1,21 @@
 <script lang="ts">
-  const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32 } = $props();
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 64 64"
-  {width}
-  {height}
+	{width}
+	{height}
 	><defs
-		><linearGradient id="lightning-bolt-b" x1="22.56" x2="39.2" y1="21.96" y2="50.8" gradientUnits="userSpaceOnUse"
+		><linearGradient
+			id="lightning-bolt-b"
+			x1="22.56"
+			x2="39.2"
+			y1="21.96"
+			y2="50.8"
+			gradientUnits="userSpaceOnUse"
 			><stop offset="0" stop-color="#f3f7fe" /><stop offset=".45" stop-color="#f3f7fe" /><stop
 				offset="1"
 				stop-color="#deeafb"
@@ -53,7 +59,14 @@
 			y1="43.45"
 			y2="59.04"
 			xlink:href="#lightning-bolt-a"
-		/><linearGradient id="lightning-bolt-g" x1="37.06" x2="46.06" y1="38.68" y2="54.27" xlink:href="#lightning-bolt-a" /></defs
+		/><linearGradient
+			id="lightning-bolt-g"
+			x1="37.06"
+			x2="46.06"
+			y1="38.68"
+			y2="54.27"
+			xlink:href="#lightning-bolt-a"
+		/></defs
 	><path
 		fill="url(#lightning-bolt-b)"
 		stroke="#e6effc"

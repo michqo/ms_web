@@ -26,10 +26,10 @@
 		onUpdate: async ({ form: f }) => {
 			if (f.valid) {
 				try {
-          const gtDate = f.data.created_at__gt?.toDate(getLocalTimeZone());
-          const ltDate = f.data.created_at__lt?.toDate(getLocalTimeZone());
-          const gt = gtDate && dayjs(gtDate).startOf('day').toISOString();
-          const lt = ltDate && dayjs(ltDate).endOf('day').toISOString();
+					const gtDate = f.data.created_at__gt?.toDate(getLocalTimeZone());
+					const ltDate = f.data.created_at__lt?.toDate(getLocalTimeZone());
+					const gt = gtDate && dayjs(gtDate).startOf('day').toISOString();
+					const lt = ltDate && dayjs(ltDate).endOf('day').toISOString();
 					await api.deleteMeasurements(stationId, gt, lt);
 					open = false;
 					toast.success($t('measurements.dialog.delete.success'));
@@ -37,7 +37,7 @@
 					toast.error($t('measurements.dialog.delete.error'));
 				}
 			} else {
-        toast.error($t('measurements.dialog.delete.error'));
+				toast.error($t('measurements.dialog.delete.error'));
 				console.log(f.errors);
 			}
 		}
@@ -61,17 +61,17 @@
 
 		<form method="POST" use:enhance class="space-y-4">
 			<FormPicker
-        form={form}
-        name="created_at__gt"
-        label={$t('measurements.dialog.delete.form_label_newer')}
-        optional
-      />
-      <FormPicker
-        form={form}
-        name="created_at__lt"
-        label={$t('measurements.dialog.delete.form_label_older')}
-        optional
-      />
+				{form}
+				name="created_at__gt"
+				label={$t('measurements.dialog.delete.form_label_newer')}
+				optional
+			/>
+			<FormPicker
+				{form}
+				name="created_at__lt"
+				label={$t('measurements.dialog.delete.form_label_older')}
+				optional
+			/>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel type="button" onclick={handleClose} disabled={$submitting}
 					>{$t('measurements.dialog.delete.cancel')}</AlertDialog.Cancel

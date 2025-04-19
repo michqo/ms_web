@@ -1,12 +1,7 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type CreateAxiosDefaults } from 'axios';
 import type { Dayjs } from 'dayjs';
-import type {
-	DeleteSchema,
-	LoginSchema,
-	PasswordSchema,
-	UsernameSchema
-} from './schemas';
+import type { DeleteSchema, LoginSchema, PasswordSchema, UsernameSchema } from './schemas';
 import type {
 	Forecast,
 	ListResponse,

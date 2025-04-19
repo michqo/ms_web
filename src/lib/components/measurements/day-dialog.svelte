@@ -149,13 +149,17 @@
 					<Tabs.Content value="chart" class="pt-4">
 						<Accordion.Root value={['temp']} type="multiple" class="w-full">
 							<Accordion.Item value="temp">
-								<Accordion.Trigger>{$t('measurements.dialog.day.tabs_chart_temperature')}</Accordion.Trigger>
+								<Accordion.Trigger
+									>{$t('measurements.dialog.day.tabs_chart_temperature')}</Accordion.Trigger
+								>
 								<Accordion.Content>
 									<Chart chartData={tempChartData!} lineColor="red" suffix="°C" />
 								</Accordion.Content>
 							</Accordion.Item>
 							<Accordion.Item value="hum">
-								<Accordion.Trigger>{$t('measurements.dialog.day.tabs_chart_humidity')}</Accordion.Trigger>
+								<Accordion.Trigger
+									>{$t('measurements.dialog.day.tabs_chart_humidity')}</Accordion.Trigger
+								>
 								<Accordion.Content>
 									<Chart chartData={humChartData!} lineColor="purple" suffix="%" />
 								</Accordion.Content>

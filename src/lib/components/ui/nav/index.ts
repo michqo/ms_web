@@ -1,3 +1,3 @@
-import Root from "./nav.svelte";
+import Root from './nav.svelte';
 
 export default Root;
