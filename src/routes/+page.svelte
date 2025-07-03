@@ -167,7 +167,7 @@
 <main class="flex w-screen flex-col items-center">
 	{#if defaultStation && otherStations}
 		<div
-			class="mt-24 flex w-full max-w-md items-center {globalState.user
+			class="mt-24 flex w-full max-w-4xl items-center {globalState.user
 				? 'justify-between'
 				: 'justify-center'}"
 		>
