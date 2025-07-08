@@ -2,7 +2,7 @@
 	import Moon from 'lucide-svelte/icons/moon';
 	import Sun from 'lucide-svelte/icons/sun';
 
-	import { resetMode, setMode, mode } from 'mode-watcher';
+	import { resetMode, setMode, userPrefersMode } from 'mode-watcher';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { buttonVariants } from '@/components/ui/button/index.js';
 	import { SunMoon } from 'lucide-svelte';
@@ -30,23 +30,27 @@
 		<DropdownMenu.Separator />
 		<DropdownMenu.Item
 			onclick={() => setMode('light')}
-			class={{ 'bg-secondary font-medium': $mode === 'light' }}
+			class={{ 'bg-secondary font-medium': $userPrefersMode === 'light' }}
 		>
 			<Sun class="mr-2 h-4 w-4" />
 			{$t('menu.theme.light')}
-			{@render active($mode, 'light')}
+			{@render active($userPrefersMode, 'light')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => setMode('dark')}
-			class={{ 'bg-secondary font-medium': $mode === 'dark' }}
+			class={{ 'bg-secondary font-medium': $userPrefersMode === 'dark' }}
 		>
 			<Moon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.dark')}
-			{@render active($mode, 'dark')}
+			{@render active($userPrefersMode, 'dark')}
 		</DropdownMenu.Item>
-		<DropdownMenu.Item onclick={() => resetMode()}>
+		<DropdownMenu.Item
+			onclick={() => resetMode()}
+			class={{ 'bg-secondary font-medium': $userPrefersMode === 'system' }}
+		>
 			<SunMoon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.system')}
+			{@render active($userPrefersMode, 'system')}
 		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
