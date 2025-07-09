@@ -5,16 +5,19 @@
 	import * as Card from './card';
 	import * as Form from './form';
 	import { Input } from './input';
+	import { Button } from './button';
+	import { Separator } from './separator';
 	import { t } from '@/translations';
 
 	interface Props {
 		id: 'login' | 'register';
 		data: SuperValidated<LoginSchema>;
+		value: string;
 		success: () => void;
 		failed: () => void;
 	}
 
-	let { id, data, success, failed }: Props = $props();
+	let { id, data, value = $bindable(), success, failed }: Props = $props();
 
 	const actionWords = {
 		login: $t('auth.login'),
@@ -44,7 +47,7 @@
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
 	</Card.Header>
 	<form method="POST" action="?/auth" use:enhance>
-		<Card.Content>
+		<Card.Content class="space-y-4">
 			<Form.Field {form} name="username">
 				<Form.Control>
 					{#snippet children({ props })}
@@ -64,8 +67,21 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		</Card.Content>
-		<Card.Footer>
-			<Form.Button>{actionWord}</Form.Button>
+		<Card.Footer class="flex flex-col items-center space-y-4">
+			<Form.Button class="w-full">{actionWord}</Form.Button>
+			<Separator />
+			<Button
+				variant="link"
+				onclick={() => {
+					if (id === 'login') {
+						value = 'register';
+					} else {
+						value = 'login';
+					}
+				}}
+			>
+				{id === 'login' ? $t('auth.switch_to_register') : $t('auth.switch_to_login')}
+			</Button>
 		</Card.Footer>
 	</form>
 </Card.Root>

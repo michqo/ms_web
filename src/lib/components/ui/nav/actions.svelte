@@ -20,6 +20,7 @@
 	let { authForm, deleteForm }: Props = $props();
 
 	let dialogOpen = $state(false);
+	let tabsValue = $state('');
 </script>
 
 {#if globalState.user}
@@ -56,7 +57,7 @@
 			{$t('menu.actions.account.login')}</Dialog.Trigger
 		>
 		<Dialog.Content class="sm:max-w-md">
-			<Tabs.Root class="mt-5">
+			<Tabs.Root bind:value={tabsValue} class="mt-5">
 				<Tabs.List class="grid w-full grid-cols-2">
 					<Tabs.Trigger value="register">{$t('auth.tab_register')}</Tabs.Trigger>
 					<Tabs.Trigger value="login">{$t('auth.tab_login')}</Tabs.Trigger>
@@ -67,6 +68,7 @@
 						failed={() => toast.error($t('auth.register_failed'))}
 						id="register"
 						data={authForm}
+						bind:value={tabsValue}
 					/>
 				</Tabs.Content>
 				<Tabs.Content value="login">
@@ -75,6 +77,7 @@
 						failed={() => toast.error($t('auth.login_failed'))}
 						id="login"
 						data={authForm}
+						bind:value={tabsValue}
 					/>
 				</Tabs.Content>
 			</Tabs.Root>
