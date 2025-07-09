@@ -25,13 +25,13 @@
 <Toaster />
 
 <QueryClientProvider client={data.queryClient}>
-	<StateContext locale={data.locale} user={data.user}>
-		<Nav authForm={data.authForm} deleteForm={data.deleteForm} />
-		{#key page.url}
+	{#key page.url}
+		<StateContext locale={data.locale} user={data.user}>
+			<Nav authForm={data.authForm} deleteForm={data.deleteForm} />
 			<Loading />
 			<div class="h-full w-full" in:fade>
 				{@render children()}
 			</div>
-		{/key}
-	</StateContext>
+		</StateContext>
+	{/key}
 </QueryClientProvider>

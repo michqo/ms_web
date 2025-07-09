@@ -15,11 +15,13 @@
 
 	let { children, locale, user }: Props = $props();
 
-	const stationsQuery = createQuery({
-		queryKey: ['stations'],
-		queryFn: () => api.getStations(),
-		enabled: !!user
-	});
+	const stationsQuery = $derived(
+		createQuery({
+			queryKey: ['stations'],
+			queryFn: () => api.getStations(),
+			enabled: !!user
+		})
+	);
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
 	const stationIdParam = $derived(page.params.station);
