@@ -37,5 +37,9 @@
 		"error": "Nie je možné získať polohu",
 		"notSupported": "Geolokácia nie je podporovaná týmto prehliadačom.",
 		"currentCoords": "Aktuálne súradnice"
-	}
+	},
+	"searchPlaceholder": "Hľadať stanicu",
+	"totalStations": "Celkový počet staníc",
+	"avgTemperature": "Priemerná teplota",
+	"noStationsFound": "Nenašli sa žiadne stanice"
 }

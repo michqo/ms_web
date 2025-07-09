@@ -1,5 +1,7 @@
 <script lang="ts">
 	import StationDialog from '@/components/station/station-dialog.svelte';
+	import { Input } from '@/components/ui/input';
+	import { Badge } from '@/components/ui/badge';
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Map } from '@/components/ui/map';
@@ -24,6 +26,7 @@
 
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
+	let search = $state('');
 
 	const defaultStation = $derived(
 		$stationsQuery.data?.results.find((station) => station.id.toString() === defaultStationId.value)
@@ -32,6 +35,24 @@
 		$stationsQuery.data?.results.filter(
 			(station) => station.id.toString() !== defaultStationId.value
 		)
+	);
+
+	const filteredStations = $derived(
+		otherStations?.filter((station) =>
+			`${station.name.toLowerCase()} ${station.city_name.toLowerCase()}`.includes(
+				search.toLowerCase()
+			)
+		) ?? []
+	);
+
+	const totalStations = $derived($stationsQuery.data?.results.length ?? 0);
+	const avgTemperature = $derived(
+		Object.values(latestMeasurements).length
+			? Object.values(latestMeasurements)
+					.filter(Boolean)
+					.map((m) => m!.temperature)
+					.reduce((a, b) => a + b, 0) / Object.values(latestMeasurements).filter(Boolean).length
+			: null
 	);
 
 	$effect(() => {
@@ -166,29 +187,49 @@
 
 <main class="flex w-screen flex-col items-center">
 	{#if defaultStation && otherStations}
-		<div
-			class="mt-24 flex w-full max-w-4xl items-center {globalState.user
-				? 'justify-between'
-				: 'justify-center'}"
-		>
-			<h1 class="text-3xl font-medium">{$t('home.title')}</h1>
-			{#if globalState.user}
-				<Button onclick={() => openDialog()} variant="outline" size="sm">
-					<Plus class="mr-2 h-4 w-4" />
-					{$t('home.dialog.createStation.trigger')}
-				</Button>
-			{/if}
+		<div class="mt-24 flex w-full max-w-4xl flex-col">
+			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+				<h1 class="text-3xl font-medium">{$t('home.title')}</h1>
+				<div class="flex w-full items-center gap-2 {globalState.user ? 'max-w-xs' : 'max-w-2xs'}">
+					<Input type="text" placeholder={$t('home.searchPlaceholder')} bind:value={search} />
+					{#if globalState.user}
+						<Button onclick={() => openDialog()} variant="outline" size="sm">
+							<Plus class="mr-2 h-4 w-4" />
+							{$t('home.dialog.createStation.trigger')}
+						</Button>
+					{/if}
+				</div>
+			</div>
+
+			<!-- Summary section -->
+			<div class="mt-4 flex flex-wrap gap-4">
+				<Badge>
+					{$t('home.totalStations')}: {totalStations}
+				</Badge>
+				{#if avgTemperature !== null}
+					<Badge>
+						{$t('home.avgTemperature')}: {Math.round(avgTemperature)}°C
+					</Badge>
+				{/if}
+			</div>
 		</div>
 
 		<div class="mt-10 w-full max-w-4xl">
 			{@render card(defaultStation!)}
 		</div>
 
-		<ul class="my-10 flex w-full max-w-4xl flex-wrap justify-center gap-4">
-			{#each otherStations as station}
-				{@render card(station)}
-			{/each}
-		</ul>
+		<!-- Catalogue view with sorted stations by temperature -->
+		<div class="my-10 flex w-full max-w-5xl flex-wrap items-start justify-center gap-6">
+			{#if filteredStations.length === 0}
+				<div class="text-muted-foreground w-full py-10 text-center text-lg">
+					{$t('home.noStationsFound')}
+				</div>
+			{:else}
+				{#each filteredStations as station}
+					{@render card(station)}
+				{/each}
+			{/if}
+		</div>
 	{/if}
 
 	{#key selectedStation}
