@@ -28,7 +28,7 @@
 <div
 	class="border-border/40 bg-primary-foreground/60 sticky inset-0 z-50 flex w-full justify-center border-b p-4 backdrop-blur-md"
 >
-	<div class="flex w-full max-w-xl items-center justify-between">
+	<div class="flex w-full max-w-4xl items-center justify-between">
 		<Links />
 		<div class="flex items-center gap-x-2">
 			<ThemeToggle />
