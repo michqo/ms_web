@@ -30,27 +30,27 @@
 		<DropdownMenu.Separator />
 		<DropdownMenu.Item
 			onclick={() => setMode('light')}
-			class={{ 'bg-secondary font-medium': $userPrefersMode === 'light' }}
+			class={{ 'bg-secondary font-medium': userPrefersMode.current === 'light' }}
 		>
 			<Sun class="mr-2 h-4 w-4" />
 			{$t('menu.theme.light')}
-			{@render active($userPrefersMode, 'light')}
+			{@render active(userPrefersMode.current, 'light')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => setMode('dark')}
-			class={{ 'bg-secondary font-medium': $userPrefersMode === 'dark' }}
+			class={{ 'bg-secondary font-medium': userPrefersMode.current === 'dark' }}
 		>
 			<Moon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.dark')}
-			{@render active($userPrefersMode, 'dark')}
+			{@render active(userPrefersMode.current, 'dark')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => resetMode()}
-			class={{ 'bg-secondary font-medium': $userPrefersMode === 'system' }}
+			class={{ 'bg-secondary font-medium': userPrefersMode.current === 'system' }}
 		>
 			<SunMoon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.system')}
-			{@render active($userPrefersMode, 'system')}
+			{@render active(userPrefersMode.current, 'system')}
 		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
