@@ -8,6 +8,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 export const actions = {
 	logout: async ({ cookies }) => {
+		console.log('Logging out');
 		cookies.delete('access_token', { path: '/' });
 		cookies.delete('refresh_token', { path: '/' });
 		redirect(308, '/');

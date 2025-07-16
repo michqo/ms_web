@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ForecastTransformed } from '@/shared/types';
+	import type { ForecastTransformed, Measurement } from '@/shared/types';
 	import Wind from '@/components/svgs/wind.svelte';
 	import Thermometer from '@/components/svgs/thermometer.svelte';
 	import { Droplets, Umbrella, Calendar, Gauge, CloudFog } from 'lucide-svelte';
@@ -13,23 +13,26 @@
 	interface Props {
 		forecast: ForecastTransformed;
 		stationId: number;
+		measurementPreview?: Measurement;
 	}
 
-	const { forecast, stationId }: Props = $props();
+	const { forecast, stationId, measurementPreview }: Props = $props();
 
 	const measurementQuery = createQuery({
 		queryKey: ['lastMeasurement', stationId],
 		queryFn: () => api.getLatestMeasurement(stationId),
-		enabled: !!stationId,
-		select: (data) => ({
+		enabled: !!stationId
+	});
+
+	const data = $derived(measurementPreview || $measurementQuery.data);
+	const latestMeasurement = $derived(
+		data && {
 			...data,
 			created_at: dayjs(data.created_at),
 			temperature: Math.round(data.temperature),
 			humidity: Math.round(data.humidity)
-		})
-	});
-
-	const latestMeasurement = $derived($measurementQuery.data);
+		}
+	);
 </script>
 
 <div class="border-border flex flex-col rounded-lg border px-8 py-6 shadow-lg">

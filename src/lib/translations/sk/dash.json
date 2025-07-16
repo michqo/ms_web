@@ -1,0 +1,53 @@
+{
+	"title": "Stanice",
+	"default": "Predvolené",
+	"setDefault": "Nastaviť ako predvolené",
+	"noData": "Žiadne údaje",
+	"lastUpdated": "Naposledy aktualizované",
+	"dialog": {
+		"createStation": {
+			"trigger": "Pridať",
+			"title": "Vytvoriť stanicu",
+			"description": "Pridať novú stanicu",
+			"form_name": "Názov",
+			"form_location": "Lokalita",
+			"form_location_coordinates": "Aktuálne súradnice",
+			"form_location_button": "Moja poloha",
+			"cancel": "Zrušiť",
+			"create": "Vytvoriť"
+		},
+		"manageStation": {
+			"trigger": "Spravovať",
+			"title": "Spravovať stanicu",
+			"description": "Upraviť detaily stanice",
+			"form_name": "Názov",
+			"form_location": "Lokalita",
+			"form_location_coordinates": "Aktuálne súradnice",
+			"form_location_button": "Moja poloha",
+			"confirm_title": "Odstrániť stanicu",
+			"confirm_description": "Ste si istý, že chcete odstrániť túto stanicu? Táto akcia sa nedá vrátiť.",
+			"delete": "Odstrániť",
+			"cancel": "Zrušiť",
+			"update": "Aktualizovať"
+		},
+		"messages": {
+			"createSuccess": "Stanica bola úspešne vytvorená",
+			"updateSuccess": "Stanica bola úspešne aktualizovaná",
+			"deleteSuccess": "Stanica bola úspešne odstránená",
+			"deleteError": "Nepodarilo sa odstrániť stanicu",
+			"updateError": "Nepodarilo sa aktualizovať stanicu",
+			"createError": "Nepodarilo sa vytvoriť stanicu"
+		}
+	},
+	"map": {
+		"locating": "Vyhľadávam polohu...",
+		"retrieve_location": "Moja poloha",
+		"error": "Nie je možné získať polohu",
+		"notSupported": "Geolokácia nie je podporovaná týmto prehliadačom.",
+		"currentCoords": "Aktuálne súradnice"
+	},
+	"searchPlaceholder": "Hľadať stanicu",
+	"totalStations": "Celkový počet staníc",
+	"avgTemperature": "Priemerná teplota",
+	"noStationsFound": "Nenašli sa žiadne stanice"
+}

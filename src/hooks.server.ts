@@ -22,6 +22,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
+	if (event.url.pathname === '/' && event.locals.user) {
+		redirect(308, '/dash');
+	}
+
 	const response = await resolve(event);
 	return response;
 };

@@ -1,6 +1,7 @@
 {
 	"routes": {
 		"home": "Home",
+		"dash": "Overview",
 		"measurements": "Measurements",
 		"forecast": "Forecast",
 		"unknown": "Unknown",

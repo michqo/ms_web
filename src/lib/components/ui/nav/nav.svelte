@@ -16,6 +16,7 @@
 	import I18n from './i18n.svelte';
 	import Links from './links.svelte';
 	import ThemeToggle from './themetoggle.svelte';
+	import { page } from '$app/state';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -26,7 +27,9 @@
 </script>
 
 <div
-	class="border-border/40 bg-primary-foreground/60 sticky inset-0 z-50 flex w-full justify-center border-b p-4 backdrop-blur-md"
+	class="border-border/40 {page.url.pathname == '/'
+		? 'bg-cyan-50/60 dark:bg-blue-950/40'
+		: 'bg-primary-foreground/60'} sticky top-0 z-50 flex w-full justify-center border-b p-4 backdrop-blur-md"
 >
 	<div class="flex w-full max-w-4xl items-center justify-between">
 		<Links />

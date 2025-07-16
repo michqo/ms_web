@@ -1,0 +1,53 @@
+{
+	"title": "Stations",
+	"default": "Default",
+	"setDefault": "Set as default",
+	"noData": "No data",
+	"lastUpdated": "Last updated",
+	"dialog": {
+		"createStation": {
+			"trigger": "Add",
+			"title": "Create Station",
+			"description": "Add a new station",
+			"form_name": "Name",
+			"form_location": "Location",
+			"form_location_coordinates": "Current coordinates",
+			"form_location_button": "My Location",
+			"cancel": "Cancel",
+			"create": "Create"
+		},
+		"manageStation": {
+			"trigger": "Manage",
+			"title": "Manage Station",
+			"description": "Edit station details",
+			"form_name": "Name",
+			"form_location": "Location",
+			"form_location_coordinates": "Current coordinates",
+			"form_location_button": "My Location",
+			"confirm_title": "Delete Station",
+			"confirm_description": "Are you sure you want to delete this station? This action cannot be undone.",
+			"delete": "Delete",
+			"cancel": "Cancel",
+			"update": "Update"
+		},
+		"messages": {
+			"createSuccess": "Station created successfully",
+			"updateSuccess": "Station updated successfully",
+			"deleteSuccess": "Station deleted successfully",
+			"deleteError": "Failed to delete station",
+			"updateError": "Failed to update station",
+			"createError": "Failed to create station"
+		}
+	},
+	"map": {
+		"locating": "Locating...",
+		"retrieve_location": "My Location",
+		"error": "Unable to retrieve location",
+		"notSupported": "Geolocation is not supported by this browser.",
+		"currentCoords": "Current coordinates"
+	},
+	"searchPlaceholder": "Search station",
+	"totalStations": "Total stations",
+	"avgTemperature": "Average temperature",
+	"noStationsFound": "No stations found"
+}

@@ -2,23 +2,36 @@
 	import { page } from '$app/state';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Cloud, Home, Menu, Thermometer } from 'lucide-svelte';
+	import { Cloud, Home, Menu, Thermometer, Columns3 } from 'lucide-svelte';
 	import { type Route } from './nav.svelte';
 	import { t } from '@/translations';
 
-	const routesMap: Record<string, Route> = $derived({
-		'/': {
-			name: $t('menu.routes.home'),
-			icon: Home
-		},
-		'/measurements': {
+	import { globalState } from '@/shared/runes.svelte';
+
+	const routesMap = $derived.by(() => {
+		const routes: Record<string, Route> = {};
+
+		if (!globalState.user) {
+			routes['/'] = {
+				name: $t('menu.routes.home'),
+				icon: Home
+			};
+		}
+
+		routes['/dash'] = {
+			name: $t('menu.routes.dash'),
+			icon: Columns3
+		};
+		routes['/measurements'] = {
 			name: $t('menu.routes.measurements'),
 			icon: Thermometer
-		},
-		'/forecast': {
+		};
+		routes['/forecast'] = {
 			name: $t('menu.routes.forecast'),
 			icon: Cloud
-		}
+		};
+
+		return routes;
 	});
 
 	const unknownRoute = {

@@ -11,7 +11,7 @@
 		todayStat?: MeasurementStat;
 		latestMeasurement?: Measurement;
 		isLoading: boolean;
-		handleLastDay: () => void;
+		handleLastDay?: () => void;
 	}
 
 	const { todayStat, latestMeasurement, isLoading, handleLastDay }: Props = $props();
@@ -27,8 +27,10 @@
 </script>
 
 <Card.Root
-	class="hover:bg-muted/10 w-full max-w-xl cursor-pointer transition-colors"
-	onclick={() => todayStat && handleLastDay()}
+	class="hover:bg-muted/10 w-full max-w-xl transition-colors {handleLastDay
+		? 'cursor-pointer'
+		: 'cursor-default'}"
+	onclick={() => todayStat && handleLastDay && handleLastDay()}
 >
 	<Card.Header class="pb-2">
 		<Card.Title class="flex items-center justify-between">

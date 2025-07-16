@@ -31,14 +31,20 @@ export const config: Config = {
 		},
 		{
 			locale: 'en',
+			key: 'dash',
+			routes: ['/dash'],
+			loader: async () => (await import('./en/dash.json')).default
+		},
+		{
+			locale: 'en',
 			key: 'measurements',
-			routes: ['/measurements'],
+			routes: ['/measurements', '/'],
 			loader: async () => (await import('./en/measurements.json')).default
 		},
 		{
 			locale: 'en',
 			key: 'forecast',
-			routes: ['/forecast'],
+			routes: ['/forecast', '/'],
 			loader: async () => (await import('./en/forecast.json')).default
 		},
 		{
@@ -59,14 +65,20 @@ export const config: Config = {
 		},
 		{
 			locale: 'sk',
+			key: 'dash',
+			routes: ['/dash'],
+			loader: async () => (await import('./sk/dash.json')).default
+		},
+		{
+			locale: 'sk',
 			key: 'measurements',
-			routes: ['/measurements'],
+			routes: ['/measurements', '/'],
 			loader: async () => (await import('./sk/measurements.json')).default
 		},
 		{
 			locale: 'sk',
 			key: 'forecast',
-			routes: ['/forecast'],
+			routes: ['/forecast', '/'],
 			loader: async () => (await import('./sk/forecast.json')).default
 		}
 	]

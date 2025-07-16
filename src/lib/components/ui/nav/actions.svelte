@@ -37,7 +37,7 @@
 				{$t('menu.actions.account.item')}
 			</DropdownMenu.Item>
 			<DropdownMenu.Item>
-				<form method="POST" action="?/logout" class="w-full">
+				<form method="POST" action="/actions?/logout" class="w-full">
 					<button
 						type="submit"
 						class="flex w-full cursor-default items-center gap-2 text-left text-red-500"
@@ -51,8 +51,8 @@
 	</DropdownMenu.Root>
 	<Profile bind:open={dialogOpen} data={deleteForm} />
 {:else}
-	<Dialog.Root>
-		<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>
+	<Dialog.Root bind:open={globalState.authOpen}>
+		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
 			<CircleUser class="mr-2 h-4 w-4" />
 			{$t('menu.actions.account.login')}</Dialog.Trigger
 		>

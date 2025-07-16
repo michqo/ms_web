@@ -1,6 +1,7 @@
 {
 	"routes": {
 		"home": "Domov",
+		"dash": "Prehľad",
 		"measurements": "Merania",
 		"forecast": "Predpoveď",
 		"unknown": "Neznáme",

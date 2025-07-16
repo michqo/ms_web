@@ -1,45 +1,26 @@
 {
-	"title": "Stations",
-	"default": "Default",
-	"setDefault": "Set as default",
-	"noData": "No data",
-	"lastUpdated": "Last updated",
-	"dialog": {
-		"createStation": {
-			"trigger": "Add",
-			"title": "Create Station",
-			"description": "Add a new station",
-			"form_name": "Name",
-			"form_location": "Location",
-			"form_location_coordinates": "Current coordinates",
-			"form_location_button": "My Location",
-			"cancel": "Cancel",
-			"create": "Create"
+	"hero": {
+		"title": "Your personal <span class='bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent'>weather</span> station",
+		"subtitle": "Track real-time weather, analyze historical data, and get accurate forecasts. All in one place.",
+		"cta": "Go to App"
+	},
+	"features": {
+		"title": "Features",
+		"feature1": {
+			"title": "Real-time Measurements",
+			"description": "Get live temperature and humidity data from your stations."
 		},
-		"manageStation": {
-			"trigger": "Manage",
-			"title": "Manage Station",
-			"description": "Edit station details",
-			"form_name": "Name",
-			"form_location": "Location",
-			"form_location_coordinates": "Current coordinates",
-			"form_location_button": "My Location",
-			"confirm_title": "Delete Station",
-			"confirm_description": "Are you sure you want to delete this station? This action cannot be undone.",
-			"delete": "Delete",
-			"cancel": "Cancel",
-			"update": "Update"
+		"feature2": {
+			"title": "Weather Forecast",
+			"description": "Detailed weather forecast for each of your stations."
+		},
+		"feature3": {
+			"title": "Interactive Map",
+			"description": "Visualize the location of your stations on a map."
 		}
 	},
-	"map": {
-		"locating": "Locating...",
-		"retrieve_location": "My Location",
-		"error": "Unable to retrieve location",
-		"notSupported": "Geolocation is not supported by this browser.",
-		"currentCoords": "Current coordinates"
-	},
-	"searchPlaceholder": "Search station",
-	"totalStations": "Total stations",
-	"avgTemperature": "Average temperature",
-	"noStationsFound": "No stations found"
+	"register": {
+		"title": "Ready to get started?",
+		"description": "Register now and start monitoring your weather stations."
+	}
 }

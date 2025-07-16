@@ -45,9 +45,23 @@
 	<Card.Header>
 		<Card.Title>{actionWord} {$t('auth.card_title')}</Card.Title>
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
+		<Card.Action>
+			<Button
+				variant="link"
+				onclick={() => {
+					if (id === 'login') {
+						value = 'register';
+					} else {
+						value = 'login';
+					}
+				}}
+			>
+				{id === 'login' ? $t('auth.switch_to_register') : $t('auth.switch_to_login')}
+			</Button>
+		</Card.Action>
 	</Card.Header>
-	<form method="POST" action="?/auth" use:enhance>
-		<Card.Content class="space-y-4">
+	<form method="POST" action="/actions?/auth" use:enhance>
+		<Card.Content class="space-y-6">
 			<Form.Field {form} name="username">
 				<Form.Control>
 					{#snippet children({ props })}
@@ -67,21 +81,8 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		</Card.Content>
-		<Card.Footer class="flex flex-col items-center space-y-4">
+		<Card.Footer class="mt-8 flex flex-col items-center">
 			<Form.Button class="w-full">{actionWord}</Form.Button>
-			<Separator />
-			<Button
-				variant="link"
-				onclick={() => {
-					if (id === 'login') {
-						value = 'register';
-					} else {
-						value = 'login';
-					}
-				}}
-			>
-				{id === 'login' ? $t('auth.switch_to_register') : $t('auth.switch_to_login')}
-			</Button>
 		</Card.Footer>
 	</form>
 </Card.Root>

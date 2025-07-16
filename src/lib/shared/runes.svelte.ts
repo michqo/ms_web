@@ -36,12 +36,14 @@ interface GlobalState {
 	stationId: number;
 	station?: Station;
 	user?: string;
+	authOpen: boolean;
 }
 
 export const globalState: GlobalState = $state({
 	stationId: NaN,
 	station: undefined,
-	user: undefined
+	user: undefined,
+	authOpen: false
 });
 
 export default useLocalStorage;

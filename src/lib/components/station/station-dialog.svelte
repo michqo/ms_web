@@ -40,15 +40,17 @@
 				if (f.valid) {
 					if (isNewStation) {
 						await api.createStation(f.data);
-						toast.success('Station created successfully');
+						toast.success($t('dash.messages.createSuccess'));
 					} else {
 						await api.updateStation(station?.id!, f.data);
-						toast.success('Station updated successfully');
+						toast.success($t('dash.messages.updateSuccess'));
 					}
 					await client.invalidateQueries({ queryKey: ['stations'] });
 					open = false;
 				} else {
-					toast.error(isNewStation ? 'Failed to create station' : 'Failed to update station');
+					toast.error(
+						isNewStation ? $t('dash.messages.createError') : $t('dash.messages.updateError')
+					);
 					open = false;
 				}
 			}
@@ -60,12 +62,12 @@
 	async function deleteStation() {
 		try {
 			await api.deleteStation(station?.id!);
-			toast.success('Station deleted successfully');
+			toast.success($t('dash.messages.deleteSuccess'));
 			deleteDialogOpen = false;
 			open = false;
 			await client.invalidateQueries({ queryKey: ['stations'] });
 		} catch (error) {
-			toast.error('Failed to delete station');
+			toast.error($t('dash.messages.deleteError'));
 		}
 	}
 </script>
@@ -75,13 +77,13 @@
 		<Dialog.Header>
 			<Dialog.Title
 				>{isNewStation
-					? $t('home.dialog.createStation.title')
-					: $t('home.dialog.manageStation.title')}</Dialog.Title
+					? $t('dash.dialog.createStation.title')
+					: $t('dash.dialog.manageStation.title')}</Dialog.Title
 			>
 			<Dialog.Description>
 				{isNewStation
-					? $t('home.dialog.createStation.description')
-					: $t('home.dialog.manageStation.description')}
+					? $t('dash.dialog.createStation.description')
+					: $t('dash.dialog.manageStation.description')}
 			</Dialog.Description>
 		</Dialog.Header>
 
@@ -89,7 +91,7 @@
 			<Form.Field {form} name="name">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>{$t('home.dialog.createStation.form_name')}</Form.Label>
+						<Form.Label>{$t('dash.dialog.createStation.form_name')}</Form.Label>
 						<Input {...props} bind:value={$formData.name} />
 					{/snippet}
 				</Form.Control>
@@ -97,14 +99,14 @@
 			</Form.Field>
 
 			<div class="mt-4 space-y-2">
-				<Label>{$t('home.dialog.createStation.form_location')}</Label>
+				<Label>{$t('dash.dialog.createStation.form_location')}</Label>
 				<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
 			</div>
 
 			<Dialog.Footer class="flex-col sm:flex-row sm:justify-between">
 				{#if !isNewStation}
 					<Button type="button" variant="destructive" onclick={() => (deleteDialogOpen = true)}>
-						{$t('home.dialog.manageStation.delete')}
+						{$t('dash.dialog.manageStation.delete')}
 					</Button>
 				{:else}
 					<div></div>
@@ -112,12 +114,12 @@
 
 				<div class="mt-2 flex gap-2 sm:mt-0">
 					<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
-						{$t('home.dialog.manageStation.cancel')}
+						{$t('dash.dialog.manageStation.cancel')}
 					</Dialog.Close>
 					<Form.Button type="submit"
 						>{isNewStation
-							? $t('home.dialog.createStation.create')
-							: $t('home.dialog.manageStation.update')}</Form.Button
+							? $t('dash.dialog.createStation.create')
+							: $t('dash.dialog.manageStation.update')}</Form.Button
 					>
 				</div>
 			</Dialog.Footer>
@@ -129,18 +131,18 @@
 	<AlertDialog.Root bind:open={deleteDialogOpen}>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>{$t('home.dialog.manageStation.confirm_title')}</AlertDialog.Title>
+				<AlertDialog.Title>{$t('dash.dialog.manageStation.confirm_title')}</AlertDialog.Title>
 				<AlertDialog.Description>
-					{$t('home.dialog.manageStation.confirm_description')}
+					{$t('dash.dialog.manageStation.confirm_description')}
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t('home.dialog.manageStation.cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('dash.dialog.manageStation.cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					onclick={deleteStation}
 					class="bg-destructive text-destructive-foreground"
 				>
-					{$t('home.dialog.manageStation.delete')}
+					{$t('dash.dialog.manageStation.delete')}
 				</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>

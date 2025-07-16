@@ -55,7 +55,7 @@
 				>
 				<AlertDialog.Action
 					type="submit"
-					formaction="?/delete"
+					formaction="/actions?/delete"
 					class={buttonVariants({ variant: 'destructive' })}
 					>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Action
 				>

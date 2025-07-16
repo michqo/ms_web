@@ -78,7 +78,7 @@
 
 	function getCurrentLocation(): void {
 		if (!browser || !navigator.geolocation) {
-			locationError = $t('home.dialog.map.notSupported');
+			locationError = $t('dash.dialog.map.notSupported');
 			return;
 		}
 
@@ -98,7 +98,7 @@
 			},
 			(error) => {
 				console.error('Error getting location:', error);
-				locationError = `${$t('home.map.error')}: ${error.message}`;
+				locationError = `${$t('dash.map.error')}: ${error.message}`;
 				locating = false;
 			},
 			{
@@ -141,7 +141,7 @@
 	{#if !preview}
 		<div class="mt-2 flex items-center justify-between">
 			<div class="text-muted-foreground text-xs">
-				{$t('home.map.currentCoords')}: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+				{$t('dash.map.currentCoords')}: {latitude.toFixed(6)}, {longitude.toFixed(6)}
 			</div>
 
 			<Button
@@ -181,7 +181,7 @@
 					</svg>
 				{/if}
 				<span class="text-xs"
-					>{locating ? $t('home.map.locating') : $t('home.map.retrieve_location')}</span
+					>{locating ? $t('dash.map.locating') : $t('dash.map.retrieve_location')}</span
 				>
 			</Button>
 		</div>
