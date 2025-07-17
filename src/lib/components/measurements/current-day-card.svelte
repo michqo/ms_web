@@ -27,9 +27,7 @@
 </script>
 
 <Card.Root
-	class="hover:bg-muted/10 w-full max-w-xl transition-colors {handleLastDay
-		? 'cursor-pointer'
-		: 'cursor-default'}"
+	class="w-full max-w-xl {handleLastDay ? 'cursor-pointer' : 'cursor-default'}"
 	onclick={() => todayStat && handleLastDay && handleLastDay()}
 >
 	<Card.Header class="pb-2">

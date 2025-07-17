@@ -1,6 +1,6 @@
 {
 	"hero": {
-		"title": "Your personal <span class='bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent'>weather</span> station",
+		"title": "Your personal <span class='bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent'>weather</span> station",
 		"subtitle": "Track real-time weather, analyze historical data, and get accurate forecasts. All in one place.",
 		"cta": "Go to App"
 	},
@@ -17,6 +17,48 @@
 		"feature3": {
 			"title": "Interactive Map",
 			"description": "Visualize the location of your stations on a map."
+		},
+		"overview_title": "Everything you need for weather monitoring",
+		"overview_description": "From real-time data collection to advanced forecasting, our platform provides all the tools you need for professional weather analysis.",
+		"real_time": {
+			"title": "Real-Time Data",
+			"description": "Monitor temperature, humidity, pressure, wind speed, and more with live updates every second."
+		},
+		"analytics": {
+			"title": "Advanced Analytics",
+			"description": "Comprehensive data analysis with trends, patterns, and statistical insights for informed decisions."
+		},
+		"forecast": {
+			"title": "Weather Forecast",
+			"description": "AI-powered forecasting with hourly, daily, and extended predictions based on your local data."
+		},
+		"dashboard": {
+			"title": "Smart Dashboard",
+			"description": "Intuitive dashboard for managing sensors, viewing data, and configuring alerts with ease."
+		},
+		"history": {
+			"title": "Historical Data",
+			"description": "Access years of historical weather data with powerful search and filtering capabilities."
+		},
+		"alerts": {
+			"title": "Smart Alerts",
+			"description": "Customizable notifications for extreme weather conditions and threshold breaches."
+		},
+		"locations": {
+			"title": "Multi-Location",
+			"description": "Monitor multiple weather stations and locations from a single unified interface."
+		},
+		"mobile": {
+			"title": "Mobile Ready",
+			"description": "Fully responsive design works perfectly on all devices and screen sizes."
+		},
+		"export": {
+			"title": "Data Export",
+			"description": "Export data in multiple formats including CSV, JSON, and PDF reports."
+		},
+		"api": {
+			"title": "API Access",
+			"description": "RESTful API for integrating weather data into your own applications and systems."
 		}
 	},
 	"register": {

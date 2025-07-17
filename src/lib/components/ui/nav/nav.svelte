@@ -28,7 +28,7 @@
 
 <div
 	class="border-border/40 {page.url.pathname == '/'
-		? 'bg-cyan-50/60 dark:bg-blue-950/40'
+		? 'dark:bg-primary-foreground/40 bg-cyan-50/60'
 		: 'bg-primary-foreground/60'} sticky top-0 z-50 flex w-full justify-center border-b p-4 backdrop-blur-md"
 >
 	<div class="flex w-full max-w-4xl items-center justify-between">

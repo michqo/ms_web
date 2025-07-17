@@ -1,14 +1,28 @@
 <script lang="ts">
 	import ForecastCard from '@/components/forecast/card.svelte';
-	import HomeCard from '@/components/home/card.svelte';
+	import FeatureCard from '@/components/home/card.svelte';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import ClearDay from '@/components/svgs/clear-day.svelte';
+	import { Badge } from '@/components/ui/badge';
 	import { Button } from '@/components/ui/button';
 	import { Map } from '@/components/ui/map';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import dayjs from 'dayjs';
-	import { ArrowRight, CloudSun, MapPin, Thermometer } from 'lucide-svelte';
+	import {
+		ArrowRight,
+		BarChart3,
+		Bell,
+		CloudRain,
+		CloudSun,
+		Database,
+		Download,
+		Gauge,
+		Globe,
+		MapPin,
+		Smartphone,
+		Thermometer
+	} from 'lucide-svelte';
 
 	const todayStat = {
 		date: dayjs(),
@@ -47,12 +61,15 @@
 	};
 </script>
 
-<main class="flex flex-1 flex-col">
+<main class="min-h-screen">
 	<!-- Hero Section -->
 	<section
-		class="from-background w-full bg-gradient-to-t to-cyan-100/60 py-20 md:py-32 lg:py-40 dark:to-blue-950/60"
+		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/60"
 	>
 		<div class="container mx-auto px-4 text-center">
+			<Badge variant="secondary" class="mb-6 px-4 py-2 text-sm font-medium">
+				🌤️ Weather Station Platform
+			</Badge>
 			<h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
 				{@html $t('home.hero.title')}
 			</h1>
@@ -60,7 +77,7 @@
 				{$t('home.hero.subtitle')}
 			</p>
 			<div class="mt-6">
-				<Button size="lg" href="/dash">
+				<Button variant="outline" size="lg" href="/dash">
 					{$t('home.hero.cta')}
 					<ArrowRight class="ml-2 h-5 w-5" />
 				</Button>
@@ -69,15 +86,166 @@
 	</section>
 
 	<!-- Features Section -->
-	<section class="bg-card w-full py-12 md:py-24">
-		<div class="container mx-auto px-4">
-			<h2
-				class="text-primary mb-12 text-center text-3xl font-bold tracking-tighter drop-shadow-lg sm:text-4xl md:text-5xl"
-			>
-				{$t('home.features.title')}
-			</h2>
+	<section class="px-6 py-20">
+		<div class="mx-auto max-w-7xl">
+			<div class="mb-16 text-center">
+				<h2 class="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl dark:text-white">
+					{$t('home.features.overview_title')}
+				</h2>
+				<p class="mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-300">
+					{$t('home.features.overview_description')}
+				</p>
+			</div>
+
+			<!-- Primary Features Grid -->
+			<div class="mb-20 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+				<FeatureCard>
+					{#snippet header()}
+						<Thermometer class="h-7 w-7 text-red-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.real_time.title')}
+						</h3>
+						<p class="text-slate-600 dark:text-slate-400">
+							{$t('home.features.real_time.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard>
+					{#snippet header()}
+						<BarChart3 class="h-7 w-7 text-blue-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.analytics.title')}
+						</h3>
+						<p class="text-slate-600 dark:text-slate-400">
+							{$t('home.features.analytics.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard>
+					{#snippet header()}
+						<CloudRain class="h-7 w-7 text-cyan-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.forecast.title')}
+						</h3>
+						<p class="text-slate-600 dark:text-slate-400">
+							{$t('home.features.forecast.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard>
+					{#snippet header()}
+						<Gauge class="h-7 w-7 text-purple-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.dashboard.title')}
+						</h3>
+						<p class="text-slate-600 dark:text-slate-400">
+							{$t('home.features.dashboard.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+			</div>
+
+			<!-- Secondary Features Grid -->
+			<div class="mb-20 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<Database class="h-6 w-6 text-emerald-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.history.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.history.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<Bell class="h-6 w-6 text-amber-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.alerts.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.alerts.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<MapPin class="h-6 w-6 text-rose-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.locations.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.locations.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<Smartphone class="h-6 w-6 text-indigo-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.mobile.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.mobile.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<Download class="h-6 w-6 text-teal-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.export.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.export.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+
+				<FeatureCard size="sm">
+					{#snippet header()}
+						<Globe class="h-6 w-6 text-violet-600" />
+					{/snippet}
+					{#snippet content()}
+						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+							{$t('home.features.api.title')}
+						</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-400">
+							{$t('home.features.api.description')}
+						</p>
+					{/snippet}
+				</FeatureCard>
+			</div>
+
+			<!-- Feature Preview Cards -->
 			<div class="flex flex-wrap items-start justify-center gap-8">
-				<HomeCard>
+				<FeatureCard>
 					{#snippet header()}
 						<Thermometer class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature1.title')}</h3>
@@ -85,8 +253,8 @@
 					{#snippet content()}
 						<CurrentDayCard {todayStat} {latestMeasurement} isLoading={false} />
 					{/snippet}
-				</HomeCard>
-				<HomeCard>
+				</FeatureCard>
+				<FeatureCard>
 					{#snippet header()}
 						<MapPin class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature3.title')}</h3>
@@ -96,8 +264,8 @@
 							<Map latitude={48.1486} longitude={17.1077} zoom={13} class="h-[200px]" preview />
 						</div>
 					{/snippet}
-				</HomeCard>
-				<HomeCard>
+				</FeatureCard>
+				<FeatureCard>
 					{#snippet header()}
 						<CloudSun class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature2.title')}</h3>
@@ -105,7 +273,7 @@
 					{#snippet content()}
 						<ForecastCard {forecast} stationId={0} measurementPreview={latestMeasurement} />
 					{/snippet}
-				</HomeCard>
+				</FeatureCard>
 			</div>
 		</div>
 	</section>
@@ -113,7 +281,7 @@
 	<!-- CTA Section -->
 	{#if !globalState.user}
 		<section
-			class="from-background w-full bg-gradient-to-b to-cyan-100 py-20 md:py-32 lg:py-40 dark:to-cyan-950"
+			class="from-background w-full bg-gradient-to-b to-cyan-50 py-20 md:py-32 lg:py-40 dark:to-cyan-950"
 		>
 			<div class="container mx-auto px-4 text-center">
 				<h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">
