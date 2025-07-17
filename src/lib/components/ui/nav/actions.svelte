@@ -11,6 +11,7 @@
 	import * as Tabs from '@/components/ui/tabs/index';
 	import { toast } from 'svelte-sonner';
 	import AuthCard from '../AuthCard.svelte';
+	import { enhance } from '$app/forms';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -37,7 +38,7 @@
 				{$t('menu.actions.account.item')}
 			</DropdownMenu.Item>
 			<DropdownMenu.Item>
-				<form method="POST" action="/actions?/logout" class="w-full">
+				<form method="POST" action="/actions?/logout" class="w-full" use:enhance>
 					<button
 						type="submit"
 						class="flex w-full cursor-default items-center gap-2 text-left text-red-500"

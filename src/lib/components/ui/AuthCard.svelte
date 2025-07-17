@@ -6,8 +6,8 @@
 	import * as Form from './form';
 	import { Input } from './input';
 	import { Button } from './button';
-	import { Separator } from './separator';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		id: 'login' | 'register';
@@ -28,9 +28,10 @@
 	const form = superForm(data, {
 		id: id,
 		validators: zodClient(loginSchema),
-		onUpdated: ({ form: f }) => {
+		onUpdate: ({ form: f }) => {
 			if (f.valid) {
 				success();
+				globalState.authOpen = false;
 			} else {
 				failed();
 			}
