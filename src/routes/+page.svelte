@@ -76,7 +76,7 @@
 			>
 				{$t('home.features.title')}
 			</h2>
-			<div class="grid items-start gap-8 md:grid-cols-3">
+			<div class="flex flex-wrap items-start justify-center gap-8">
 				<HomeCard>
 					{#snippet header()}
 						<Thermometer class="text-primary h-8 w-8" />
@@ -88,22 +88,22 @@
 				</HomeCard>
 				<HomeCard>
 					{#snippet header()}
+						<MapPin class="text-primary h-8 w-8" />
+						<h3>{$t('home.features.feature3.title')}</h3>
+					{/snippet}
+					{#snippet content()}
+						<div class="w-full max-w-lg overflow-hidden rounded-lg shadow-md">
+							<Map latitude={48.1486} longitude={17.1077} zoom={13} class="h-[200px]" preview />
+						</div>
+					{/snippet}
+				</HomeCard>
+				<HomeCard>
+					{#snippet header()}
 						<CloudSun class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature2.title')}</h3>
 					{/snippet}
 					{#snippet content()}
 						<ForecastCard {forecast} stationId={0} measurementPreview={latestMeasurement} />
-					{/snippet}
-				</HomeCard>
-				<HomeCard>
-					{#snippet header()}
-						<MapPin class="text-primary h-8 w-8" />
-						<h3>{$t('home.features.feature3.title')}</h3>
-					{/snippet}
-					{#snippet content()}
-						<div class="overflow-hidden rounded-md">
-							<Map latitude={48.1486} longitude={17.1077} zoom={13} class="h-[200px]" preview />
-						</div>
 					{/snippet}
 				</HomeCard>
 			</div>

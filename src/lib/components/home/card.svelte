@@ -10,7 +10,7 @@
 	const { header, content }: Props = $props();
 </script>
 
-<Card.Root class="drop-shadow-md drop-shadow-cyan-50/70 dark:drop-shadow-cyan-950/60">
+<Card.Root class="w-md drop-shadow-md drop-shadow-cyan-50/70 dark:drop-shadow-cyan-950/60">
 	<Card.Header class="items-center pb-2">
 		<div class="bg-primary-foreground mb-4 flex items-center gap-2 rounded-full p-3">
 			{@render header()}
