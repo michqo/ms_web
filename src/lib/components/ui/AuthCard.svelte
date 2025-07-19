@@ -8,6 +8,7 @@
 	import { Button } from './button';
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
+	import { Sparkles } from 'lucide-svelte';
 
 	interface Props {
 		id: 'login' | 'register';
@@ -42,13 +43,17 @@
 	const { form: formData, enhance } = form;
 </script>
 
-<Card.Root>
+<Card.Root class="border-0 bg-transparent shadow-none">
 	<Card.Header>
-		<Card.Title>{actionWord} {$t('auth.card_title')}</Card.Title>
+		<Card.Title
+			class="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-3xl font-bold text-transparent dark:from-white dark:to-slate-300"
+			>{actionWord} {$t('auth.card_title')}</Card.Title
+		>
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
 		<Card.Action>
 			<Button
-				variant="link"
+				variant="ghost"
+				class="cursor-pointer bg-slate-100 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
 				onclick={() => {
 					if (id === 'login') {
 						value = 'register';

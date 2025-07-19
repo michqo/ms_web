@@ -1,17 +1,16 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
-	import { CircleUser, LogOut, User } from 'lucide-svelte';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import Profile from './profile.svelte';
-	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
-	import * as Dialog from '../dialog';
-	import * as Tabs from '@/components/ui/tabs/index';
+	import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
+	import { t } from '@/translations';
+	import { CircleUser, LogOut, User } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import AuthCard from '../AuthCard.svelte';
-	import { enhance } from '$app/forms';
+	import * as Dialog from '../dialog';
+	import Profile from './profile.svelte';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -21,7 +20,7 @@
 	let { authForm, deleteForm }: Props = $props();
 
 	let dialogOpen = $state(false);
-	let tabsValue = $state('');
+	let tabsValue = $state('register');
 </script>
 
 {#if globalState.user}
@@ -57,31 +56,26 @@
 			<CircleUser class="mr-2 h-4 w-4" />
 			{$t('menu.actions.account.login')}</Dialog.Trigger
 		>
-		<Dialog.Content class="sm:max-w-md">
-			<Tabs.Root bind:value={tabsValue} class="mt-5">
-				<Tabs.List class="grid w-full grid-cols-2">
-					<Tabs.Trigger value="register">{$t('auth.tab_register')}</Tabs.Trigger>
-					<Tabs.Trigger value="login">{$t('auth.tab_login')}</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="register">
-					<AuthCard
-						success={() => toast.success($t('auth.register_success'))}
-						failed={() => toast.error($t('auth.register_failed'))}
-						id="register"
-						data={authForm}
-						bind:value={tabsValue}
-					/>
-				</Tabs.Content>
-				<Tabs.Content value="login">
-					<AuthCard
-						success={() => toast.success($t('auth.login_success'))}
-						failed={() => toast.error($t('auth.login_failed'))}
-						id="login"
-						data={authForm}
-						bind:value={tabsValue}
-					/>
-				</Tabs.Content>
-			</Tabs.Root>
+		<Dialog.Content
+			class="border-0 bg-white/80 shadow-2xl backdrop-blur-lg sm:max-w-md dark:bg-zinc-800/80"
+		>
+			{#if tabsValue == 'register'}
+				<AuthCard
+					success={() => toast.success($t('auth.register_success'))}
+					failed={() => toast.error($t('auth.register_failed'))}
+					id="register"
+					data={authForm}
+					bind:value={tabsValue}
+				/>
+			{:else if tabsValue == 'login'}
+				<AuthCard
+					success={() => toast.success($t('auth.login_success'))}
+					failed={() => toast.error($t('auth.login_failed'))}
+					id="login"
+					data={authForm}
+					bind:value={tabsValue}
+				/>
+			{/if}
 		</Dialog.Content>
 	</Dialog.Root>
 {/if}
