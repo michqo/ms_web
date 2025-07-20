@@ -2,7 +2,8 @@
 	"hero": {
 		"title": "Your personal <span class='bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent'>weather</span> station",
 		"subtitle": "Track real-time weather, analyze historical data, and get accurate forecasts. All in one place.",
-		"cta": "Go to App"
+		"cta": "Go to App",
+		"badge": "Weather Station Platform"
 	},
 	"features": {
 		"title": "Features",

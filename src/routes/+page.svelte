@@ -68,7 +68,7 @@
 	>
 		<div class="container mx-auto px-4 text-center">
 			<Badge variant="secondary" class="mb-6 px-4 py-2 text-sm font-medium">
-				🌤️ Weather Station Platform
+				🌤️ {$t('home.hero.badge')}
 			</Badge>
 			<h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
 				{@html $t('home.hero.title')}
