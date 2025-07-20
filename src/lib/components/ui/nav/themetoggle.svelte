@@ -9,12 +9,6 @@
 	import { t } from '@/translations';
 </script>
 
-{#snippet active(current: string | undefined, mode: string)}
-	{#if current == mode}
-		<DropdownMenu.Shortcut>{$t('menu.theme.active')}</DropdownMenu.Shortcut>
-	{/if}
-{/snippet}
-
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
 		<Sun
@@ -34,7 +28,6 @@
 		>
 			<Sun class="mr-2 h-4 w-4" />
 			{$t('menu.theme.light')}
-			{@render active(userPrefersMode.current, 'light')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => setMode('dark')}
@@ -42,7 +35,6 @@
 		>
 			<Moon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.dark')}
-			{@render active(userPrefersMode.current, 'dark')}
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			onclick={() => resetMode()}
@@ -50,7 +42,6 @@
 		>
 			<SunMoon class="mr-2 h-4 w-4" />
 			{$t('menu.theme.system')}
-			{@render active(userPrefersMode.current, 'system')}
 		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
