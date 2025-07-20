@@ -22,7 +22,8 @@
 	"language": {
 		"label": "Language",
 		"en": "English",
-		"sk": "Slovak"
+		"sk": "Slovak",
+		"hint": "Select your preferred language"
 	},
 	"actions": {
 		"account": {

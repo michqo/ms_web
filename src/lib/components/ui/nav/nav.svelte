@@ -34,10 +34,10 @@
 	<div class="flex w-full max-w-4xl items-center justify-between">
 		<Links />
 		<div class="flex items-center gap-x-2">
-			<ThemeToggle />
 			<Button variant="ghost" size="icon" href="https://github.com/michqo/ms_web" target="_blank">
 				<Github />
 			</Button>
+			<ThemeToggle />
 			<I18n />
 			<Actions {authForm} {deleteForm} />
 		</div>
