@@ -14,7 +14,10 @@
 		"label": "Vzhľad",
 		"light": "Svetlý",
 		"dark": "Tmavý",
-		"system": "Systém"
+		"system": "Systém",
+		"light_description": "Svetlé a čisté rozhranie.",
+		"dark_description": "Tmavé a pohodlné.",
+		"system_description": "Nasleduje systémové nastavenie."
 	},
 	"language": {
 		"label": "Jazyk",
