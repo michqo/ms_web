@@ -15,9 +15,9 @@
 		"light": "Light",
 		"dark": "Dark",
 		"system": "System",
-		"light_description": "Light and clean interface.",
-		"dark_description": "Dark and comfortable.",
-		"system_description": "Follows system preference."
+		"light_description": "Light and clean interface",
+		"dark_description": "Dark and comfortable",
+		"system_description": "Follows system preference"
 	},
 	"language": {
 		"label": "Language",
