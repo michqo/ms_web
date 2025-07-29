@@ -108,7 +108,9 @@
 			)}
 		>
 			<div class="flex items-center">
-				<currentPage.icon class="mr-2 h-4 w-4" />
+				{#if currentPage.icon}
+					<currentPage.icon class="mr-2 h-4 w-4" />
+				{/if}
 				<span class="font-medium">{currentPage.name}</span>
 			</div>
 			<ChevronDown class="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
