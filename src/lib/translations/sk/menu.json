@@ -1,4 +1,8 @@
 {
+	"app": {
+		"title": "Meteostanica",
+		"description": "Váš osobný asistent počasia"
+	},
 	"routes": {
 		"home": "Domov",
 		"dash": "Prehľad",

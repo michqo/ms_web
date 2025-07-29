@@ -1,4 +1,8 @@
 {
+	"app": {
+		"title": "Meteostation",
+		"description": "Your personal weather assistant"
+	},
 	"routes": {
 		"home": "Home",
 		"dash": "Overview",

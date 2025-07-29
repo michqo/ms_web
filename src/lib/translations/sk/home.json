@@ -65,5 +65,13 @@
 	"register": {
 		"title": "Pripravení začať?",
 		"description": "Zaregistrujte sa teraz a začnite monitorovať svoje meteorologické stanice."
+	},
+	"footer": {
+		"rights": "Všetky práva vyhradené",
+		"made_with": {
+			"part1": "Vytvorené so",
+			"part2": "Michal Urban"
+		},
+		"code": "Zdrojový kód"
 	}
 }

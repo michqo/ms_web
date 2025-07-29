@@ -6,6 +6,7 @@
 	import { Badge } from '@/components/ui/badge';
 	import { Button } from '@/components/ui/button';
 	import { Map } from '@/components/ui/map';
+	import { Separator } from '@/components/ui/separator';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import dayjs from 'dayjs';
@@ -13,37 +14,43 @@
 		ArrowRight,
 		BarChart3,
 		Bell,
+		Cloud,
 		CloudRain,
 		CloudSun,
 		Database,
 		Download,
+		ExternalLink,
 		Gauge,
+		Github,
 		Globe,
+		Heart,
 		MapPin,
 		Smartphone,
 		Thermometer
 	} from 'lucide-svelte';
 
+	const date = dayjs();
+
 	const todayStat = {
-		date: dayjs(),
+		date: date,
 		temperature: 24,
 		humidity: 68,
 		station: 0
 	};
 
 	const latestMeasurement = {
-		timestamp: dayjs(),
+		timestamp: date,
 		temperature: 26,
 		humidity: 65,
 		pressure: 1013,
 		rain: 0,
 		wind_speed: 5,
 		wind_direction: 180,
-		created_at: dayjs().toISOString()
+		created_at: date.toISOString()
 	};
 
 	const forecast = {
-		time: dayjs(),
+		time: date,
 		temperature_max: 28,
 		temperature_min: 15,
 		temperature_mean: 21.5,
@@ -64,7 +71,7 @@
 <main class="min-h-screen">
 	<!-- Hero Section -->
 	<section
-		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/60"
+		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/50"
 	>
 		<div class="container mx-auto px-4 text-center">
 			<Badge variant="secondary" class="mb-6 px-4 py-2 text-sm font-medium">
@@ -278,10 +285,10 @@
 		</div>
 	</section>
 
-	<!-- CTA Section -->
+	<!-- Footer Section -->
 	{#if !globalState.user}
 		<section
-			class="from-background w-full bg-gradient-to-b to-cyan-50 py-20 md:py-32 lg:py-40 dark:to-cyan-950"
+			class="from-background w-full space-y-10 bg-gradient-to-b to-blue-100/60 pt-20 md:pt-32 lg:pt-40 dark:to-cyan-950/40"
 		>
 			<div class="container mx-auto px-4 text-center">
 				<h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">
@@ -294,6 +301,54 @@
 					<Button size="lg" onclick={() => (globalState.authOpen = true)}
 						>{$t('auth.register')}</Button
 					>
+				</div>
+			</div>
+
+			<div class="flex w-full justify-center">
+				<div
+					class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-xs sm:my-15 sm:items-start sm:border"
+				>
+					<div class="flex items-center gap-3">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
+						>
+							<Cloud class="h-7 w-7 text-white" />
+						</div>
+						<div>
+							<h3 class="text-2xl font-bold">{$t('menu.app.title')}</h3>
+							<p class="text-sm text-slate-600 dark:text-slate-300">
+								{$t('menu.app.description')}
+							</p>
+						</div>
+					</div>
+
+					<Button
+						variant="ghost"
+						href="https://github.com/michqo/ms_web"
+						target="_blank"
+						class="group w-fit"
+					>
+						<Github class="h-4 w-4" />
+						{$t('home.footer.code')}
+						<ExternalLink class="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
+					</Button>
+
+					<Separator />
+
+					<!-- Bottom Bar -->
+					<div class="container mx-auto px-3 py-3">
+						<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+							<div class="flex items-center gap-4 text-sm">
+								<span>© {date.year()} {$t('menu.app.title')}. {$t('home.footer.rights')}.</span>
+							</div>
+
+							<div class="flex items-center gap-2 text-sm">
+								<span>{$t('home.footer.made_with.part1')}</span>
+								<Heart class="h-4 w-4 fill-current text-red-500" />
+								<span>{$t('home.footer.made_with.part2')}</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>

@@ -65,5 +65,13 @@
 	"register": {
 		"title": "Ready to get started?",
 		"description": "Register now and start monitoring your weather stations."
+	},
+	"footer": {
+		"rights": "All rights reserved",
+		"made_with": {
+			"part1": "Made with",
+			"part2": "by Michal Urban"
+		},
+		"code": "Source Code"
 	}
 }
