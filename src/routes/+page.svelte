@@ -71,6 +71,7 @@
 <main class="min-h-screen">
 	<!-- Hero Section -->
 	<section
+		id="hero"
 		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/50"
 	>
 		<div class="container mx-auto px-4 text-center">
@@ -93,7 +94,7 @@
 	</section>
 
 	<!-- Features Section -->
-	<section class="px-6 py-20">
+	<section id="features" class="px-6 py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="mb-16 text-center">
 				<h2 class="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl dark:text-white">
@@ -288,6 +289,7 @@
 	<!-- Footer Section -->
 	{#if !globalState.user}
 		<section
+			id="footer"
 			class="from-background w-full space-y-10 bg-gradient-to-b to-blue-100/60 pt-20 md:pt-32 lg:pt-40 dark:to-cyan-950/40"
 		>
 			<div class="container mx-auto px-4 text-center">

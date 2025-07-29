@@ -10,7 +10,9 @@
 		"forecast": "Forecast",
 		"unknown": "Unknown",
 		"action": "Menu",
-		"label": "Navigation"
+		"label": "Navigation",
+		"features": "Features",
+		"footer": "Footer"
 	},
 	"theme": {
 		"action": "Toggle theme",

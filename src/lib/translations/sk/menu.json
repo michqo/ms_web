@@ -10,7 +10,9 @@
 		"forecast": "Predpoveď",
 		"unknown": "Neznáme",
 		"action": "Menu",
-		"label": "Navigácia"
+		"label": "Navigácia",
+		"features": "Funkcie",
+		"footer": "Pätička"
 	},
 	"theme": {
 		"action": "Zmeniť tému",

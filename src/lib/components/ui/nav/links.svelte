@@ -2,12 +2,11 @@
 	import { page } from '$app/state';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Cloud, Home, Menu, Thermometer, Columns3, ChevronDown } from 'lucide-svelte';
-	import { type Route } from './nav.svelte';
-	import { t } from '@/translations';
-
 	import { globalState } from '@/shared/runes.svelte';
+	import { t } from '@/translations';
 	import { cn } from '@/utils';
+	import { ChevronDown, Cloud, Columns3, Home, Thermometer } from 'lucide-svelte';
+	import { type Route } from './nav.svelte';
 
 	const routesMap = $derived.by(() => {
 		const routes: Record<string, Route> = {};
@@ -40,12 +39,34 @@
 		icon: Home
 	};
 
-	const currentPage = $derived(routesMap[page.url.pathname] ?? unknownRoute);
+	const homeRoutes: Record<string, Route> = {
+		'#hero': {
+			name: $t('menu.routes.home'),
+			icon: null
+		},
+		'#features': {
+			name: $t('menu.routes.features'),
+			icon: null
+		},
+		'#footer': {
+			name: $t('menu.routes.footer'),
+			icon: null
+		}
+	};
+
+	const isHome = $derived(page.url.pathname === '/');
+	const currentPage = $derived(
+		isHome
+			? page.url.hash == ''
+				? homeRoutes['#hero']
+				: (homeRoutes[page.url.hash] ?? unknownRoute)
+			: (routesMap[page.url.pathname] ?? unknownRoute)
+	);
 </script>
 
 <!-- Desktop Navigation -->
 <div class="hidden items-center gap-2 sm:flex">
-	{#each Object.entries(routesMap) as [route, data]}
+	{#each Object.entries(isHome ? homeRoutes : routesMap) as [route, data]}
 		{@const isActive = currentPage.name === data.name}
 		<a
 			href={route}
@@ -60,7 +81,9 @@
 		>
 			<data.icon class="h-4 w-4 transition-transform group-hover:scale-110" />
 			<span
-				class={isActive ? 'ml-2 hidden font-medium lg:inline-block' : 'ml-2 hidden lg:inline-block'}
+				class={isActive
+					? `ml-2 font-medium ${isHome ? 'inline-block' : 'hidden lg:inline-block'}`
+					: `ml-2 ${isHome ? 'inline-block' : 'hidden lg:inline-block'}`}
 			>
 				{data.name}
 			</span>
@@ -98,7 +121,7 @@
 			<DropdownMenu.Separator />
 
 			<DropdownMenu.Group>
-				{#each Object.entries(routesMap) as [route, data]}
+				{#each Object.entries(isHome ? homeRoutes : routesMap) as [route, data]}
 					{@const isActive = currentPage.name === data.name}
 					<a href={route} class="block w-full">
 						<DropdownMenu.Item
