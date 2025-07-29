@@ -79,7 +79,9 @@
 			)}
 			title={data.name}
 		>
-			<data.icon class="h-4 w-4 transition-transform group-hover:scale-110" />
+			{#if data.icon}
+				<data.icon class="h-4 w-4 transition-transform group-hover:scale-110" />
+			{/if}
 			<span
 				class={isActive
 					? `ml-2 font-medium ${isHome ? 'inline-block' : 'hidden lg:inline-block'}`
@@ -131,11 +133,13 @@
 						>
 							<div class="flex w-full items-center justify-between">
 								<div class="flex items-center">
-									<data.icon
-										class="mr-3 h-4 w-4 transition-colors {isActive
-											? 'text-primary'
-											: 'text-muted-foreground group-hover:text-foreground'}"
-									/>
+									{#if data.icon}
+										<data.icon
+											class="mr-3 h-4 w-4 transition-colors {isActive
+												? 'text-primary'
+												: 'text-muted-foreground group-hover:text-foreground'}"
+										/>
+									{/if}
 									<span class="transition-colors">{data.name}</span>
 								</div>
 							</div>
