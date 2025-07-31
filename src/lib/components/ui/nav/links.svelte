@@ -84,8 +84,8 @@
 			{/if}
 			<span
 				class={isActive
-					? `ml-2 font-medium ${isHome ? 'inline-block' : 'hidden lg:inline-block'}`
-					: `ml-2 ${isHome ? 'inline-block' : 'hidden lg:inline-block'}`}
+					? `font-medium ${isHome ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`
+					: `${isHome ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`}
 			>
 				{data.name}
 			</span>
