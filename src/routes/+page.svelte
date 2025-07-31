@@ -9,6 +9,10 @@
 	import { Separator } from '@/components/ui/separator';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import dayjs from 'dayjs';
 	import {
 		ArrowRight,
@@ -66,6 +70,78 @@
 		uvindex: 5,
 		pictocode: 1
 	};
+
+	// GSAP Animations
+	onMount(() => {
+		if (browser) {
+			gsap.registerPlugin(ScrollTrigger);
+
+			// Hero section animation
+			gsap.from('#hero-content', {
+				y: 50,
+				opacity: 0,
+				stagger: 0.2,
+				duration: 1,
+				ease: 'power2.out'
+			});
+
+			// Features heading animation
+			gsap.from('#features-heading', {
+				scrollTrigger: {
+					trigger: '#features-heading',
+					start: 'top 80%',
+					toggleActions: 'play none none none'
+				},
+				y: 50,
+				opacity: 0,
+				duration: 0.8,
+				ease: 'power2.out'
+			});
+
+			// Primary features animation
+			gsap.from('.primary-feature', {
+				scrollTrigger: {
+					trigger: '.primary-feature',
+					start: 'top 80%',
+					toggleActions: 'play none none none'
+				},
+				y: 30,
+				opacity: 0,
+				stagger: 0.15,
+				duration: 0.7,
+				ease: 'power2.out'
+			});
+
+			// Preview cards animation
+			gsap.from('.preview-card', {
+				scrollTrigger: {
+					trigger: '.preview-card',
+					start: 'top 80%',
+					toggleActions: 'play none none none'
+				},
+				scale: 0.95,
+				y: 30,
+				opacity: 0,
+				stagger: 0.2,
+				duration: 0.8,
+				ease: 'back.out(1.7)'
+			});
+
+			// Footer animation
+			gsap.from('#footer > *', {
+				scrollTrigger: {
+					trigger: '#footer',
+					start: 'top 80%',
+					toggleActions: 'play none none none'
+				},
+				y: 30,
+				opacity: 0,
+				stagger: 0.15,
+				duration: 0.7,
+				ease: 'power2.out'
+			});
+		}
+	});
 </script>
 
 <main class="min-h-screen">
@@ -74,7 +150,7 @@
 		id="hero"
 		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/50"
 	>
-		<div class="container mx-auto px-4 text-center">
+		<div id="hero-content" class="container mx-auto px-4 text-center">
 			<Badge variant="secondary" class="mb-6 px-4 py-2 text-sm font-medium">
 				🌤️ {$t('home.hero.badge')}
 			</Badge>
@@ -96,7 +172,7 @@
 	<!-- Features Section -->
 	<section id="features" class="px-6 py-20">
 		<div class="mx-auto max-w-7xl">
-			<div class="mb-16 text-center">
+			<div id="features-heading" class="mb-16 text-center">
 				<h2 class="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl dark:text-white">
 					{$t('home.features.overview_title')}
 				</h2>
@@ -107,7 +183,7 @@
 
 			<!-- Primary Features Grid -->
 			<div class="mb-20 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-				<FeatureCard>
+				<FeatureCard class="primary-feature">
 					{#snippet header()}
 						<Thermometer class="h-7 w-7 text-red-600" />
 					{/snippet}
@@ -121,7 +197,7 @@
 					{/snippet}
 				</FeatureCard>
 
-				<FeatureCard>
+				<FeatureCard class="primary-feature">
 					{#snippet header()}
 						<BarChart3 class="h-7 w-7 text-blue-600" />
 					{/snippet}
@@ -135,7 +211,7 @@
 					{/snippet}
 				</FeatureCard>
 
-				<FeatureCard>
+				<FeatureCard class="primary-feature">
 					{#snippet header()}
 						<CloudRain class="h-7 w-7 text-cyan-600" />
 					{/snippet}
@@ -149,7 +225,7 @@
 					{/snippet}
 				</FeatureCard>
 
-				<FeatureCard>
+				<FeatureCard class="primary-feature">
 					{#snippet header()}
 						<Gauge class="h-7 w-7 text-purple-600" />
 					{/snippet}
@@ -164,96 +240,9 @@
 				</FeatureCard>
 			</div>
 
-			<!-- Secondary Features Grid -->
-			<div class="mb-20 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<Database class="h-6 w-6 text-emerald-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.history.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.history.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<Bell class="h-6 w-6 text-amber-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.alerts.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.alerts.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<MapPin class="h-6 w-6 text-rose-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.locations.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.locations.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<Smartphone class="h-6 w-6 text-indigo-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.mobile.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.mobile.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<Download class="h-6 w-6 text-teal-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.export.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.export.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard size="sm">
-					{#snippet header()}
-						<Globe class="h-6 w-6 text-violet-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.api.title')}
-						</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-400">
-							{$t('home.features.api.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-			</div>
-
 			<!-- Feature Preview Cards -->
 			<div class="flex flex-wrap items-start justify-center gap-8">
-				<FeatureCard>
+				<FeatureCard class="preview-card">
 					{#snippet header()}
 						<Thermometer class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature1.title')}</h3>
@@ -262,7 +251,8 @@
 						<CurrentDayCard {todayStat} {latestMeasurement} isLoading={false} />
 					{/snippet}
 				</FeatureCard>
-				<FeatureCard>
+
+				<FeatureCard class="preview-card">
 					{#snippet header()}
 						<MapPin class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature3.title')}</h3>
@@ -273,7 +263,8 @@
 						</div>
 					{/snippet}
 				</FeatureCard>
-				<FeatureCard>
+
+				<FeatureCard class="preview-card">
 					{#snippet header()}
 						<CloudSun class="text-primary h-8 w-8" />
 						<h3>{$t('home.features.feature2.title')}</h3>

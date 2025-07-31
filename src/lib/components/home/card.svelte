@@ -1,14 +1,15 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
+	import * as Card from '@/components/ui/card';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
+		class?: string;
 		header: Snippet;
 		content: Snippet;
 		size?: 'sm' | 'md' | 'lg';
 	}
 
-	const { header, content, size = 'md' }: Props = $props();
+	const { class: className = '', header, content, size = 'md' }: Props = $props();
 
 	const sizeClasses = {
 		sm: 'max-w-sm',
@@ -20,7 +21,7 @@
 <Card.Root
 	class="
 		group relative w-full overflow-hidden border border-zinc-200 bg-white shadow-lg hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-900/70
-		{sizeClasses[size]}"
+		{sizeClasses[size]} {className}"
 >
 	<Card.Header class="relative items-center pt-8 pb-4">
 		<div
