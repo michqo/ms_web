@@ -41,17 +41,13 @@
 		</div>
 
 		<!-- Content -->
-		<div class="min-w-0 flex-1">
-			<div class="flex items-center justify-between">
-				<span
-					class="text-sm font-medium transition-colors ${isActive
-						? 'text-blue-700 dark:text-blue-300'
-						: 'text-slate-900 dark:text-slate-100'}"
-				>
-					{name}
-				</span>
-			</div>
-		</div>
+		<span
+			class="text-sm font-medium transition-colors ${isActive
+				? 'text-blue-700 dark:text-blue-300'
+				: 'text-slate-900 dark:text-slate-100'}"
+		>
+			{name}
+		</span>
 	</DropdownMenu.Item>
 {/snippet}
 
