@@ -18,8 +18,10 @@ import PartlyCloudyDay from '@/components/svgs/partly-cloudy-day.svelte';
 import Snow from '@/components/svgs/snow.svelte';
 import dayjs from 'dayjs';
 import type { Forecast, ForecastTransformed } from './types';
-import { goto } from '$app/navigation';
+import { goto, invalidateAll } from '$app/navigation';
 import { api, authApi } from './api';
+import { locale } from '@/translations';
+import Cookies from 'js-cookie';
 
 const weatherIcons: { [key: number]: any } = {
 	1: ClearDay,
@@ -68,4 +70,11 @@ const setParam = (key: string, value: string) => {
 	goto(`?${params.toString()}`);
 };
 
-export { transformForecast, setParam, authApi, api };
+async function setLocale(lang: string) {
+	locale.set(lang);
+	dayjs.locale(lang);
+	Cookies.set('lang', lang, { path: '/' });
+	await invalidateAll();
+}
+
+export { transformForecast, setParam, authApi, api, setLocale };

@@ -295,7 +295,7 @@
 
 		<div class="flex w-full justify-center">
 			<div
-				class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-none sm:my-15 sm:items-start sm:border sm:shadow-xs"
+				class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-none md:my-15 md:items-start md:border md:shadow-xs"
 			>
 				<div class="flex items-center gap-3">
 					<div
@@ -322,7 +322,7 @@
 						{$t('home.footer.code')}
 						<ExternalLink class="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
 					</Button>
-					<div class="flex gap-2 sm:hidden">
+					<div class="flex gap-2 md:hidden">
 						<ThemeToggle />
 						<I18n />
 					</div>

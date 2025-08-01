@@ -1,3 +1,7 @@
+<script module>
+	export { themeIcon, option };
+</script>
+
 <script lang="ts">
 	import Moon from 'lucide-svelte/icons/moon';
 	import Sun from 'lucide-svelte/icons/sun';
@@ -58,17 +62,17 @@
 	</DropdownMenu.Item>
 {/snippet}
 
+{#snippet themeIcon()}
+	<!-- Sun icon -->
+	<Sun class="h-4 w-4 scale-100 transition-all duration-500 ease-out dark:scale-0" />
+
+	<!-- Moon icon -->
+	<Moon class="absolute h-4 w-4 scale-0 transition-all duration-500 ease-out dark:scale-100" />
+{/snippet}
+
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-		<!-- Sun icon -->
-		<Sun
-			class="h-[1.2rem] w-[1.2rem] scale-100 transition-all duration-500 ease-out dark:scale-0"
-		/>
-
-		<!-- Moon icon -->
-		<Moon
-			class="absolute h-[1.2rem] w-[1.2rem] scale-0 transition-all duration-500 ease-out dark:scale-100"
-		/>
+		{@render themeIcon()}
 		<!-- Check icon for active state -->
 		<span class="sr-only">{$t('menu.theme.action')}</span>
 	</DropdownMenu.Trigger>

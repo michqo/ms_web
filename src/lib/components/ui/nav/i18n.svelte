@@ -1,25 +1,22 @@
+<script module>
+	export { item };
+</script>
+
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import { buttonVariants } from '@/components/ui/button/index.js';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
+	import { setLocale } from '@/shared';
 	import { locale, t } from '@/translations';
-	import dayjs from 'dayjs';
-	import Cookies from 'js-cookie';
 	import { Check, Languages } from 'lucide-svelte';
-
-	async function setLocale(lang: string) {
-		locale.set(lang);
-		dayjs.locale(lang);
-		Cookies.set('lang', lang, { path: '/' });
-		await invalidateAll();
-	}
+	import { get } from 'svelte/store';
 </script>
 
 {#snippet item(code: string, name: string, flag: string)}
-	{@const isActive = $locale === code}
+	<!-- Fun fact: Works only with get(), $locale gives error -->
+	{@const isActive = get(locale) === code}
 	<DropdownMenu.Item
 		onclick={() => setLocale(code)}
-		class="group relative flex cursor-pointer items-center gap-3 rounded-lg px-3 py-3 transition-all duration-200 {isActive
+		class="group p-3 {isActive
 			? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300'
 			: 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}"
 	>
@@ -42,7 +39,7 @@
 
 		<!-- Content -->
 		<span
-			class="text-sm font-medium transition-colors ${isActive
+			class="text-sm font-medium transition-colors {isActive
 				? 'text-blue-700 dark:text-blue-300'
 				: 'text-slate-900 dark:text-slate-100'}"
 		>
@@ -53,7 +50,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-		{$locale}
+		<Languages class="h-4 w-4" />
 	</DropdownMenu.Trigger>
 	<form method="POST" action="?/lang">
 		<DropdownMenu.Content class="p-2">
