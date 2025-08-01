@@ -17,13 +17,14 @@
 	import ThemeToggle from './themetoggle.svelte';
 	import { page } from '$app/state';
 	import { t } from '@/translations';
-	import { Separator } from '../separator';
 	import { Button } from '../button';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
 		deleteForm: SuperValidated<DeleteSchema>;
 	}
+
+	const isRoot = $derived(page.url.pathname === '/');
 
 	let { authForm, deleteForm }: Props = $props();
 </script>
@@ -46,8 +47,10 @@
 		</Button>
 		<Links />
 		<div class="flex items-center gap-x-2">
-			<ThemeToggle />
-			<I18n />
+			<div class="hidden gap-2 sm:flex">
+				<ThemeToggle />
+				<I18n />
+			</div>
 			<Actions {authForm} {deleteForm} />
 		</div>
 	</div>

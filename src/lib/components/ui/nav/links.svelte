@@ -54,9 +54,9 @@
 		}
 	};
 
-	const isHome = $derived(page.url.pathname === '/');
+	const isRoot = $derived(page.url.pathname === '/');
 	const currentPage = $derived(
-		isHome
+		isRoot
 			? page.url.hash == ''
 				? homeRoutes['#hero']
 				: (homeRoutes[page.url.hash] ?? unknownRoute)
@@ -66,7 +66,7 @@
 
 <!-- Desktop Navigation -->
 <div class="hidden items-center gap-2 sm:flex">
-	{#each Object.entries(isHome ? homeRoutes : routesMap) as [route, data]}
+	{#each Object.entries(isRoot ? homeRoutes : routesMap) as [route, data]}
 		{@const isActive = currentPage.name === data.name}
 		<a
 			href={route}
@@ -84,8 +84,8 @@
 			{/if}
 			<span
 				class={isActive
-					? `font-medium ${isHome ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`
-					: `${isHome ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`}
+					? `font-medium ${isRoot ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`
+					: `${isRoot ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`}
 			>
 				{data.name}
 			</span>
@@ -99,14 +99,9 @@
 </div>
 
 <!-- Mobile Navigation -->
-<div class="sm:hidden">
+<div class={['sm:hidden', { hidden: isRoot }]}>
 	<DropdownMenu.Root>
-		<DropdownMenu.Trigger
-			class={cn(
-				buttonVariants({ variant: 'outline', size: 'sm' }),
-				'group hover:bg-accent w-full justify-between transition-all duration-200'
-			)}
-		>
+		<DropdownMenu.Trigger class={[buttonVariants({ variant: 'ghost' }), 'group justify-between']}>
 			<div class="flex items-center">
 				{#if currentPage.icon}
 					<currentPage.icon class="mr-2 h-4 w-4" />
@@ -130,7 +125,7 @@
 			</div>
 			<DropdownMenu.Separator />
 
-			{#each Object.entries(isHome ? homeRoutes : routesMap) as [route, data]}
+			{#each Object.entries(isRoot ? homeRoutes : routesMap) as [route, data]}
 				{@const isActive = currentPage.name === data.name}
 				<a href={route} class="block w-full">
 					<DropdownMenu.Item

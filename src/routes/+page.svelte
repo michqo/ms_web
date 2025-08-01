@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import ForecastCard from '@/components/forecast/card.svelte';
 	import FeatureCard from '@/components/home/card.svelte';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
@@ -9,29 +10,25 @@
 	import { Separator } from '@/components/ui/separator';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
+	import dayjs from 'dayjs';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-	import dayjs from 'dayjs';
+	import ThemeToggle from '@/components/ui/nav/themetoggle.svelte';
+	import I18n from '@/components/ui/nav/i18n.svelte';
 	import {
 		ArrowRight,
 		BarChart3,
-		Bell,
 		Cloud,
 		CloudRain,
 		CloudSun,
-		Database,
-		Download,
 		ExternalLink,
 		Gauge,
 		Github,
-		Globe,
 		Heart,
 		MapPin,
-		Smartphone,
 		Thermometer
 	} from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
 	const date = dayjs();
 
@@ -278,43 +275,43 @@
 	</section>
 
 	<!-- Footer Section -->
-	{#if !globalState.user}
-		<section
-			id="footer"
-			class="from-background w-full space-y-10 bg-gradient-to-b to-blue-100/60 pt-20 md:pt-32 lg:pt-40 dark:to-cyan-950/40"
-		>
-			<div class="container mx-auto px-4 text-center">
-				<h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">
-					{$t('home.register.title')}
-				</h2>
-				<p class="text-muted-foreground mx-auto mt-4 max-w-[600px] md:text-lg">
-					{$t('home.register.description')}
-				</p>
-				<div class="mt-6">
-					<Button size="lg" onclick={() => (globalState.authOpen = true)}
-						>{$t('auth.register')}</Button
-					>
-				</div>
-			</div>
-
-			<div class="flex w-full justify-center">
-				<div
-					class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-xs sm:my-15 sm:items-start sm:border"
+	<section
+		id="footer"
+		class="from-background w-full space-y-10 bg-gradient-to-b to-blue-100/60 pt-20 md:pt-32 lg:pt-40 dark:to-cyan-950/40"
+	>
+		<div class="container mx-auto px-4 text-center">
+			<h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">
+				{$t('home.register.title')}
+			</h2>
+			<p class="text-muted-foreground mx-auto mt-4 max-w-[600px] md:text-lg">
+				{$t('home.register.description')}
+			</p>
+			<div class="mt-6">
+				<Button size="lg" onclick={() => (globalState.authOpen = true)}
+					>{$t('auth.register')}</Button
 				>
-					<div class="flex items-center gap-3">
-						<div
-							class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
-						>
-							<Cloud class="h-7 w-7 text-white" />
-						</div>
-						<div>
-							<h3 class="text-2xl font-bold">{$t('menu.app.title')}</h3>
-							<p class="text-sm text-slate-600 dark:text-slate-300">
-								{$t('menu.app.description')}
-							</p>
-						</div>
-					</div>
+			</div>
+		</div>
 
+		<div class="flex w-full justify-center">
+			<div
+				class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-none sm:my-15 sm:items-start sm:border sm:shadow-xs"
+			>
+				<div class="flex items-center gap-3">
+					<div
+						class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
+					>
+						<Cloud class="h-7 w-7 text-white" />
+					</div>
+					<div>
+						<h3 class="text-2xl font-bold">{$t('menu.app.title')}</h3>
+						<p class="text-sm text-slate-600 dark:text-slate-300">
+							{$t('menu.app.description')}
+						</p>
+					</div>
+				</div>
+
+				<div class="flex flex-col items-center gap-2">
 					<Button
 						variant="ghost"
 						href="https://github.com/michqo/ms_web"
@@ -325,25 +322,27 @@
 						{$t('home.footer.code')}
 						<ExternalLink class="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
 					</Button>
+					<div class="flex gap-2 sm:hidden">
+						<ThemeToggle />
+						<I18n />
+					</div>
+				</div>
 
-					<Separator />
+				<Separator />
 
-					<!-- Bottom Bar -->
-					<div class="container mx-auto px-3 py-3">
-						<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-							<div class="flex items-center gap-4 text-sm">
-								<span>© {date.year()} {$t('menu.app.title')}. {$t('home.footer.rights')}.</span>
-							</div>
+				<!-- Bottom Bar -->
+				<div class="flex flex-col items-center justify-between gap-4 px-3 py-3 md:flex-row">
+					<div class="flex items-center gap-4 text-sm">
+						<span>© {date.year()} {$t('menu.app.title')}. {$t('home.footer.rights')}.</span>
+					</div>
 
-							<div class="flex items-center gap-2 text-sm">
-								<span>{$t('home.footer.made_with.part1')}</span>
-								<Heart class="h-4 w-4 fill-current text-red-500" />
-								<span>{$t('home.footer.made_with.part2')}</span>
-							</div>
-						</div>
+					<div class="flex items-center gap-2 text-sm">
+						<span>{$t('home.footer.made_with.part1')}</span>
+						<Heart class="h-4 w-4 fill-current text-red-500" />
+						<span>{$t('home.footer.made_with.part2')}</span>
 					</div>
 				</div>
 			</div>
-		</section>
-	{/if}
+		</div>
+	</section>
 </main>
