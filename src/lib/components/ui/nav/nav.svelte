@@ -30,9 +30,6 @@
 	let { authForm, deleteForm }: Props = $props();
 </script>
 
-<!-- class="border-border/40 sticky top-0 z-50 flex w-full justify-center border-b py-3 px-4 backdrop-blur-md {page.url.pathname == '/'
-		? 'dark:bg-primary-foreground/40 bg-cyan-50/60'
-		: 'bg-primary-foreground/60'}" -->
 <div
 	class={[
 		'border-border/40 sticky top-0 z-50 flex w-full justify-center border-b px-4 py-3 backdrop-blur-md',
