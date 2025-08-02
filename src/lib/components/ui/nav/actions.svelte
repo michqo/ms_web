@@ -52,9 +52,11 @@
 	<Profile bind:open={dialogOpen} data={deleteForm} />
 {:else}
 	<Dialog.Root bind:open={globalState.authOpen}>
-		<Dialog.Trigger class={buttonVariants({ variant: 'default', size: 'sm' })}>
-			<CircleUser class="mr-2 h-4 w-4" />
-			{$t('menu.actions.account.login')}</Dialog.Trigger
+		<Dialog.Trigger
+			class={[buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-2']}
+		>
+			<CircleUser class="h-4 w-4" />
+			<span class="hidden sm:block">{$t('menu.actions.account.login')}</span></Dialog.Trigger
 		>
 		<Dialog.Content
 			class="border-0 bg-white/80 shadow-2xl backdrop-blur-lg sm:max-w-md dark:bg-zinc-800/80"

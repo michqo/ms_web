@@ -32,7 +32,7 @@
 
 <div
 	class={[
-		'border-border/40 sticky top-0 z-50 flex w-full justify-center border-b px-4 py-3 backdrop-blur-md',
+		'border-border/40 sticky top-0 z-50 flex w-full justify-center border-b px-4 py-3 backdrop-blur-md sm:px-8',
 		{
 			'dark:bg-primary-foreground/40 bg-cyan-50/60': isRoot,
 			'bg-primary-foreground/60': !isRoot
@@ -40,7 +40,7 @@
 	]}
 >
 	<div class="flex w-full max-w-6xl items-center justify-between">
-		<Button variant="ghost" href="/">
+		<Button variant="ghost" class="p-0" href="/">
 			<div
 				class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
 			>
