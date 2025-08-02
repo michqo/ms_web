@@ -331,7 +331,7 @@
 				<Separator />
 
 				<!-- Bottom Bar -->
-				<div class="flex flex-col items-center justify-between gap-4 px-3 py-3 md:flex-row">
+				<div class="flex w-full flex-col items-center justify-between gap-4 p-3 md:flex-row">
 					<div class="flex items-center gap-4 text-sm">
 						<span>© {date.year()} {$t('menu.app.title')}. {$t('home.footer.rights')}.</span>
 					</div>
