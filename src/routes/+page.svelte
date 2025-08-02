@@ -178,8 +178,8 @@
 				</p>
 			</div>
 
-			<!-- Primary Features Grid -->
-			<div class="mb-20 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+			<!-- Features -->
+			<div class="mb-20 flex flex-wrap justify-center gap-8">
 				<FeatureCard class="primary-feature">
 					{#snippet header()}
 						<Thermometer class="h-7 w-7 text-red-600" />

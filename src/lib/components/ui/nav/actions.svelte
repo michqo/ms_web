@@ -25,7 +25,7 @@
 
 {#if globalState.user}
 	<DropdownMenu.Root>
-		<DropdownMenu.Trigger class={buttonVariants({ variant: 'outline' })}>
+		<DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'sm' })}>
 			<CircleUser class="mr-2 h-4 w-4" />
 			{globalState.user}
 		</DropdownMenu.Trigger>
@@ -52,7 +52,7 @@
 	<Profile bind:open={dialogOpen} data={deleteForm} />
 {:else}
 	<Dialog.Root bind:open={globalState.authOpen}>
-		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
+		<Dialog.Trigger class={buttonVariants({ variant: 'default', size: 'sm' })}>
 			<CircleUser class="mr-2 h-4 w-4" />
 			{$t('menu.actions.account.login')}</Dialog.Trigger
 		>

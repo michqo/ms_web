@@ -30,10 +30,17 @@
 	let { authForm, deleteForm }: Props = $props();
 </script>
 
-<div
-	class="border-border/40 {page.url.pathname == '/'
+<!-- class="border-border/40 sticky top-0 z-50 flex w-full justify-center border-b py-3 px-4 backdrop-blur-md {page.url.pathname == '/'
 		? 'dark:bg-primary-foreground/40 bg-cyan-50/60'
-		: 'bg-primary-foreground/60'} sticky top-0 z-50 flex w-full justify-center border-b p-4 backdrop-blur-md"
+		: 'bg-primary-foreground/60'}" -->
+<div
+	class={[
+		'border-border/40 sticky top-0 z-50 flex w-full justify-center border-b px-4 py-3 backdrop-blur-md',
+		{
+			'dark:bg-primary-foreground/40 bg-cyan-50/60': isRoot,
+			'bg-primary-foreground/60': !isRoot
+		}
+	]}
 >
 	<div class="flex w-full max-w-6xl items-center justify-between">
 		<Button variant="ghost" href="/">
