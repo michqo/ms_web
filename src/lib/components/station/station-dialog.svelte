@@ -40,16 +40,18 @@
 				if (f.valid) {
 					if (isNewStation) {
 						await api.createStation(f.data);
-						toast.success($t('dash.messages.createSuccess'));
+						toast.success($t('dash.dialog.messages.createSuccess'));
 					} else {
 						await api.updateStation(station?.id!, f.data);
-						toast.success($t('dash.messages.updateSuccess'));
+						toast.success($t('dash.dialog.messages.updateSuccess'));
 					}
 					await client.invalidateQueries({ queryKey: ['stations'] });
 					open = false;
 				} else {
 					toast.error(
-						isNewStation ? $t('dash.messages.createError') : $t('dash.messages.updateError')
+						isNewStation
+							? $t('dash.dialog.messages.createError')
+							: $t('dash.dialog.messages.updateError')
 					);
 					open = false;
 				}
@@ -62,12 +64,12 @@
 	async function deleteStation() {
 		try {
 			await api.deleteStation(station?.id!);
-			toast.success($t('dash.messages.deleteSuccess'));
+			toast.success($t('dash.dialog.messages.deleteSuccess'));
 			deleteDialogOpen = false;
 			open = false;
 			await client.invalidateQueries({ queryKey: ['stations'] });
 		} catch (error) {
-			toast.error($t('dash.messages.deleteError'));
+			toast.error($t('dash.dialog.messages.deleteError'));
 		}
 	}
 </script>
