@@ -1,12 +1,26 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { buttonVariants } from '@/components/ui/button';
-	import * as DropdownMenu from '@/components/ui/dropdown-menu';
+	import * as Dialog from '@/components/ui/dialog';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import { cn } from '@/utils';
-	import { ChevronDown, Cloud, Columns3, Home, Menu, Thermometer } from 'lucide-svelte';
+	import {
+		ChevronDown,
+		CircleUser,
+		Cloud,
+		Columns3,
+		Home,
+		LogOut,
+		Menu,
+		Thermometer,
+		X
+	} from 'lucide-svelte';
 	import { type Route } from './nav.svelte';
+	import ThemeToggle from './themetoggle.svelte';
+	import I18n from './i18n.svelte';
+	import { Button } from '@/components/ui/button';
+	import { enhance } from '$app/forms';
 
 	const routesMap = $derived.by(() => {
 		const routes: Record<string, Route> = {};
@@ -62,6 +76,8 @@
 				: (homeRoutes[page.url.hash] ?? unknownRoute)
 			: (routesMap[page.url.pathname] ?? unknownRoute)
 	);
+
+	let mobileMenuOpen = $state(false);
 </script>
 
 <!-- Desktop Navigation -->
@@ -100,52 +116,122 @@
 
 <!-- Mobile Navigation -->
 <div class={['sm:hidden', { hidden: isRoot }]}>
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger class={[buttonVariants({ variant: 'ghost' }), 'group justify-between']}>
-			<div class="flex items-center">
-				{#if currentPage.icon}
-					<currentPage.icon class="mr-2 h-4 w-4" />
-				{/if}
-				<span class="font-medium">{currentPage.name}</span>
-			</div>
-			<ChevronDown class="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
-		</DropdownMenu.Trigger>
+	<Button
+		variant="ghost"
+		size="sm"
+		class="flex items-center gap-2"
+		onclick={() => (mobileMenuOpen = true)}
+	>
+		<div class="flex items-center">
+			{#if currentPage.icon}
+				<currentPage.icon class="mr-2 h-4 w-4" />
+			{/if}
+			<span class="font-medium">{currentPage.name}</span>
+		</div>
+		<ChevronDown class="h-4 w-4" />
+	</Button>
 
-		<DropdownMenu.Content class="p-2">
-			<!-- Header -->
-			<div class="flex items-center gap-2 p-2">
-				<div
-					class="rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 p-2 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300"
-				>
-					<Menu class="h-3.5 w-3.5" />
-				</div>
-				<DropdownMenu.Label class="p-0 text-sm font-semibold text-slate-900 dark:text-slate-100">
-					{$t('menu.routes.label')}
-				</DropdownMenu.Label>
-			</div>
-			<DropdownMenu.Separator />
-
-			{#each Object.entries(isRoot ? homeRoutes : routesMap) as [route, data]}
-				{@const isActive = currentPage.name === data.name}
-				<a href={route} class="block w-full">
-					<DropdownMenu.Item
-						class="group relative flex cursor-pointer items-center gap-3 rounded-lg px-3 py-3 transition-all duration-200 {isActive
-							? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300'
-							: 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}"
+	<Dialog.Root bind:open={mobileMenuOpen}>
+		<Dialog.Content
+			class="h-[100dvh] w-screen max-w-none rounded-none border-0 p-0"
+			showCloseButton={false}
+		>
+			<!-- Header with close button -->
+			<div
+				class="bg-background/95 sticky top-0 z-10 flex items-center justify-between border-b p-4 backdrop-blur"
+			>
+				<div class="flex items-center gap-3">
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
 					>
-						<div class="flex items-center">
-							{#if data.icon}
-								<data.icon
-									class="mr-3 h-4 w-4 transition-colors {isActive
-										? 'text-primary'
-										: 'text-muted-foreground group-hover:text-foreground'}"
-								/>
-							{/if}
-							<span class="transition-colors">{data.name}</span>
-						</div>
-					</DropdownMenu.Item>
-				</a>
-			{/each}
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+						<Cloud class="h-5 w-5 text-white" />
+					</div>
+					<h2 class="text-lg font-bold">{$t('menu.app.title')}</h2>
+				</div>
+				<Button variant="ghost" size="icon" onclick={() => (mobileMenuOpen = false)}>
+					<X class="h-5 w-5" />
+				</Button>
+			</div>
+
+			<!-- Navigation Items -->
+			<div class="p-4">
+				<h3 class="text-primary mb-3 font-semibold">{$t('menu.routes.label')}</h3>
+
+				<div class="space-y-1">
+					{#each Object.entries(routesMap) as [route, data]}
+						{@const isActive = currentPage.name === data.name}
+						<a
+							href={route}
+							class={[
+								'flex items-center gap-3 rounded-md p-3',
+								{
+									'bg-gradient-to-r from-blue-50/70 to-cyan-50/70 dark:from-blue-950/70 dark:to-cyan-950/70':
+										isActive,
+									'hover:bg-muted/80': !isActive
+								}
+							]}
+							onclick={() => (mobileMenuOpen = false)}
+						>
+							<div
+								class={[
+									'flex h-9 w-9 items-center justify-center rounded-md',
+									{
+										'bg-primary/20 text-primary': isActive,
+										'bg-muted text-muted-foreground': !isActive
+									}
+								]}
+							>
+								<data.icon class="h-5 w-5" />
+							</div>
+							<span class={['text-base', { 'font-medium': isActive }]}>{data.name}</span>
+						</a>
+					{/each}
+				</div>
+			</div>
+
+			<!-- Footer with user actions and theme toggle -->
+			<div class="bg-background/80 flex items-center justify-between border-t p-4 backdrop-blur">
+				<div class="flex items-center gap-2">
+					<ThemeToggle />
+					<I18n />
+				</div>
+				{#if !globalState.user}
+					<Button
+						size="sm"
+						onclick={() => {
+							mobileMenuOpen = false;
+							globalState.authOpen = true;
+						}}
+					>
+						{$t('auth.login')}
+					</Button>
+				{:else}
+					<div class="flex items-center gap-2">
+						<form method="POST" action="/actions?/logout" use:enhance>
+							<button
+								type="submit"
+								class="flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-1 text-sm font-medium text-red-600 hover:bg-red-100 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-900/30"
+								onclick={() => (mobileMenuOpen = false)}
+							>
+								<LogOut class="h-4 w-4" />
+								{$t('menu.actions.account.logout')}
+							</button>
+						</form>
+
+						<Button
+							variant="outline"
+							size="sm"
+							onclick={() => {
+								mobileMenuOpen = false;
+								globalState.userOpen = true;
+							}}
+						>
+							<CircleUser class="mr-2 h-4 w-4" />
+							{globalState.user}
+						</Button>
+					</div>
+				{/if}
+			</div>
+		</Dialog.Content>
+	</Dialog.Root>
 </div>

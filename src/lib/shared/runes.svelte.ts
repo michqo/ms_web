@@ -37,13 +37,15 @@ interface GlobalState {
 	station?: Station;
 	user?: string;
 	authOpen: boolean;
+	userOpen: boolean;
 }
 
 export const globalState: GlobalState = $state({
 	stationId: NaN,
 	station: undefined,
 	user: undefined,
-	authOpen: false
+	authOpen: false,
+	userOpen: false
 });
 
 export default useLocalStorage;

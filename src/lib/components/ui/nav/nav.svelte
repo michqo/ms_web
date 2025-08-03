@@ -18,7 +18,6 @@
 	import { page } from '$app/state';
 	import { t } from '@/translations';
 	import { Button } from '../button';
-	import Menu from './menu.svelte';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -51,14 +50,9 @@
 			</h1>
 		</Button>
 		<Links />
-		<div class="flex items-center gap-x-2">
-			<div class="hidden gap-2 md:flex">
-				<ThemeToggle />
-				<I18n />
-			</div>
-			<div class={{ 'block md:hidden': !isRoot, hidden: isRoot }}>
-				<Menu />
-			</div>
+		<div class="hidden items-center gap-x-2 sm:flex">
+			<ThemeToggle />
+			<I18n />
 			<Actions {authForm} {deleteForm} />
 		</div>
 	</div>
