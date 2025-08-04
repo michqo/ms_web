@@ -17,7 +17,7 @@
 	<DropdownMenu.Item
 		onclick={() => setLocale(code)}
 		class={[
-			'group cursor-pointer p-3',
+			'group cursor-pointer p-3 transition-all duration-200',
 			{
 				'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300':
 					isActive,

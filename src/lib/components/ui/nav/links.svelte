@@ -123,7 +123,7 @@
 			<Menu />
 		</Dialog.Trigger>
 		<Dialog.Content
-			class="flex h-[100svh] w-screen max-w-none flex-col items-center justify-between rounded-none border-0 p-0"
+			class="flex h-[100vh] w-screen max-w-none flex-col items-center justify-between rounded-none border-0 p-0"
 			showCloseButton={false}
 		>
 			<!-- Header with close button -->
