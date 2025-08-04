@@ -116,30 +116,16 @@
 
 <!-- Mobile Navigation -->
 <div class={['sm:hidden', { hidden: isRoot }]}>
-	<Button
-		variant="ghost"
-		size="sm"
-		class="flex items-center gap-2"
-		onclick={() => (mobileMenuOpen = true)}
-	>
-		<div class="flex items-center">
-			{#if currentPage.icon}
-				<currentPage.icon class="mr-2 h-4 w-4" />
-			{/if}
-			<span class="font-medium">{currentPage.name}</span>
-		</div>
-		<ChevronDown class="h-4 w-4" />
-	</Button>
-
 	<Dialog.Root bind:open={mobileMenuOpen}>
+		<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+			<Menu />
+		</Dialog.Trigger>
 		<Dialog.Content
-			class="h-[100dvh] w-screen max-w-none rounded-none border-0 p-0"
+			class="flex h-[100svh] w-screen max-w-none flex-col items-center justify-between rounded-none border-0 p-0"
 			showCloseButton={false}
 		>
 			<!-- Header with close button -->
-			<div
-				class="bg-background/95 sticky top-0 z-10 flex items-center justify-between border-b p-4 backdrop-blur"
-			>
+			<div class="flex w-full items-center justify-between border-b p-4 backdrop-blur">
 				<div class="flex items-center gap-3">
 					<div
 						class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
@@ -190,7 +176,9 @@
 			</div>
 
 			<!-- Footer with user actions and theme toggle -->
-			<div class="bg-background/80 flex items-center justify-between border-t p-4 backdrop-blur">
+			<div
+				class="bg-background/80 flex w-full items-center justify-between border-t p-4 backdrop-blur"
+			>
 				<div class="flex items-center gap-2">
 					<ThemeToggle />
 					<I18n />
