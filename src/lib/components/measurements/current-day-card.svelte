@@ -27,7 +27,13 @@
 </script>
 
 <Card.Root
-	class="w-full max-w-xl {handleLastDay ? 'cursor-pointer' : 'cursor-default'}"
+	class={[
+		'w-full max-w-xl',
+		{
+			'cursor-pointer': handleLastDay,
+			'cursor-default': !handleLastDay
+		}
+	]}
 	onclick={() => todayStat && handleLastDay && handleLastDay()}
 >
 	<Card.Header class="pb-2">

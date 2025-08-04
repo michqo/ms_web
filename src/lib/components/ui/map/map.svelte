@@ -5,6 +5,7 @@
 	import type { Map as LeafletMap, Marker, TileLayer, LeafletMouseEvent } from 'leaflet';
 	import { Button } from '../button';
 	import { t } from '@/translations';
+	import type { ClassValue } from 'svelte/elements';
 
 	let mapElement: HTMLDivElement;
 	let map = $state<LeafletMap | null>(null);
@@ -16,7 +17,7 @@
 		latitude: number;
 		longitude: number;
 		zoom?: number;
-		class?: string;
+		class?: ClassValue;
 		preview?: boolean;
 	}
 
@@ -24,7 +25,7 @@
 		latitude = $bindable(),
 		longitude = $bindable(),
 		zoom = 8,
-		class: className = '',
+		class: className,
 		preview = false
 	}: Props = $props();
 

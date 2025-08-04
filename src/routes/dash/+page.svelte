@@ -100,9 +100,13 @@
 	{@const loading = loadingMeasurements[station.id]}
 	{@const isDefault = defaultStationId.value == station.id.toString()}
 	<li
-		class="group relative flex flex-col rounded-lg border {isDefault
-			? 'border-primary bg-muted/30 w-full'
-			: 'border-border w-sm'} hover:border-primary px-8 py-4 shadow-lg"
+		class={[
+			'group relative flex flex-col rounded-lg border px-8 py-4 shadow-lg',
+			{
+				'border-primary bg-muted/30 w-full': isDefault,
+				'border-border hover:border-primary w-sm': !isDefault
+			}
+		]}
 	>
 		{#if globalState.user}
 			<div
@@ -148,7 +152,7 @@
 						latitude={station.latitude}
 						longitude={station.longitude}
 						zoom={isDefault ? 15 : 13}
-						class={isDefault ? 'h-[250px]' : 'h-[100px]'}
+						class={{ 'h-[250px]': isDefault, 'h-[100px]': !isDefault }}
 						preview={true}
 					/>
 				</div>
@@ -190,7 +194,12 @@
 		<div class="mt-24 flex w-full max-w-4xl flex-col">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<h1 class="text-3xl font-medium">{$t('dash.title')}</h1>
-				<div class="flex w-full items-center gap-2 {globalState.user ? 'max-w-xs' : 'max-w-2xs'}">
+				<div
+					class={[
+						'flex w-full items-center gap-2',
+						{ 'max-w-xs': globalState.user, 'max-w-2xs': !globalState.user }
+					]}
+				>
 					<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
 					{#if globalState.user}
 						<Button onclick={() => openDialog()} variant="outline" size="sm">

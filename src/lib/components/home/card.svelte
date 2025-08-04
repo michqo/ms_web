@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Card from '@/components/ui/card';
+	import { cn } from '@/utils';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
@@ -19,9 +20,11 @@
 </script>
 
 <Card.Root
-	class="
-		group relative w-full overflow-hidden border border-zinc-200 bg-white shadow-lg hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-900/70
-		{sizeClasses[size]} {className}"
+	class={cn(
+		'group relative w-full overflow-hidden border border-zinc-200 bg-white shadow-lg hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-900/70',
+		sizeClasses[size],
+		className
+	)}
 >
 	<Card.Header class="relative items-center pt-8 pb-4">
 		<div

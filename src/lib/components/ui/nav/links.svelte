@@ -99,9 +99,11 @@
 				<data.icon class="h-4 w-4 transition-transform group-hover:scale-110" />
 			{/if}
 			<span
-				class={isActive
-					? `font-medium ${isRoot ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`
-					: `${isRoot ? 'inline-block' : 'ml-2 hidden lg:inline-block'}`}
+				class={{
+					'font-medium': isActive,
+					'ml-2 hidden lg:inline-block': !isRoot,
+					'inline-block': isRoot
+				}}
 			>
 				{data.name}
 			</span>

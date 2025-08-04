@@ -16,15 +16,25 @@
 	{@const isActive = userPrefersMode.current === id}
 	<DropdownMenu.Item
 		onclick={() => (id === 'system' ? resetMode() : setMode(id))}
-		class="group relative flex cursor-pointer items-center gap-3 rounded-lg px-3 py-3 transition-all duration-200 {isActive
-			? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300'
-			: 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}"
+		class={[
+			'group flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-all duration-200',
+			{
+				'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300':
+					isActive,
+				'hover:bg-slate-50 dark:hover:bg-slate-800/50': !isActive
+			}
+		]}
 	>
 		<!-- Icon container -->
 		<div
-			class="relative rounded-lg p-2 transition-all duration-200 {isActive
-				? `text-white shadow-lg`
-				: 'bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-slate-700'}"
+			class={[
+				'relative rounded-lg p-2 transition-all duration-200',
+				{
+					'text-white shadow-lg': isActive,
+					'bg-slate-100 group-hover:bg-slate-200 dark:bg-slate-800 dark:group-hover:bg-slate-700':
+						!isActive
+				}
+			]}
 		>
 			{#if id == 'dark'}
 				<Moon class="h-4 w-4" />
@@ -48,9 +58,13 @@
 		<div class="min-w-0 flex-1">
 			<div class="flex items-center justify-between">
 				<span
-					class="text-sm font-medium transition-colors ${isActive
-						? 'text-blue-700 dark:text-blue-300'
-						: 'text-slate-900 dark:text-slate-100'}"
+					class={[
+						'text-sm font-medium transition-colors',
+						{
+							'text-blue-700 dark:text-blue-300': isActive,
+							'text-slate-900 dark:text-slate-100': !isActive
+						}
+					]}
 				>
 					{label}
 				</span>

@@ -43,9 +43,9 @@
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#each forecast as item, i}
+			{#each forecast as item}
 				<Table.Row
-					class="hover:bg-muted/50 transition-colors {i == 0 ? 'bg-muted/20' : ''} cursor-pointer"
+					class="hover:bg-muted/50 cursor-pointer transition-colors"
 					onclick={() => handleRowClick(item)}
 				>
 					<Table.Cell class="font-medium">{displayTime(item)}</Table.Cell>
