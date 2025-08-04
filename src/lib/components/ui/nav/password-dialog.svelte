@@ -8,6 +8,8 @@
 	import * as Form from '../form';
 	import { Input } from '../input';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let open = $state(false);
 
@@ -19,8 +21,10 @@
 				const { current_password, new_password } = f.data;
 				await api.setPassword({ current_password, new_password });
 				open = false;
+				globalState.userOpen = false;
+				toast.success($t('menu.actions.account.dialog.password_success'));
 			} else {
-				console.error('Please fix the errors in the form.');
+				toast.error($t('menu.actions.account.dialog.password_error'));
 			}
 		}
 	});

@@ -8,6 +8,7 @@
 	import { Input } from '../input';
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		data: SuperValidated<DeleteSchema>;
@@ -21,9 +22,11 @@
 		validators: zodClient(deleteSchema),
 		onUpdate: async ({ form: f }) => {
 			if (f.valid) {
-				toast.success('Successfully deleted account.');
+				toast.success($t('menu.actions.account.dialog.delete_success'));
+				open = false;
+				globalState.userOpen = false;
 			} else {
-				toast.error('Failed to delete account.');
+				toast.error($t('menu.actions.account.dialog.delete_error'));
 			}
 		}
 	});

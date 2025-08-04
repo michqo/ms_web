@@ -11,13 +11,12 @@
 
 	interface Props {
 		data: SuperValidated<DeleteSchema>;
-		open: boolean;
 	}
 
-	let { data, open = $bindable() }: Props = $props();
+	let { data }: Props = $props();
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root bind:open={globalState.userOpen}>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>{$t('menu.actions.account.title')}</Dialog.Title>

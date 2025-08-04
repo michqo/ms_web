@@ -48,7 +48,7 @@
 			</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
-	<Profile bind:open={globalState.userOpen} data={deleteForm} />
+	<Profile data={deleteForm} />
 {:else}
 	<Dialog.Root bind:open={globalState.authOpen}>
 		<Dialog.Trigger

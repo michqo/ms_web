@@ -9,6 +9,7 @@
 	import { Input } from '../input';
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let open = $state(false);
 
@@ -24,8 +25,10 @@
 				if (f.valid) {
 					await api.setUsername(f.data);
 					open = false;
+					globalState.userOpen = false;
+					toast.success($t('menu.actions.account.dialog.username_success'));
 				} else {
-					console.error('Please fix the errors in the form.');
+					toast.error($t('menu.actions.account.dialog.username_error'));
 				}
 			}
 		}
