@@ -4,7 +4,7 @@
 		icon: any;
 	};
 
-	export { type Route };
+	export { type Route, logo };
 </script>
 
 <script lang="ts">
@@ -18,6 +18,7 @@
 	import { page } from '$app/state';
 	import { t } from '@/translations';
 	import { Button } from '../button';
+	import { get } from 'svelte/store';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -28,6 +29,17 @@
 
 	let { authForm, deleteForm }: Props = $props();
 </script>
+
+{#snippet logo()}
+	<div
+		class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
+	>
+		<Cloud class="h-4 w-4 text-white" />
+	</div>
+	<h1 class="text-accent-foreground hidden text-xl font-bold sm:block">
+		{get(t)('menu.app.title')}
+	</h1>
+{/snippet}
 
 <div
 	class={[
@@ -40,14 +52,7 @@
 >
 	<div class="flex w-full max-w-6xl items-center justify-between">
 		<Button variant="ghost" class="p-0" href="/">
-			<div
-				class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
-			>
-				<Cloud class="h-4 w-4 text-white" />
-			</div>
-			<h1 class="text-accent-foreground hidden text-xl font-bold sm:block">
-				{$t('menu.app.title')}
-			</h1>
+			{@render logo()}
 		</Button>
 		<Links />
 		<div class="hidden items-center gap-x-2 sm:flex">

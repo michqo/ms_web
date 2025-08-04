@@ -16,7 +16,7 @@
 	{@const isActive = get(locale) === code}
 	<DropdownMenu.Item
 		onclick={() => setLocale(code)}
-		class="group p-3 {isActive
+		class="group cursor-pointer p-3 {isActive
 			? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300'
 			: 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}"
 	>

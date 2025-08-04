@@ -16,7 +16,7 @@
 		Thermometer,
 		X
 	} from 'lucide-svelte';
-	import { type Route } from './nav.svelte';
+	import { logo, type Route } from './nav.svelte';
 	import ThemeToggle from './themetoggle.svelte';
 	import I18n from './i18n.svelte';
 	import { Button } from '@/components/ui/button';
@@ -125,22 +125,15 @@
 			showCloseButton={false}
 		>
 			<!-- Header with close button -->
-			<div class="flex w-full items-center justify-between border-b p-4 backdrop-blur">
-				<div class="flex items-center gap-3">
-					<div
-						class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
-					>
-						<Cloud class="h-5 w-5 text-white" />
-					</div>
-					<h2 class="text-lg font-bold">{$t('menu.app.title')}</h2>
-				</div>
+			<div class="flex w-full items-center justify-between border-b p-4">
+				{@render logo()}
 				<Button variant="ghost" size="icon" onclick={() => (mobileMenuOpen = false)}>
 					<X class="h-5 w-5" />
 				</Button>
 			</div>
 
 			<!-- Navigation Items -->
-			<div class="p-4">
+			<div class="w-full p-4">
 				<h3 class="text-primary mb-3 font-semibold">{$t('menu.routes.label')}</h3>
 
 				<div class="space-y-1">
