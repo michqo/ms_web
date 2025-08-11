@@ -5,6 +5,7 @@
 	import dayjs, { type Dayjs } from 'dayjs';
 	import DialogCard from './dialog-card.svelte';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		forecast: ForecastTransformed[];
@@ -73,7 +74,7 @@
 </div>
 
 <Dialog.Root bind:open={dialogOpen}>
-	<Dialog.Content class="sm:max-w-[500px]">
+	<Dialog.MobileContent class={['pt-5', { 'justify-between': globalState.isMobile.value }]}>
 		<Dialog.Header>
 			<Dialog.Title>
 				{selectedForecast?.time.format('dddd, MMMM D')}
@@ -95,5 +96,5 @@
 		<Dialog.Footer>
 			<Dialog.Close>{$t('forecast.table.dialog.close')}</Dialog.Close>
 		</Dialog.Footer>
-	</Dialog.Content>
+	</Dialog.MobileContent>
 </Dialog.Root>

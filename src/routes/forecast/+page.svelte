@@ -27,10 +27,10 @@
 	);
 </script>
 
-<main class="grid h-svh place-items-center">
+<main class="grid h-svh place-items-center p-4">
 	{#if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
-		<div class="my-6 flex w-full flex-col items-center">
+		<div class="mb-6 flex w-full flex-col items-center">
 			<h1 class="text-4xl font-medium">{globalState.station?.name}</h1>
 			<h2 class="text-muted-foreground mt-1 text-xl font-light">
 				{globalState.station?.city_name}

@@ -11,6 +11,7 @@
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
 	import FormPicker from '../ui/calendar/form-picker.svelte';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		open: boolean;
@@ -51,7 +52,12 @@
 </script>
 
 <AlertDialog.Root bind:open>
-	<AlertDialog.Content class="sm:max-w-md">
+	<AlertDialog.Content
+		class={[
+			'flex flex-col sm:max-w-md',
+			{ 'h-[100vh] w-screen max-w-none rounded-none border-0': globalState.isMobile.value }
+		]}
+	>
 		<AlertDialog.Header>
 			<AlertDialog.Title>{$t('measurements.dialog.delete.title')}</AlertDialog.Title>
 			<AlertDialog.Description>
@@ -59,19 +65,21 @@
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
-		<form method="POST" use:enhance class="space-y-4">
-			<FormPicker
-				{form}
-				name="created_at__gt"
-				label={$t('measurements.dialog.delete.form_label_newer')}
-				optional
-			/>
-			<FormPicker
-				{form}
-				name="created_at__lt"
-				label={$t('measurements.dialog.delete.form_label_older')}
-				optional
-			/>
+		<form method="POST" use:enhance class="mt-10 flex h-full flex-col justify-between">
+			<div class="flex flex-col gap-2">
+				<FormPicker
+					{form}
+					name="created_at__gt"
+					label={$t('measurements.dialog.delete.form_label_newer')}
+					optional
+				/>
+				<FormPicker
+					{form}
+					name="created_at__lt"
+					label={$t('measurements.dialog.delete.form_label_older')}
+					optional
+				/>
+			</div>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel type="button" onclick={handleClose} disabled={$submitting}
 					>{$t('measurements.dialog.delete.cancel')}</AlertDialog.Cancel

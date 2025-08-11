@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { api } from '@/shared';
-	import useLocalStorage, { globalState } from '@/shared/runes.svelte';
+	import { useLocalStorage, globalState, useMediaQuery } from '@/shared/runes.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
 	interface Props {
@@ -22,6 +22,10 @@
 			enabled: !!user
 		})
 	);
+
+	onMount(() => {
+		globalState.isMobile = useMediaQuery('(max-width: 640px)');
+	});
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
 	const stationIdParam = $derived(page.params.station);

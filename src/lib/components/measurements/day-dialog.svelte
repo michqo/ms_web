@@ -97,7 +97,7 @@
 </script>
 
 <Dialog.Root {open} {onOpenChange}>
-	<Dialog.Content class="h-screen overflow-y-auto sm:max-w-2xl md:max-h-[700px]">
+	<Dialog.MobileContent class="pt-10">
 		<Dialog.Header>
 			<div class="flex items-center justify-between">
 				<Button
@@ -180,5 +180,5 @@
 				</Tabs.Root>
 			{/if}
 		</div>
-	</Dialog.Content>
+	</Dialog.MobileContent>
 </Dialog.Root>

@@ -43,6 +43,22 @@
 	const { form: formData, enhance } = form;
 </script>
 
+{#snippet switchButton()}
+	<Button
+		variant={globalState.isMobile.value ? 'outline' : 'secondary'}
+		class="w-full cursor-pointer"
+		onclick={() => {
+			if (id === 'login') {
+				value = 'register';
+			} else {
+				value = 'login';
+			}
+		}}
+	>
+		{id === 'login' ? $t('auth.register') : $t('auth.login')}
+	</Button>
+{/snippet}
+
 <Card.Root class="border-0 bg-transparent shadow-none">
 	<Card.Header>
 		<Card.Title
@@ -50,21 +66,11 @@
 			>{actionWord} {$t('auth.card_title')}</Card.Title
 		>
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
-		<Card.Action>
-			<Button
-				variant="ghost"
-				class="cursor-pointer bg-slate-100 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
-				onclick={() => {
-					if (id === 'login') {
-						value = 'register';
-					} else {
-						value = 'login';
-					}
-				}}
-			>
-				{id === 'login' ? $t('auth.switch_to_register') : $t('auth.switch_to_login')}
-			</Button>
-		</Card.Action>
+		{#if !globalState.isMobile.value}
+			<Card.Action>
+				{@render switchButton()}
+			</Card.Action>
+		{/if}
 	</Card.Header>
 	<form method="POST" action="/actions?/auth" use:enhance>
 		<Card.Content class="space-y-6">
@@ -87,8 +93,11 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		</Card.Content>
-		<Card.Footer class="mt-8 flex flex-col items-center">
+		<Card.Footer class="mt-8 flex flex-col items-center gap-2">
 			<Form.Button class="w-full">{actionWord}</Form.Button>
+			{#if globalState.isMobile.value}
+				{@render switchButton()}
+			{/if}
 		</Card.Footer>
 	</form>
 </Card.Root>

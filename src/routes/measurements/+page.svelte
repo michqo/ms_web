@@ -100,7 +100,7 @@
 	}
 </script>
 
-<div class="flex w-full flex-col items-center gap-y-6 py-6">
+<div class="flex w-full flex-col items-center gap-y-6 p-5">
 	<div class="flex w-full max-w-xl items-center justify-between">
 		<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
 		{#if globalState.user}
@@ -151,10 +151,8 @@
 				</div>
 			</div>
 		{:else}
-			<div class="flex w-screen max-w-xl flex-col items-center gap-5">
-				<Skeleton class="h-[40px] w-full" />
-				<Skeleton class="h-[40px] w-full" />
-			</div>
+			<Skeleton class="h-[40px] w-full" />
+			<Skeleton class="h-[40px] w-full" />
 		{/if}
 	</main>
 

@@ -5,6 +5,7 @@ import Footer from './dialog-footer.svelte';
 import Header from './dialog-header.svelte';
 import Overlay from './dialog-overlay.svelte';
 import Content from './dialog-content.svelte';
+import MobileContent from './dialog-mobile-content.svelte';
 import Description from './dialog-description.svelte';
 import Trigger from './dialog-trigger.svelte';
 import Close from './dialog-close.svelte';
@@ -21,6 +22,7 @@ export {
 	Trigger,
 	Overlay,
 	Content,
+	MobileContent,
 	Description,
 	Close,
 	//
@@ -32,6 +34,7 @@ export {
 	Trigger as DialogTrigger,
 	Overlay as DialogOverlay,
 	Content as DialogContent,
+	MobileContent as DialogMobileContent,
 	Description as DialogDescription,
 	Close as DialogClose
 };

@@ -14,6 +14,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Label } from '../ui/label';
 	import { t } from '@/translations';
+	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		open: boolean;
@@ -75,7 +76,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Content class="sm:max-w-md">
+	<Dialog.MobileContent class={{ 'justify-between': globalState.isMobile.value }}>
 		<Dialog.Header>
 			<Dialog.Title
 				>{isNewStation
@@ -126,12 +127,17 @@
 				</div>
 			</Dialog.Footer>
 		</form>
-	</Dialog.Content>
+	</Dialog.MobileContent>
 </Dialog.Root>
 
 {#if !isNewStation}
 	<AlertDialog.Root bind:open={deleteDialogOpen}>
-		<AlertDialog.Content>
+		<AlertDialog.Content
+			class={[
+				'flex flex-col sm:max-w-md',
+				{ 'h-[100vh] w-screen max-w-none rounded-none border-0': globalState.isMobile.value }
+			]}
+		>
 			<AlertDialog.Header>
 				<AlertDialog.Title>{$t('dash.dialog.manageStation.confirm_title')}</AlertDialog.Title>
 				<AlertDialog.Description>

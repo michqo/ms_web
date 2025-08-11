@@ -6,7 +6,7 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Map } from '@/components/ui/map';
 	import { api } from '@/shared';
-	import useLocalStorage, { globalState } from '@/shared/runes.svelte';
+	import { useLocalStorage, globalState } from '@/shared/runes.svelte';
 	import type { Measurement, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
@@ -189,7 +189,7 @@
 	</li>
 {/snippet}
 
-<main class="flex w-screen flex-col items-center">
+<main class="flex w-screen flex-col items-center px-4">
 	{#if defaultStation && otherStations}
 		<div class="mt-24 flex w-full max-w-4xl flex-col">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
