@@ -151,8 +151,8 @@
 				</div>
 			</div>
 		{:else}
-			<Skeleton class="h-[40px] w-full" />
-			<Skeleton class="h-[40px] w-full" />
+			<Skeleton class="h-[40px] w-full max-w-xl" />
+			<Skeleton class="h-[40px] w-full max-w-xl" />
 		{/if}
 	</main>
 
