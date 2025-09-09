@@ -16,7 +16,7 @@
 
 <Dialog.Content
 	class={cn(
-		'flex flex-col sm:max-w-md',
+		'flex flex-col sm:max-w-lg',
 		{ 'h-[100vh] w-screen max-w-none rounded-none border-0': globalState.isMobile.value },
 		className
 	)}

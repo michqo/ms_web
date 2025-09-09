@@ -40,14 +40,15 @@
 			/>
 			<Spline class="stroke-2 {lineColors[lineColor]}" />
 			<Labels format="integer" />
-			<Highlight points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} lines />
+			<!-- <Highlight points={{ class: `fill-background stroke-2 ${lineColors[lineColor]}` }} lines /> -->
 		</Svg>
-
-		<Tooltip.Root let:data>
+		<!-- <Tooltip.Root>
+			{#snippet children({ data })}
 			<Tooltip.Header>{dayjs(data.date).format('ddd, MMMM D HH:00')}</Tooltip.Header>
 			<Tooltip.List>
 				<Tooltip.Item label={$t('measurements.chart.label')} value={data.value + suffix} />
 			</Tooltip.List>
-		</Tooltip.Root>
+			{/snippet}
+		</Tooltip.Root> -->
 	</Chart>
 </div>
