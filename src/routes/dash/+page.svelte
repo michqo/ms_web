@@ -190,17 +190,23 @@
 {/snippet}
 
 <main class="flex w-screen flex-col items-center px-4">
-	{#if defaultStation && otherStations}
+	{#if otherStations}
 		<div class="mt-24 flex w-full max-w-4xl flex-col">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<h1 class="text-3xl font-medium">{$t('dash.title')}</h1>
 				<div
 					class={[
-						'flex w-full items-center gap-2',
-						{ 'max-w-xs': globalState.user, 'max-w-2xs': !globalState.user }
+						'flex items-center gap-2',
+						{
+							'w-full': defaultStation,
+							'max-w-xs': globalState.user,
+							'max-w-2xs': !globalState.user
+						}
 					]}
 				>
-					<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
+					{#if defaultStation}
+						<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
+					{/if}
 					{#if globalState.user}
 						<Button onclick={() => openDialog()} variant="outline" size="sm">
 							<Plus class="mr-2 h-4 w-4" />
@@ -223,9 +229,11 @@
 			</div>
 		</div>
 
-		<div class="mt-10 w-full max-w-4xl">
-			{@render card(defaultStation!)}
-		</div>
+		{#if defaultStation}
+			<div class="mt-10 w-full max-w-4xl">
+				{@render card(defaultStation!)}
+			</div>
+		{/if}
 
 		<!-- Catalogue view with sorted stations by temperature -->
 		<div class="my-10 flex w-full max-w-5xl flex-wrap items-start justify-center gap-6">
