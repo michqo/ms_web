@@ -7,11 +7,12 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
+	import { globalState } from '@/shared/runes.svelte';
 	import type { ListResponse, Measurement, MeasurementStat } from '@/shared/types';
 	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs, { type Dayjs } from 'dayjs';
-	import { Calendar, ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import { Calendar, ChevronLeft, ChevronRight, Maximize, Minimize } from 'lucide-svelte';
 
 	interface Props {
 		open: boolean;
@@ -94,11 +95,21 @@
 			onNavigate(currentIndex + 1);
 		}
 	}
+
+	function onOpenChangeComplete(open: boolean) {
+		if (!open) {
+			isMaximized = false;
+		}
+	}
+
+	let isMaximized = $state(false);
 </script>
 
-<Dialog.Root {open} {onOpenChange}>
-	<Dialog.MobileContent class="pt-10">
-		<Dialog.Header>
+<Dialog.Root {open} {onOpenChange} {onOpenChangeComplete}>
+	<Dialog.MobileContent
+		class={{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized }}
+	>
+		<Dialog.Header class="pt-10">
 			<div class="flex items-center justify-between">
 				<Button
 					variant="ghost"
@@ -116,16 +127,34 @@
 					{formattedDate}
 				</Dialog.Title>
 
-				<Button
-					variant="ghost"
-					size="icon"
-					class="h-10 w-10 rounded-full"
-					onclick={goToNext}
-					disabled={currentIndex == weekStats.length - 1}
-					aria-label={$t('measurements.dialog.next')}
-				>
-					<ChevronRight class="h-5 w-5" />
-				</Button>
+				<div class="flex items-center gap-2">
+					<Button
+						variant="ghost"
+						size="icon"
+						class="h-10 w-10 rounded-full"
+						onclick={goToNext}
+						disabled={currentIndex == weekStats.length - 1}
+						aria-label={$t('measurements.dialog.next')}
+					>
+						<ChevronRight class="h-5 w-5" />
+					</Button>
+
+					{#if !globalState.isMobile.value}
+						<Button
+							variant="ghost"
+							size="icon"
+							class="h-10 w-10 rounded-full"
+							onclick={() => (isMaximized = !isMaximized)}
+							aria-label={$t('measurements.dialog.maximize')}
+						>
+							{#if isMaximized}
+								<Minimize class="h-5 w-5" />
+							{:else}
+								<Maximize class="h-5 w-5" />
+							{/if}
+						</Button>
+					{/if}
+				</div>
 			</div>
 		</Dialog.Header>
 

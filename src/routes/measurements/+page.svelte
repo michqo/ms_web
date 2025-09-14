@@ -133,22 +133,24 @@
 			<div class="flex w-full max-w-xl flex-col gap-y-6">
 				<StatsTable weekStats={$weekStatsQuery.data!} onSelectDay={handleSelectDay} />
 
-				<div class="w-full space-y-6">
-					<div class="grid grid-cols-1 gap-6">
-						<StatsChart
-							chartData={weekTempChartData!}
-							lineColor="red"
-							suffix="°C"
-							title={$t('measurements.chart.temperature')}
-						/>
-						<StatsChart
-							chartData={weekHumChartData!}
-							lineColor="blue"
-							suffix="%"
-							title={$t('measurements.chart.humidity')}
-						/>
+				{#if $weekStatsQuery.data!.length > 1}
+					<div class="w-full space-y-6">
+						<div class="grid grid-cols-1 gap-6">
+							<StatsChart
+								chartData={weekTempChartData!}
+								lineColor="red"
+								suffix="°C"
+								title={$t('measurements.chart.temperature')}
+							/>
+							<StatsChart
+								chartData={weekHumChartData!}
+								lineColor="blue"
+								suffix="%"
+								title={$t('measurements.chart.humidity')}
+							/>
+						</div>
 					</div>
-				</div>
+				{/if}
 			</div>
 		{:else}
 			<Skeleton class="h-[40px] w-full max-w-xl" />
