@@ -49,5 +49,17 @@
 	"searchPlaceholder": "Hľadať stanicu",
 	"totalStations": "Celkový počet staníc",
 	"avgTemperature": "Priemerná teplota",
-	"noStationsFound": "Nenašli sa žiadne stanice"
+	"noStationsFound": "Nenašli sa žiadne stanice",
+	"station": {
+		"dialog": {
+			"tabs": {
+				"overview": "Prehľad",
+				"charts": "Grafy"
+			},
+			"location": "Poloha",
+			"latestMeasurement": "Posledné meranie",
+			"noMeasurements": "Žiadne merania nie sú dostupné",
+			"noChartData": "Žiadne dáta pre graf nie sú dostupné"
+		}
+	}
 }

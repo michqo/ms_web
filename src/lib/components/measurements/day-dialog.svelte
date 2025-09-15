@@ -2,7 +2,7 @@
 	import Chart from '@/components/measurements/chart.svelte';
 	import Table from '@/components/measurements/table.svelte';
 	import * as Accordion from '@/components/ui/accordion';
-	import { Button } from '@/components/ui/button';
+	import { Button, buttonVariants } from '@/components/ui/button';
 	import * as Dialog from '@/components/ui/dialog';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
@@ -12,7 +12,7 @@
 	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs, { type Dayjs } from 'dayjs';
-	import { Calendar, ChevronLeft, ChevronRight, Maximize, Minimize } from 'lucide-svelte';
+	import { Calendar, ChevronLeft, ChevronRight, Maximize, Minimize, X } from 'lucide-svelte';
 
 	interface Props {
 		open: boolean;
@@ -107,53 +107,52 @@
 
 <Dialog.Root {open} {onOpenChange} {onOpenChangeComplete}>
 	<Dialog.MobileContent
-		class={{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized }}
+		class={[
+			'[&>button]:hidden',
+			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized }
+		]}
 	>
-		<Dialog.Header class="pt-10">
-			<div class="flex items-center justify-between">
+		<Dialog.Header class="flex flex-row items-center justify-between">
+			<Button
+				variant="ghost"
+				size="icon"
+				onclick={goToPrevious}
+				disabled={currentIndex == 0}
+				aria-label={$t('measurements.dialog.previous')}
+			>
+				<ChevronLeft class="size-4" />
+			</Button>
+
+			<Dialog.Title class="flex items-center gap-2">
+				<Calendar class="size-4" />
+				{formattedDate}
+			</Dialog.Title>
+
+			<div class="flex items-center gap-4">
 				<Button
 					variant="ghost"
 					size="icon"
-					class="h-10 w-10 rounded-full"
-					onclick={goToPrevious}
-					disabled={currentIndex == 0}
-					aria-label={$t('measurements.dialog.previous')}
+					onclick={goToNext}
+					disabled={currentIndex == weekStats.length - 1}
+					aria-label={$t('measurements.dialog.next')}
 				>
-					<ChevronLeft class="h-5 w-5" />
+					<ChevronRight class="size-4" />
 				</Button>
 
-				<Dialog.Title class="flex items-center gap-2">
-					<Calendar class="size-5" />
-					{formattedDate}
-				</Dialog.Title>
-
-				<div class="flex items-center gap-2">
-					<Button
-						variant="ghost"
-						size="icon"
-						class="h-10 w-10 rounded-full"
-						onclick={goToNext}
-						disabled={currentIndex == weekStats.length - 1}
-						aria-label={$t('measurements.dialog.next')}
-					>
-						<ChevronRight class="h-5 w-5" />
-					</Button>
-
+				<div class="flex gap-2">
 					{#if !globalState.isMobile.value}
-						<Button
-							variant="ghost"
-							size="icon"
-							class="h-10 w-10 rounded-full"
-							onclick={() => (isMaximized = !isMaximized)}
-							aria-label={$t('measurements.dialog.maximize')}
-						>
+						<Button variant="ghost" size="icon" onclick={() => (isMaximized = !isMaximized)}>
 							{#if isMaximized}
-								<Minimize class="h-5 w-5" />
+								<Minimize class="size-4" />
 							{:else}
-								<Maximize class="h-5 w-5" />
+								<Maximize class="size-4" />
 							{/if}
 						</Button>
 					{/if}
+
+					<Dialog.Close class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+						<X class="size-4" />
+					</Dialog.Close>
 				</div>
 			</div>
 		</Dialog.Header>

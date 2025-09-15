@@ -133,7 +133,7 @@
 			<div class="flex w-full max-w-xl flex-col gap-y-6">
 				<StatsTable weekStats={$weekStatsQuery.data!} onSelectDay={handleSelectDay} />
 
-				{#if $weekStatsQuery.data!.length > 1}
+				{#if $weekStatsQuery.data && $weekStatsQuery.data.length > 1}
 					<div class="w-full space-y-6">
 						<div class="grid grid-cols-1 gap-6">
 							<StatsChart

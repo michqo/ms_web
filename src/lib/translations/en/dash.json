@@ -49,5 +49,17 @@
 	"searchPlaceholder": "Search station",
 	"totalStations": "Total stations",
 	"avgTemperature": "Average temperature",
-	"noStationsFound": "No stations found"
+	"noStationsFound": "No stations found",
+	"station": {
+		"dialog": {
+			"tabs": {
+				"overview": "Overview",
+				"charts": "Charts"
+			},
+			"location": "Location",
+			"latestMeasurement": "Latest Measurement",
+			"noMeasurements": "No measurements available",
+			"noChartData": "No chart data available"
+		}
+	}
 }

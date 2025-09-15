@@ -23,11 +23,6 @@
 			"tabs_chart_humidity": "Vlhkosť"
 		}
 	},
-	"chart": {
-		"temperature": "Týždenná teplota",
-		"humidity": "Týždenná vlhkosť",
-		"label": "Hodnota"
-	},
 	"table": {
 		"caption": "Denné štatistiky",
 		"date": "Deň",
@@ -41,5 +36,12 @@
 		"noData": "Pre dnešok nie sú k dispozícii žiadne údaje",
 		"label": "Denné priemery",
 		"latest": "Najnovšie"
+	},
+	"temperature": "Teplota",
+	"humidity": "Vlhkosť",
+	"lastUpdated": "Naposledy aktualizované",
+	"chart": {
+		"temperature": "Teplota",
+		"humidity": "Vlhkosť"
 	}
 }

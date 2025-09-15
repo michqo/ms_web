@@ -23,11 +23,6 @@
 			"tabs_chart_humidity": "Humidity"
 		}
 	},
-	"chart": {
-		"temperature": "Weekly Temperature",
-		"humidity": "Weekly Humidity",
-		"label": "Value"
-	},
 	"table": {
 		"caption": "Daily Statistics",
 		"date": "Day",
@@ -41,5 +36,12 @@
 		"noData": "No data available for today",
 		"label": "Daily Averages",
 		"latest": "Latest"
+	},
+	"temperature": "Temperature",
+	"humidity": "Humidity",
+	"lastUpdated": "Last updated",
+	"chart": {
+		"temperature": "Temperature",
+		"humidity": "Humidity"
 	}
 }

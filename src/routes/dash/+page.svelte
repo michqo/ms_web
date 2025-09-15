@@ -1,4 +1,5 @@
 <script lang="ts">
+	import StationEditDialog from '@/components/station/station-edit-dialog.svelte';
 	import StationDialog from '@/components/station/station-dialog.svelte';
 	import { Input } from '@/components/ui/input';
 	import { Badge } from '@/components/ui/badge';
@@ -20,10 +21,12 @@
 		refetchOnWindowFocus: false
 	});
 
-	let selectedStation: Partial<Station> | undefined = $state();
-	let dialogOpen = $state(false);
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
 
+	let selectedEditStation: Station | undefined = $state();
+	let selectedPreviewStation: Station | undefined = $state();
+	let editDialogOpen = $state(false);
+	let previewDialogOpen = $state(false);
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
 	let search = $state('');
@@ -84,9 +87,13 @@
 		}
 	}
 
-	function openDialog(station?: Partial<Station>) {
-		selectedStation = station || undefined;
-		dialogOpen = true;
+	function openEditDialog(station?: Station) {
+		selectedEditStation = station || undefined;
+		editDialogOpen = true;
+	}
+	function openPreviewDialog(station: Station) {
+		selectedPreviewStation = station;
+		previewDialogOpen = true;
 	}
 
 	function setSelectedStation(stationId: number) {
@@ -130,33 +137,35 @@
 					onclick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
-						openDialog(station);
+						openEditDialog(station);
 					}}
 				>
 					<Edit class="h-4 w-4" />
 				</Button>
 			</div>
 		{/if}
-		<a href="/measurements?station={station.id}" class="flex flex-col">
-			<div class="flex items-center gap-2">
-				<span>{station.name}</span>
-				{#if defaultStationId.value == station.id.toString()}
-					<span class="text-muted-foreground text-xs">({$t('dash.default')})</span>
-				{/if}
-			</div>
-			<span class="text-muted-foreground">{station.city_name}</span>
-
-			{#if station.latitude && station.longitude}
-				<div class="mt-3 mb-2 w-full overflow-hidden rounded-md">
-					<Map
-						latitude={station.latitude}
-						longitude={station.longitude}
-						zoom={isDefault ? 15 : 13}
-						class={{ 'h-[250px]': isDefault, 'h-[100px]': !isDefault }}
-						preview={true}
-					/>
+		<div class="flex flex-col">
+			<button class="cursor-pointer text-left" onclick={() => openPreviewDialog(station)}>
+				<div class="flex items-center gap-2">
+					<span>{station.name}</span>
+					{#if defaultStationId.value == station.id.toString()}
+						<span class="text-muted-foreground text-xs">({$t('dash.default')})</span>
+					{/if}
 				</div>
-			{/if}
+				<span class="text-muted-foreground">{station.city_name}</span>
+
+				{#if station.latitude && station.longitude}
+					<div class="mt-3 mb-2 w-full overflow-hidden rounded-md">
+						<Map
+							latitude={station.latitude}
+							longitude={station.longitude}
+							zoom={isDefault ? 15 : 13}
+							class={{ 'h-[250px]': isDefault, 'h-[100px]': !isDefault }}
+							preview={true}
+						/>
+					</div>
+				{/if}
+			</button>
 
 			<div class="mt-3 grid grid-cols-2 gap-2 border-t pt-2">
 				<div class="flex items-center gap-2">
@@ -185,7 +194,7 @@
 					</div>
 				{/if}
 			</div>
-		</a>
+		</div>
 	</li>
 {/snippet}
 
@@ -208,7 +217,7 @@
 						<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
 					{/if}
 					{#if globalState.user}
-						<Button onclick={() => openDialog()} variant="outline" size="sm">
+						<Button onclick={() => openEditDialog()} variant="outline" size="sm">
 							<Plus class="mr-2 h-4 w-4" />
 							{$t('dash.dialog.createStation.trigger')}
 						</Button>
@@ -237,7 +246,7 @@
 
 		<!-- Catalogue view with sorted stations by temperature -->
 		<div class="my-10 flex w-full max-w-5xl flex-wrap items-start justify-center gap-6">
-			{#if filteredStations.length === 0}
+			{#if otherStations.length > 0 && filteredStations.length === 0}
 				<div class="text-muted-foreground w-full py-10 text-center text-lg">
 					{$t('dash.noStationsFound')}
 				</div>
@@ -249,7 +258,8 @@
 		</div>
 	{/if}
 
-	{#key selectedStation}
-		<StationDialog bind:open={dialogOpen} station={selectedStation} />
+	{#key selectedEditStation}
+		<StationEditDialog bind:open={editDialogOpen} station={selectedEditStation} />
 	{/key}
+	<StationDialog bind:open={previewDialogOpen} station={selectedPreviewStation} />
 </main>
