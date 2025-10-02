@@ -61,5 +61,11 @@
 			"noMeasurements": "No measurements available",
 			"noChartData": "No chart data available"
 		}
+	},
+	"chart": {
+		"temperature": "Temperature",
+		"humidity": "Humidity",
+		"value": "Value",
+		"time": "Time"
 	}
 }

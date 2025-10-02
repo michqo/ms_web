@@ -61,5 +61,11 @@
 			"noMeasurements": "Žiadne merania nie sú dostupné",
 			"noChartData": "Žiadne dáta pre graf nie sú dostupné"
 		}
+	},
+	"chart": {
+		"temperature": "Teplota",
+		"humidity": "Vlhkosť",
+		"value": "Hodnota",
+		"time": "Čas"
 	}
 }

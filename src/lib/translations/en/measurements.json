@@ -42,6 +42,7 @@
 	"lastUpdated": "Last updated",
 	"chart": {
 		"temperature": "Temperature",
-		"humidity": "Humidity"
+		"humidity": "Humidity",
+		"label": "Value"
 	}
 }

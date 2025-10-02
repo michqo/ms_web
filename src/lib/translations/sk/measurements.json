@@ -42,6 +42,7 @@
 	"lastUpdated": "Naposledy aktualizované",
 	"chart": {
 		"temperature": "Teplota",
-		"humidity": "Vlhkosť"
+		"humidity": "Vlhkosť",
+		"label": "Hodnota"
 	}
 }

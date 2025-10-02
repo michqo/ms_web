@@ -30,7 +30,7 @@
 		"formsnap": "2.0.1",
 		"husky": "^9.1.7",
 		"kit@latest": "link:sveltejs/kit@latest",
-		"layerchart": "2.0.0-next.27",
+		"layerchart": "2.0.0-next.39",
 		"lint-staged": "^16.1.2",
 		"lucide-svelte": "^0.487.0",
 		"mode-watcher": "^1.1.0",
