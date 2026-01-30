@@ -1,25 +1,96 @@
 <script lang="ts">
-	import Chart from '@/components/measurements/chart.svelte';
+	import * as AlertDialog from '@/components/ui/alert-dialog';
 	import * as Dialog from '@/components/ui/dialog';
+	import * as Form from '@/components/ui/form';
+	import { Input } from '@/components/ui/input';
+	import { Label } from '@/components/ui/label';
 	import { Map } from '@/components/ui/map';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
 	import { api } from '@/shared';
-	import type { ListResponse, Measurement, MeasurementStat, Station } from '@/shared/types';
+	import { globalState } from '@/shared/runes.svelte';
+	import { stationSchema } from '@/shared/schemas';
+	import type { Station } from '@/shared/types';
 	import { t } from '@/translations';
-	import { createQuery } from '@tanstack/svelte-query';
+	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { Calendar, Droplets, MapPin, Maximize, Minimize, Thermometer, X } from 'lucide-svelte';
+	import {
+		Calendar,
+		Droplets,
+		Edit,
+		MapPin,
+		Maximize,
+		Minimize,
+		Thermometer,
+		Trash2,
+		X
+	} from 'lucide-svelte';
+	import { toast } from 'svelte-sonner';
+	import { superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 	import StatsChart from '../measurements/stats-chart.svelte';
 	import Button, { buttonVariants } from '../ui/button/button.svelte';
-	import { globalState } from '@/shared/runes.svelte';
 
 	interface Props {
 		open: boolean;
 		station?: Station;
+		startInEditMode?: boolean;
 	}
 
-	let { open = $bindable(), station }: Props = $props();
+	let { open = $bindable(), station, startInEditMode = false }: Props = $props();
+
+	const client = useQueryClient();
+	const isNewStation = !station;
+
+	let editMode = $state(isNewStation || startInEditMode);
+	let deleteDialogOpen = $state(false);
+
+	const form = superForm(
+		{
+			name: station?.name || '',
+			latitude: station?.latitude || 48.1,
+			longitude: station?.longitude || 17.1
+		},
+		{
+			SPA: true,
+			validators: zodClient(stationSchema),
+			onUpdate: async ({ form: f }) => {
+				if (f.valid) {
+					try {
+						if (isNewStation) {
+							await api.createStation(f.data);
+							toast.success($t('dash.dialog.messages.createSuccess'));
+						} else {
+							await api.updateStation(station?.id!, f.data);
+							toast.success($t('dash.dialog.messages.updateSuccess'));
+						}
+						await client.invalidateQueries({ queryKey: ['stations'] });
+						open = false;
+					} catch (error) {
+						toast.error(
+							isNewStation
+								? $t('dash.dialog.messages.createError')
+								: $t('dash.dialog.messages.updateError')
+						);
+					}
+				}
+			}
+		}
+	);
+
+	const { form: formData, enhance } = form;
+
+	async function deleteStation() {
+		try {
+			await api.deleteStation(station?.id!);
+			toast.success($t('dash.dialog.messages.deleteSuccess'));
+			deleteDialogOpen = false;
+			open = false;
+			await client.invalidateQueries({ queryKey: ['stations'] });
+		} catch (error) {
+			toast.error($t('dash.dialog.messages.deleteError'));
+		}
+	}
 
 	const startOfWeek = dayjs().subtract(6, 'days').startOf('day');
 	const endOfWeek = dayjs().endOf('day');
@@ -65,6 +136,7 @@
 		if (!open) {
 			isMaximized = false;
 			activeTab = 'overview';
+			editMode = isNewStation || startInEditMode;
 		}
 	}
 
@@ -85,15 +157,27 @@
 		<Dialog.Header class="flex w-full flex-row justify-between">
 			<div class="flex w-fit flex-col space-y-2">
 				<Dialog.Title class="flex items-center gap-2">
-					<MapPin class="size-5" />
-					{station?.name}
+					{#if !editMode}
+						<MapPin class="size-5" />
+						{station?.name}
+					{:else}
+						{isNewStation
+							? $t('dash.dialog.createStation.title')
+							: $t('dash.dialog.manageStation.title')}
+					{/if}
 				</Dialog.Title>
 				<Dialog.Description>
-					{station?.city_name}
+					{#if !editMode}
+						{station?.city_name}
+					{:else}
+						{isNewStation
+							? $t('dash.dialog.createStation.description')
+							: $t('dash.dialog.manageStation.description')}
+					{/if}
 				</Dialog.Description>
 			</div>
 			<div class="flex gap-2">
-				{#if !globalState.isMobile.value}
+				{#if !isNewStation && !editMode && !globalState.isMobile.value}
 					<Button variant="ghost" size="icon" onclick={() => (isMaximized = !isMaximized)}>
 						{#if isMaximized}
 							<Minimize class="size-4" />
@@ -102,13 +186,65 @@
 						{/if}
 					</Button>
 				{/if}
+				{#if globalState.user && !isNewStation}
+					<Button
+						variant="ghost"
+						size="icon"
+						onclick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							editMode = !editMode;
+						}}
+					>
+						<Edit class="h-4 w-4" />
+					</Button>
+				{/if}
 				<Dialog.Close class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
 					<X class="size-4" />
 				</Dialog.Close>
 			</div>
 		</Dialog.Header>
 
-		{#if station}
+		{#if editMode}
+			<form method="POST" use:enhance class="space-y-4">
+				<Form.Field {form} name="name">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>{$t('dash.dialog.createStation.form_name')}</Form.Label>
+							<Input {...props} bind:value={$formData.name} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+
+				<div class="mt-4 space-y-2">
+					<Label>{$t('dash.dialog.createStation.form_location')}</Label>
+					<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
+				</div>
+
+				<Dialog.Footer class="flex-col pt-4 sm:flex-row sm:justify-between">
+					{#if !isNewStation}
+						<Button type="button" variant="destructive" onclick={() => (deleteDialogOpen = true)}>
+							<Trash2 class="mr-2 h-4 w-4" />
+							{$t('dash.dialog.manageStation.delete')}
+						</Button>
+					{:else}
+						<div></div>
+					{/if}
+
+					<div class="mt-2 flex gap-2 sm:mt-0">
+						<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
+							{$t('dash.dialog.manageStation.cancel')}
+						</Dialog.Close>
+						<Form.Button type="submit"
+							>{isNewStation
+								? $t('dash.dialog.createStation.create')
+								: $t('dash.dialog.manageStation.update')}</Form.Button
+						>
+					</div>
+				</Dialog.Footer>
+			</form>
+		{:else if station}
 			<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
 				<Tabs.List class="grid w-full grid-cols-2">
 					<Tabs.Trigger value="overview">{$t('dash.station.dialog.tabs.overview')}</Tabs.Trigger>
@@ -126,7 +262,7 @@
 							<div class="w-full overflow-hidden rounded-lg border">
 								{#key isMaximized}
 									<Map
-										class="h-[300px] w-full"
+										class={['w-full', { 'h-[500px]': isMaximized, 'h-[250px]': !isMaximized }]}
 										latitude={station.latitude}
 										longitude={station.longitude}
 										zoom={15}
@@ -211,3 +347,30 @@
 		{/if}
 	</Dialog.MobileContent>
 </Dialog.Root>
+
+{#if !isNewStation}
+	<AlertDialog.Root bind:open={deleteDialogOpen}>
+		<AlertDialog.Content
+			class={[
+				'flex flex-col sm:max-w-md',
+				{ 'h-[100vh] w-screen max-w-none rounded-none border-0': globalState.isMobile.value }
+			]}
+		>
+			<AlertDialog.Header>
+				<AlertDialog.Title>{$t('dash.dialog.manageStation.confirm_title')}</AlertDialog.Title>
+				<AlertDialog.Description>
+					{$t('dash.dialog.manageStation.confirm_description')}
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>{$t('dash.dialog.manageStation.cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action
+					onclick={deleteStation}
+					class="bg-destructive text-destructive-foreground"
+				>
+					{$t('dash.dialog.manageStation.delete')}
+				</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+{/if}

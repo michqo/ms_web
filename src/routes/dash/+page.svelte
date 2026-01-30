@@ -1,5 +1,4 @@
 <script lang="ts">
-	import StationEditDialog from '@/components/station/station-edit-dialog.svelte';
 	import StationDialog from '@/components/station/station-dialog.svelte';
 	import { Input } from '@/components/ui/input';
 	import { Badge } from '@/components/ui/badge';
@@ -23,10 +22,9 @@
 
 	const defaultStationId = useLocalStorage('defaultStationId', undefined);
 
-	let selectedEditStation: Station | undefined = $state();
-	let selectedPreviewStation: Station | undefined = $state();
-	let editDialogOpen = $state(false);
-	let previewDialogOpen = $state(false);
+	let selectedStation: Station | undefined | null = $state();
+	let dialogOpen = $state(false);
+	let startInEditMode = $state(false);
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
 	let search = $state('');
@@ -87,13 +85,10 @@
 		}
 	}
 
-	function openEditDialog(station?: Station) {
-		selectedEditStation = station || undefined;
-		editDialogOpen = true;
-	}
-	function openPreviewDialog(station: Station) {
-		selectedPreviewStation = station;
-		previewDialogOpen = true;
+	function openDialog(station?: Station, edit = false) {
+		selectedStation = station;
+		startInEditMode = edit;
+		dialogOpen = true;
 	}
 
 	function setSelectedStation(stationId: number) {
@@ -137,7 +132,7 @@
 					onclick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
-						openEditDialog(station);
+						openDialog(station, true);
 					}}
 				>
 					<Edit class="h-4 w-4" />
@@ -145,7 +140,7 @@
 			</div>
 		{/if}
 		<div class="flex flex-col">
-			<button class="cursor-pointer text-left" onclick={() => openPreviewDialog(station)}>
+			<button class="cursor-pointer text-left" onclick={() => openDialog(station)}>
 				<div class="flex items-center gap-2">
 					<span>{station.name}</span>
 					{#if defaultStationId.value == station.id.toString()}
@@ -217,7 +212,7 @@
 						<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
 					{/if}
 					{#if globalState.user}
-						<Button onclick={() => openEditDialog()} variant="outline" size="sm">
+						<Button onclick={() => openDialog()} variant="outline" size="sm">
 							<Plus class="mr-2 h-4 w-4" />
 							{$t('dash.dialog.createStation.trigger')}
 						</Button>
@@ -258,8 +253,11 @@
 		</div>
 	{/if}
 
-	{#key selectedEditStation}
-		<StationEditDialog bind:open={editDialogOpen} station={selectedEditStation} />
+	{#key selectedStation}
+		<StationDialog
+			bind:open={dialogOpen}
+			station={selectedStation ?? undefined}
+			{startInEditMode}
+		/>
 	{/key}
-	<StationDialog bind:open={previewDialogOpen} station={selectedPreviewStation} />
 </main>
