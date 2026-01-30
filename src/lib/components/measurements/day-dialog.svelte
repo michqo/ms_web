@@ -108,8 +108,9 @@
 <Dialog.Root {open} {onOpenChange} {onOpenChangeComplete}>
 	<Dialog.MobileContent
 		class={[
-			'[&>button]:hidden',
-			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized }
+			'flex flex-col [&>button]:hidden',
+			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized },
+			{ 'max-h-[80vh]': !isMaximized }
 		]}
 	>
 		<Dialog.Header class="flex flex-row items-center justify-between">
@@ -157,7 +158,7 @@
 			</div>
 		</Dialog.Header>
 
-		<div class="space-y-6">
+		<div class="space-y-6 overflow-y-auto">
 			{#if $dayMeasurementsQuery.isLoading}
 				<div class="flex flex-col gap-4">
 					<Skeleton class="h-[40px] w-full" />
@@ -169,13 +170,17 @@
 				</div>
 			{:else}
 				<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
-					<Tabs.List class="grid w-full grid-cols-2">
+					<Tabs.List class="bg-background sticky top-0 z-10 grid w-full grid-cols-2">
 						<Tabs.Trigger value="chart">{$t('measurements.dialog.day.tabs_chart')}</Tabs.Trigger>
 						<Tabs.Trigger value="table">{$t('measurements.dialog.day.tabs_table')}</Tabs.Trigger>
 					</Tabs.List>
 
 					<Tabs.Content value="chart" class="pt-4">
-						<Accordion.Root value={['temp']} type="multiple" class="w-full">
+						<Accordion.Root
+							value={isMaximized ? ['temp', 'hum'] : ['temp']}
+							type="multiple"
+							class="w-full"
+						>
 							<Accordion.Item value="temp">
 								<Accordion.Trigger
 									>{$t('measurements.dialog.day.tabs_chart_temperature')}</Accordion.Trigger
