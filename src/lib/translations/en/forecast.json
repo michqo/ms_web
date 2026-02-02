@@ -1,4 +1,5 @@
 {
+	"pageTitle": "MS Web - Forecast",
 	"card": {
 		"title": "Forecast",
 		"error_current": "Failed to load current data",

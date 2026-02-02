@@ -31,11 +31,7 @@
 </script>
 
 {#snippet logo()}
-	<div
-		class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
-	>
-		<Cloud class="h-4 w-4 text-white" />
-	</div>
+	<img src="/favicon.png" alt="logo" class="h-8 w-8 rounded-xl" />
 	<h1 class="text-accent-foreground hidden text-xl font-bold sm:block">
 		{get(t)('menu.app.title')}
 	</h1>

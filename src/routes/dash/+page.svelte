@@ -193,6 +193,10 @@
 	</li>
 {/snippet}
 
+<svelte:head>
+	<title>{$t('dash.pageTitle')}</title>
+</svelte:head>
+
 <main class="flex w-screen flex-col items-center px-4">
 	{#if otherStations}
 		<div class="mt-24 flex w-full max-w-4xl flex-col">

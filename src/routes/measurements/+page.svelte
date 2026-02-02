@@ -100,6 +100,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{$t('measurements.pageTitle')}</title>
+</svelte:head>
+
 <div class="flex w-full flex-col items-center gap-y-6 p-5">
 	<div class="flex w-full max-w-xl items-center justify-between">
 		<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>

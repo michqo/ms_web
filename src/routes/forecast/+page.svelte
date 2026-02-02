@@ -6,6 +6,7 @@
 	import { globalState } from '@/shared/runes.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
+	import { t } from '@/translations';
 
 	const dataQuery = $derived(
 		createQuery({
@@ -26,6 +27,10 @@
 		})
 	);
 </script>
+
+<svelte:head>
+	<title>{$t('forecast.pageTitle')}</title>
+</svelte:head>
 
 <main class="grid h-svh place-items-center p-4">
 	{#if $dataQuery.data}

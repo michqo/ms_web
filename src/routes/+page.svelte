@@ -141,6 +141,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{$t('home.pageTitle')}</title>
+</svelte:head>
+
 <main class="min-h-screen">
 	<!-- Hero Section -->
 	<section
