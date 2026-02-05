@@ -151,10 +151,8 @@
 		id="hero"
 		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/50"
 	>
-		<div id="hero-content" class="container mx-auto px-4 text-center">
-			<Badge variant="secondary" class="mb-6 px-4 py-2 text-sm font-medium">
-				🌤️ {$t('home.hero.badge')}
-			</Badge>
+		<div id="hero-content" class="container mx-auto flex flex-col items-center px-4 text-center">
+			<img src="/favicon.png" alt="MS Logo" class="h-40 w-40 md:mb-4" />
 			<h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
 				{@html $t('home.hero.title')}
 			</h1>
