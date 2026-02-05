@@ -60,7 +60,9 @@
 			"location": "Location",
 			"latestMeasurement": "Latest Measurement",
 			"noMeasurements": "No measurements available",
-			"noChartData": "No chart data available"
+			"noChartData": "No chart data available",
+			"forecast": "Forecast",
+			"noForecast": "No forecast data available"
 		}
 	},
 	"chart": {

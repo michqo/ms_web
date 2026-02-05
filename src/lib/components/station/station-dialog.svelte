@@ -7,7 +7,7 @@
 	import { Map } from '@/components/ui/map';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import * as Tabs from '@/components/ui/tabs';
-	import { api } from '@/shared';
+	import { api, transformForecast } from '@/shared';
 	import { globalState } from '@/shared/runes.svelte';
 	import { stationSchema } from '@/shared/schemas';
 	import type { Station } from '@/shared/types';
@@ -30,6 +30,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import StatsChart from '../measurements/stats-chart.svelte';
 	import Button, { buttonVariants } from '../ui/button/button.svelte';
+	import MiniForecastCard from '../forecast/mini-card.svelte';
 
 	interface Props {
 		open: boolean;
@@ -126,6 +127,19 @@
 		})
 	);
 
+	const forecastQuery = $derived(
+		createQuery({
+			queryKey: ['forecast', station?.id],
+			queryFn: () => api.getForecast(station!.id),
+			enabled: !!station?.id && open && !editMode,
+			select: (data) => ({
+				...data,
+				created_at: dayjs(data.created_at),
+				results: transformForecast(data)
+			})
+		})
+	);
+
 	const createChartData = (key: 'temperature' | 'humidity') =>
 		$weekStatsQuery.data?.map((data) => ({
 			date: data.date.toDate(),
@@ -150,8 +164,8 @@
 <Dialog.Root bind:open {onOpenChangeComplete}>
 	<Dialog.MobileContent
 		class={[
-			'max-w-4xl [&>button]:hidden',
-			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized }
+			'flex max-h-[90vh] max-w-4xl flex-col [&>button]:hidden',
+			{ 'h-screen! max-h-none! w-screen! max-w-none! rounded-none border-0': isMaximized }
 		]}
 	>
 		<Dialog.Header class="flex w-full flex-row justify-between">
@@ -205,146 +219,160 @@
 			</div>
 		</Dialog.Header>
 
-		{#if editMode}
-			<form method="POST" use:enhance class="space-y-4">
-				<Form.Field {form} name="name">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>{$t('dash.dialog.createStation.form_name')}</Form.Label>
-							<Input {...props} bind:value={$formData.name} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
+		<div class="overflow-y-auto pr-1">
+			{#if editMode}
+				<form method="POST" use:enhance class="space-y-4">
+					<Form.Field {form} name="name">
+						<Form.Control>
+							{#snippet children({ props })}
+								<Form.Label>{$t('dash.dialog.createStation.form_name')}</Form.Label>
+								<Input {...props} bind:value={$formData.name} />
+							{/snippet}
+						</Form.Control>
+						<Form.FieldErrors />
+					</Form.Field>
 
-				<div class="mt-4 space-y-2">
-					<Label>{$t('dash.dialog.createStation.form_location')}</Label>
-					<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
-				</div>
-
-				<Dialog.Footer class="flex-col pt-4 sm:flex-row sm:justify-between">
-					{#if !isNewStation}
-						<Button type="button" variant="destructive" onclick={() => (deleteDialogOpen = true)}>
-							<Trash2 class="mr-2 h-4 w-4" />
-							{$t('dash.dialog.manageStation.delete')}
-						</Button>
-					{:else}
-						<div></div>
-					{/if}
-
-					<div class="mt-2 flex gap-2 sm:mt-0">
-						<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
-							{$t('dash.dialog.manageStation.cancel')}
-						</Dialog.Close>
-						<Form.Button type="submit"
-							>{isNewStation
-								? $t('dash.dialog.createStation.create')
-								: $t('dash.dialog.manageStation.update')}</Form.Button
-						>
+					<div class="mt-4 space-y-2">
+						<Label>{$t('dash.dialog.createStation.form_location')}</Label>
+						<Map bind:latitude={$formData.latitude} bind:longitude={$formData.longitude} />
 					</div>
-				</Dialog.Footer>
-			</form>
-		{:else if station}
-			<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
-				<Tabs.List class="grid w-full grid-cols-2">
-					<Tabs.Trigger value="overview">{$t('dash.station.dialog.tabs.overview')}</Tabs.Trigger>
-					<Tabs.Trigger value="charts">{$t('dash.station.dialog.tabs.charts')}</Tabs.Trigger>
-				</Tabs.List>
 
-				<Tabs.Content
-					value="overview"
-					class={{ 'space-y-5': !isMaximized, 'space-y-10': isMaximized }}
-				>
-					<!-- Map Section -->
-					{#if station.latitude && station.longitude}
-						<div class="space-y-2">
-							<h3 class="text-lg font-semibold">{$t('dash.station.dialog.location')}</h3>
-							<div class="w-full overflow-hidden rounded-lg border">
-								{#key isMaximized}
-									<Map
-										class={['w-full', { 'h-[500px]': isMaximized, 'h-[250px]': !isMaximized }]}
-										latitude={station.latitude}
-										longitude={station.longitude}
-										zoom={15}
-										preview
-									/>
-								{/key}
-							</div>
-						</div>
-					{/if}
-
-					<!-- Latest Measurement -->
-					<div class="space-y-2">
-						<h3 class="text-lg font-semibold">{$t('dash.station.dialog.latestMeasurement')}</h3>
-						{#if $latestMeasurementQuery.isLoading}
-							<div class="flex gap-4">
-								<Skeleton class="h-16 w-full" />
-								<Skeleton class="h-16 w-full" />
-							</div>
-						{:else if $latestMeasurementQuery.data}
-							<div class="grid grid-cols-2 gap-4">
-								<div class="flex items-center gap-3 rounded-lg border p-4">
-									<Thermometer class="text-primary size-8" />
-									<div>
-										<p class="text-2xl font-bold">
-											{$latestMeasurementQuery.data.temperature}°C
-										</p>
-										<p class="text-muted-foreground text-sm">
-											{$t('measurements.temperature')}
-										</p>
-									</div>
-								</div>
-								<div class="flex items-center gap-3 rounded-lg border p-4">
-									<Droplets class="size-8 text-blue-500" />
-									<div>
-										<p class="text-2xl font-bold text-blue-500">
-											{$latestMeasurementQuery.data.humidity}%
-										</p>
-										<p class="text-muted-foreground text-sm">
-											{$t('measurements.humidity')}
-										</p>
-									</div>
-								</div>
-							</div>
-							<p class="text-muted-foreground flex items-center gap-1 text-sm">
-								<Calendar class="size-4" />
-								{$t('measurements.lastUpdated')}: {$latestMeasurementQuery.data.timestamp.format(
-									'MMM D, HH:mm'
-								)}
-							</p>
+					<Dialog.Footer class="flex-col pt-4 sm:flex-row sm:justify-between">
+						{#if !isNewStation}
+							<Button type="button" variant="destructive" onclick={() => (deleteDialogOpen = true)}>
+								<Trash2 class="mr-2 h-4 w-4" />
+								{$t('dash.dialog.manageStation.delete')}
+							</Button>
 						{:else}
-							<p class="text-muted-foreground">{$t('dash.station.dialog.noMeasurements')}</p>
+							<div></div>
 						{/if}
-					</div>
-				</Tabs.Content>
 
-				<Tabs.Content value="charts" class="space-y-6">
-					{#if $weekStatsQuery.isLoading}
-						<div class="space-y-4">
-							<Skeleton class="h-[300px] w-full" />
-							<Skeleton class="h-[300px] w-full" />
+						<div class="mt-2 flex gap-2 sm:mt-0">
+							<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
+								{$t('dash.dialog.manageStation.cancel')}
+							</Dialog.Close>
+							<Form.Button type="submit"
+								>{isNewStation
+									? $t('dash.dialog.createStation.create')
+									: $t('dash.dialog.manageStation.update')}</Form.Button
+							>
 						</div>
-					{:else if tempChartData && humChartData && tempChartData.length > 0 && humChartData.length > 0}
-						<StatsChart
-							chartData={tempChartData}
-							lineColor="red"
-							suffix="°C"
-							title={$t('measurements.chart.temperature')}
-						/>
-						<StatsChart
-							chartData={humChartData}
-							lineColor="purple"
-							suffix="%"
-							title={$t('measurements.chart.humidity')}
-						/>
-					{:else}
-						<div class="flex h-32 items-center justify-center">
-							<p class="text-muted-foreground">{$t('dash.station.dialog.noChartData')}</p>
+					</Dialog.Footer>
+				</form>
+			{:else if station}
+				<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
+					<Tabs.List class="grid w-full grid-cols-2">
+						<Tabs.Trigger value="overview">{$t('dash.station.dialog.tabs.overview')}</Tabs.Trigger>
+						<Tabs.Trigger value="charts">{$t('dash.station.dialog.tabs.charts')}</Tabs.Trigger>
+					</Tabs.List>
+
+					<Tabs.Content
+						value="overview"
+						class={{ 'space-y-5': !isMaximized, 'space-y-10': isMaximized }}
+					>
+						<!-- Map Section -->
+						{#if station.latitude && station.longitude}
+							<div class="space-y-2">
+								<h3 class="text-lg font-semibold">{$t('dash.station.dialog.location')}</h3>
+								<div class="w-full overflow-hidden rounded-lg border">
+									{#key isMaximized}
+										<Map
+											class={['w-full', { 'h-[500px]': isMaximized, 'h-[250px]': !isMaximized }]}
+											latitude={station.latitude}
+											longitude={station.longitude}
+											zoom={15}
+											preview
+										/>
+									{/key}
+								</div>
+							</div>
+						{/if}
+
+						<!-- Latest Measurement -->
+						<div class="space-y-2">
+							<h3 class="text-lg font-semibold">{$t('dash.station.dialog.latestMeasurement')}</h3>
+							{#if $latestMeasurementQuery.isLoading}
+								<div class="flex gap-4">
+									<Skeleton class="h-16 w-full" />
+									<Skeleton class="h-16 w-full" />
+								</div>
+							{:else if $latestMeasurementQuery.data}
+								<div class="grid grid-cols-2 gap-4">
+									<div class="flex items-center gap-3 rounded-lg border p-4">
+										<Thermometer class="text-primary size-8" />
+										<div>
+											<p class="text-2xl font-bold">
+												{$latestMeasurementQuery.data.temperature}°C
+											</p>
+											<p class="text-muted-foreground text-sm">
+												{$t('measurements.temperature')}
+											</p>
+										</div>
+									</div>
+									<div class="flex items-center gap-3 rounded-lg border p-4">
+										<Droplets class="size-8 text-blue-500" />
+										<div>
+											<p class="text-2xl font-bold text-blue-500">
+												{$latestMeasurementQuery.data.humidity}%
+											</p>
+											<p class="text-muted-foreground text-sm">
+												{$t('measurements.humidity')}
+											</p>
+										</div>
+									</div>
+								</div>
+								<p class="text-muted-foreground flex items-center gap-1 text-sm">
+									<Calendar class="size-4" />
+									{$t('measurements.lastUpdated')}: {$latestMeasurementQuery.data.timestamp.format(
+										'MMM D, HH:mm'
+									)}
+								</p>
+							{:else}
+								<p class="text-muted-foreground">{$t('dash.station.dialog.noMeasurements')}</p>
+							{/if}
 						</div>
-					{/if}
-				</Tabs.Content>
-			</Tabs.Root>
-		{/if}
+
+						<!-- Forecast -->
+						<div class="space-y-2">
+							<h3 class="text-lg font-semibold">{$t('dash.station.dialog.forecast')}</h3>
+							{#if $forecastQuery.isLoading}
+								<Skeleton class="h-24 w-full" />
+							{:else if $forecastQuery.data}
+								<MiniForecastCard forecast={$forecastQuery.data.results[0]} />
+							{:else}
+								<p class="text-muted-foreground">{$t('dash.station.dialog.noForecast')}</p>
+							{/if}
+						</div>
+					</Tabs.Content>
+
+					<Tabs.Content value="charts" class="space-y-6">
+						{#if $weekStatsQuery.isLoading}
+							<div class="space-y-4">
+								<Skeleton class="h-[300px] w-full" />
+								<Skeleton class="h-[300px] w-full" />
+							</div>
+						{:else if tempChartData && humChartData && tempChartData.length > 0 && humChartData.length > 0}
+							<StatsChart
+								chartData={tempChartData}
+								lineColor="red"
+								suffix="°C"
+								title={$t('measurements.chart.temperature')}
+							/>
+							<StatsChart
+								chartData={humChartData}
+								lineColor="purple"
+								suffix="%"
+								title={$t('measurements.chart.humidity')}
+							/>
+						{:else}
+							<div class="flex h-32 items-center justify-center">
+								<p class="text-muted-foreground">{$t('dash.station.dialog.noChartData')}</p>
+							</div>
+						{/if}
+					</Tabs.Content>
+				</Tabs.Root>
+			{/if}
+		</div>
 	</Dialog.MobileContent>
 </Dialog.Root>
 
