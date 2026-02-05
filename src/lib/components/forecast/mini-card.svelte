@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ForecastTransformed } from '@/shared/types';
-	import { t } from '@/translations';
 	import { CloudRain, Droplets, Thermometer } from 'lucide-svelte';
 
 	interface Props {
@@ -13,8 +12,9 @@
 	<div class="flex items-center gap-4">
 		<forecast.icon width={100} height={100} />
 		<div>
-			<p class="text-lg font-semibold">
-				{Math.round(forecast.temperature_max)}° / {Math.round(forecast.temperature_min)}°
+			<p class="text-lg">
+				<span class="font-semibold">{Math.round(forecast.temperature_max)}°</span>
+				<span class="text-muted-foreground">/ {Math.round(forecast.temperature_min)}°</span>
 			</p>
 		</div>
 	</div>

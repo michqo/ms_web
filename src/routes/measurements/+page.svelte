@@ -106,7 +106,10 @@
 
 <div class="flex w-full flex-col items-center gap-y-6 p-5">
 	<div class="flex w-full max-w-xl items-center justify-between">
-		<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
+		<h1 class="text-2xl font-bold tracking-tight">
+			{globalState.station?.name}
+			{$t('measurements.title')}
+		</h1>
 		{#if globalState.user}
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
