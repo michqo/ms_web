@@ -3,10 +3,10 @@
 	import { passwordSchema } from '@/shared/schemas';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { buttonVariants } from '../button/button.svelte';
-	import * as Dialog from '../dialog';
-	import * as Form from '../form';
-	import { Input } from '../input';
+	import { buttonVariants } from '../../button/button.svelte';
+	import * as Dialog from '../../dialog';
+	import * as Form from '../../form';
+	import { Input } from '../../input';
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
 	import { toast } from 'svelte-sonner';
@@ -33,12 +33,15 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+	<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'sm' })}
 		>{$t('menu.actions.account.dialog.password_action')}</Dialog.Trigger
 	>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>{$t('menu.actions.account.dialog.password_action')}</Dialog.Title>
+			<Dialog.Description>
+				{$t('menu.actions.account.dialog.password_description')}
+			</Dialog.Description>
 		</Dialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
 			<Form.Field {form} name="current_password">

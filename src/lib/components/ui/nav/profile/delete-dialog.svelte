@@ -2,10 +2,10 @@
 	import { deleteSchema, type DeleteSchema } from '@/shared/schemas';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import * as AlertDialog from '../alert-dialog';
-	import { buttonVariants } from '../button/button.svelte';
-	import * as Form from '../form';
-	import { Input } from '../input';
+	import * as AlertDialog from '../../alert-dialog';
+	import { buttonVariants } from '../../button/button.svelte';
+	import * as Form from '../../form';
+	import { Input } from '../../input';
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
@@ -35,12 +35,15 @@
 </script>
 
 <AlertDialog.Root bind:open>
-	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' })}
+	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive', size: 'sm' })}
 		>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Trigger
 	>
 	<AlertDialog.Content class="sm:max-w-md">
 		<AlertDialog.Header>
 			<AlertDialog.Title>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Title>
+			<AlertDialog.Description>
+				{$t('menu.actions.account.dialog.delete_confirm_description')}
+			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
 			<Form.Field {form} name="current_password">

@@ -10,7 +10,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import AuthCard from '../AuthCard.svelte';
 	import * as Dialog from '../dialog';
-	import Profile from './profile.svelte';
+	import Profile from './profile/profile.svelte';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
