@@ -60,12 +60,14 @@
 					<DropdownMenu.Item
 						class="group w-full cursor-pointer p-3 text-red-500 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/50"
 					>
-						<div
-							class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-red-100/50 p-2 transition-all duration-200 group-hover:bg-red-100 dark:bg-red-900/50 dark:group-hover:bg-red-900"
-						>
-							<LogOut class="h-4 w-4" />
-						</div>
-						<span class="text-sm font-medium">{$t('menu.actions.account.logout')}</span>
+						<button type="submit" class="flex w-full cursor-pointer items-center gap-2">
+							<div
+								class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-red-100/50 p-2 transition-all duration-200 group-hover:bg-red-100 dark:bg-red-900/50 dark:group-hover:bg-red-900"
+							>
+								<LogOut class="h-4 w-4" />
+							</div>
+							<span class="text-sm font-medium">{$t('menu.actions.account.logout')}</span>
+						</button>
 					</DropdownMenu.Item>
 				</form>
 			</div>
