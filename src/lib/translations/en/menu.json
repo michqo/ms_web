@@ -58,7 +58,7 @@
 				"form_current_password": "Current Password",
 				"form_save_changes": "Save changes",
 				"form_new_password": "New Password",
-				"form_configm_password": "Confirm Password",
+				"form_confirm_password": "Confirm Password",
 				"form_confirm_new_password": "Confirm New Password",
 				"form_cancel": "Cancel"
 			}

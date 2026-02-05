@@ -24,28 +24,51 @@
 
 {#if globalState.user}
 	<DropdownMenu.Root>
-		<DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'sm' })}>
-			<CircleUser class="mr-2 h-4 w-4" />
-			{globalState.user}
+		<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+			<CircleUser class="h-4 w-4" />
 		</DropdownMenu.Trigger>
-		<DropdownMenu.Content>
-			<DropdownMenu.Label>{$t('menu.actions.account.label')}</DropdownMenu.Label>
-			<DropdownMenu.Separator />
-			<DropdownMenu.Item onclick={() => (globalState.userOpen = true)}>
-				<User class="mr-2 h-4 w-4" />
-				{$t('menu.actions.account.item')}
-			</DropdownMenu.Item>
-			<DropdownMenu.Item>
-				<form method="POST" action="/actions?/logout" class="w-full" use:enhance>
-					<button
-						type="submit"
-						class="flex w-full cursor-default items-center gap-2 text-left text-red-500"
+		<DropdownMenu.Content class="p-2">
+			<!-- Header -->
+			<div class="mb-2 px-3 py-2">
+				<div class="mb-1 flex items-center gap-2">
+					<div
+						class="rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 p-2 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300"
 					>
-						<LogOut class="mr-2 h-4 w-4" />
-						{$t('menu.actions.account.logout')}
-					</button>
+						<User class="h-3.5 w-3.5" />
+					</div>
+					<DropdownMenu.Label class="p-0 text-sm font-semibold text-slate-900 dark:text-slate-100">
+						{globalState.user}
+					</DropdownMenu.Label>
+				</div>
+			</div>
+			<DropdownMenu.Separator />
+			<div class="space-y-1">
+				<DropdownMenu.Item
+					onclick={() => (globalState.userOpen = true)}
+					class="group cursor-pointer p-3 transition-all duration-200 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+				>
+					<div
+						class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 p-2 transition-all duration-200 group-hover:bg-slate-200 dark:bg-slate-800 dark:group-hover:bg-slate-700"
+					>
+						<User class="h-4 w-4" />
+					</div>
+					<span class="text-sm font-medium text-slate-900 dark:text-slate-100">
+						{$t('menu.actions.account.item')}
+					</span>
+				</DropdownMenu.Item>
+				<form method="POST" action="/actions?/logout" class="w-full" use:enhance>
+					<DropdownMenu.Item
+						class="group w-full cursor-pointer p-3 text-red-500 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/50"
+					>
+						<div
+							class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-red-100/50 p-2 transition-all duration-200 group-hover:bg-red-100 dark:bg-red-900/50 dark:group-hover:bg-red-900"
+						>
+							<LogOut class="h-4 w-4" />
+						</div>
+						<span class="text-sm font-medium">{$t('menu.actions.account.logout')}</span>
+					</DropdownMenu.Item>
 				</form>
-			</DropdownMenu.Item>
+			</div>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 	<Profile data={deleteForm} />

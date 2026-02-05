@@ -213,7 +213,12 @@
 					]}
 				>
 					{#if defaultStation}
-						<Input type="text" placeholder={$t('dash.searchPlaceholder')} bind:value={search} />
+						<Input
+							type="text"
+							placeholder={$t('dash.searchPlaceholder')}
+							bind:value={search}
+							class="h-8"
+						/>
 					{/if}
 					{#if globalState.user}
 						<Button onclick={() => openDialog()} variant="outline" size="sm">
