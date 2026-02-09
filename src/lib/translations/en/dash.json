@@ -7,9 +7,9 @@
 	"lastUpdated": "Last updated",
 	"dialog": {
 		"createStation": {
-			"trigger": "Add",
+			"trigger": "New",
 			"title": "Create Station",
-			"description": "Add a new station",
+			"description": "Create a new station",
 			"form_name": "Name",
 			"form_location": "Location",
 			"form_location_coordinates": "Current coordinates",

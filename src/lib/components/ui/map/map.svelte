@@ -14,17 +14,19 @@
 	let locationError = $state<string | null>(null);
 
 	interface Props {
-		latitude: number;
-		longitude: number;
+		latitude?: number;
+		longitude?: number;
+		posArray?: [number, number][];
 		zoom?: number;
 		class?: ClassValue;
 		preview?: boolean;
 	}
 
 	let {
-		latitude = $bindable(),
-		longitude = $bindable(),
-		zoom = 8,
+		latitude = $bindable(0),
+		longitude = $bindable(0),
+		posArray,
+		zoom,
 		class: className,
 		preview = false
 	}: Props = $props();
@@ -36,12 +38,14 @@
 		const L = await import('leaflet');
 
 		// Create map with controls disabled in preview mode
+		zoom = posArray ? 7 : zoom ? zoom : 8;
+		const controlAllow = !preview || !!posArray;
 		map = L.map(mapElement, {
-			zoomControl: !preview,
-			dragging: !preview,
-			scrollWheelZoom: !preview,
-			doubleClickZoom: !preview,
-			touchZoom: !preview
+			zoomControl: controlAllow,
+			dragging: controlAllow,
+			scrollWheelZoom: controlAllow,
+			doubleClickZoom: controlAllow,
+			touchZoom: controlAllow
 		}).setView([latitude, longitude], zoom);
 
 		// Add tile layer
@@ -51,22 +55,30 @@
 				: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		// Add marker at initial position
-		marker = L.marker([latitude, longitude], {
-			draggable: !preview
-		}).addTo(map);
+		if (posArray && posArray.length > 0) {
+			const markers = posArray.map((pos) => L.marker(pos));
+			const featureGroup = L.featureGroup(markers).addTo(map);
+			map.fitBounds(featureGroup.getBounds(), { padding: [50, 50] });
+		}
 
-		// Only add event listeners if not in preview mode
-		if (!preview) {
-			// Update coordinates when marker is dragged
-			marker.on('dragend', updateCoordinates);
+		if (!posArray) {
+			// Add marker at initial position
+			marker = L.marker([latitude, longitude], {
+				draggable: !preview
+			}).addTo(map);
 
-			// Update coordinates when map is clicked
-			map.on('click', (e: LeafletMouseEvent) => {
-				if (!marker) return;
-				marker.setLatLng(e.latlng);
-				updateCoordinates();
-			});
+			// Only add event listeners if not in preview mode
+			if (!preview) {
+				// Update coordinates when marker is dragged
+				marker.on('dragend', updateCoordinates);
+
+				// Update coordinates when map is clicked
+				map.on('click', (e: LeafletMouseEvent) => {
+					if (!marker) return;
+					marker.setLatLng(e.latlng);
+					updateCoordinates();
+				});
+			}
 		}
 	});
 
