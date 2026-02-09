@@ -59,7 +59,7 @@
 			<div class="flex items-center justify-between">
 				<span
 					class={[
-						'text-sm font-medium transition-colors',
+						'text-sm transition-colors',
 						{
 							'text-blue-700 dark:text-blue-300': isActive,
 							'text-slate-900 dark:text-slate-100': !isActive
