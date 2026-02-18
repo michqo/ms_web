@@ -180,65 +180,6 @@
 				</p>
 			</div>
 
-			<!-- Features -->
-			<div class="mb-20 flex flex-wrap justify-center gap-8">
-				<FeatureCard class="primary-feature">
-					{#snippet header()}
-						<Thermometer class="h-7 w-7 text-red-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.real_time.title')}
-						</h3>
-						<p class="text-slate-600 dark:text-slate-400">
-							{$t('home.features.real_time.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard class="primary-feature">
-					{#snippet header()}
-						<BarChart3 class="h-7 w-7 text-blue-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.analytics.title')}
-						</h3>
-						<p class="text-slate-600 dark:text-slate-400">
-							{$t('home.features.analytics.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard class="primary-feature">
-					{#snippet header()}
-						<CloudRain class="h-7 w-7 text-cyan-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.forecast.title')}
-						</h3>
-						<p class="text-slate-600 dark:text-slate-400">
-							{$t('home.features.forecast.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-
-				<FeatureCard class="primary-feature">
-					{#snippet header()}
-						<Gauge class="h-7 w-7 text-purple-600" />
-					{/snippet}
-					{#snippet content()}
-						<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">
-							{$t('home.features.dashboard.title')}
-						</h3>
-						<p class="text-slate-600 dark:text-slate-400">
-							{$t('home.features.dashboard.description')}
-						</p>
-					{/snippet}
-				</FeatureCard>
-			</div>
-
 			<!-- Feature Preview Cards -->
 			<div class="flex flex-wrap items-start justify-center gap-8">
 				<FeatureCard class="preview-card">
