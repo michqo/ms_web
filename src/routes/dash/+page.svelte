@@ -230,7 +230,7 @@
 		</div>
 
 		<div class="w-full max-w-4xl overflow-hidden rounded-md py-5">
-			<Map stations={$stationsQuery.data?.results} preview={true} />
+			<Map stations={$stationsQuery.data?.results} {openDialog} preview={true} />
 		</div>
 
 		<!-- Catalogue view with sorted stations by temperature -->

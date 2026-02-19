@@ -18,6 +18,7 @@
 		latitude?: number;
 		longitude?: number;
 		stations?: Station[];
+		openDialog?: (station?: Station) => void;
 		zoom?: number;
 		class?: ClassValue;
 		preview?: boolean;
@@ -27,6 +28,7 @@
 		latitude = $bindable(0),
 		longitude = $bindable(0),
 		stations,
+		openDialog,
 		zoom,
 		class: className,
 		preview = false
@@ -58,12 +60,16 @@
 
 		if (stations && stations.length > 0) {
 			const markers = stations.map((i) =>
-				L.marker([i.latitude, i.longitude]).bindTooltip(i.name, {
-					permanent: true,
-					direction: 'top',
-					className: 'ms-marker-tooltip',
-					offset: [0, -10]
-				})
+				L.marker([i.latitude, i.longitude])
+					.bindTooltip(i.name, {
+						permanent: true,
+						direction: 'top',
+						className: 'ms-marker-tooltip',
+						offset: [0, -10]
+					})
+					.on('click', () => {
+						openDialog?.(i);
+					})
 			);
 			const featureGroup = L.featureGroup(markers).addTo(map);
 			map.fitBounds(featureGroup.getBounds(), { padding: [50, 50] });
