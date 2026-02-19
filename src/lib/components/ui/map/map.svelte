@@ -6,6 +6,7 @@
 	import { Button } from '../button';
 	import { t } from '@/translations';
 	import type { ClassValue } from 'svelte/elements';
+	import type { Station } from '@/shared/types';
 
 	let mapElement: HTMLDivElement;
 	let map = $state<LeafletMap | null>(null);
@@ -16,7 +17,7 @@
 	interface Props {
 		latitude?: number;
 		longitude?: number;
-		posArray?: [number, number][];
+		stations?: Station[];
 		zoom?: number;
 		class?: ClassValue;
 		preview?: boolean;
@@ -25,7 +26,7 @@
 	let {
 		latitude = $bindable(0),
 		longitude = $bindable(0),
-		posArray,
+		stations,
 		zoom,
 		class: className,
 		preview = false
@@ -38,8 +39,8 @@
 		const L = await import('leaflet');
 
 		// Create map with controls disabled in preview mode
-		zoom = posArray ? 7 : zoom ? zoom : 8;
-		const controlAllow = !preview || !!posArray;
+		zoom = stations ? 7 : zoom ? zoom : 8;
+		const controlAllow = !preview || !!stations;
 		map = L.map(mapElement, {
 			zoomControl: controlAllow,
 			dragging: controlAllow,
@@ -55,13 +56,20 @@
 				: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		if (posArray && posArray.length > 0) {
-			const markers = posArray.map((pos) => L.marker(pos));
+		if (stations && stations.length > 0) {
+			const markers = stations.map((i) =>
+				L.marker([i.latitude, i.longitude]).bindTooltip(i.name, {
+					permanent: true,
+					direction: 'top',
+					className: 'ms-marker-tooltip',
+					offset: [0, -10]
+				})
+			);
 			const featureGroup = L.featureGroup(markers).addTo(map);
 			map.fitBounds(featureGroup.getBounds(), { padding: [50, 50] });
 		}
 
-		if (!posArray) {
+		if (!stations) {
 			// Add marker at initial position
 			marker = L.marker([latitude, longitude], {
 				draggable: !preview
@@ -219,5 +227,23 @@
 	}
 	:global(.leaflet-control-attribution) {
 		display: none !important;
+	}
+
+	/* Shadcn style for markers */
+	:global(.ms-marker-tooltip) {
+		background-color: var(--card) !important;
+		color: var(--card-foreground) !important;
+		border: 1px solid var(--border) !important;
+		border-radius: var(--radius) !important;
+		box-shadow:
+			0 4px 6px -1px rgb(0 0 0 / 0.1),
+			0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+		font-weight: 500 !important;
+		padding: 2px 8px !important;
+		font-size: 0.75rem !important;
+	}
+
+	:global(.ms-marker-tooltip::before) {
+		border-top-color: var(--border) !important;
 	}
 </style>

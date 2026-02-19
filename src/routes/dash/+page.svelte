@@ -33,12 +33,6 @@
 		$stationsQuery.data?.results.find((station) => station.id.toString() === defaultStationId.value)
 	);
 
-	const stationsPosArray = $derived(
-		$stationsQuery.data?.results.map(
-			(station) => [station.latitude, station.longitude] as [number, number]
-		) ?? []
-	);
-
 	const filteredStations = $derived(
 		$stationsQuery.data?.results.filter((station) =>
 			`${station.name.toLowerCase()} ${station.city_name.toLowerCase()}`.includes(
@@ -236,7 +230,7 @@
 		</div>
 
 		<div class="w-full max-w-4xl overflow-hidden rounded-md py-5">
-			<Map posArray={stationsPosArray} preview={true} />
+			<Map stations={$stationsQuery.data?.results} preview={true} />
 		</div>
 
 		<!-- Catalogue view with sorted stations by temperature -->
