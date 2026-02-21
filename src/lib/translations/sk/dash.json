@@ -5,6 +5,8 @@
 	"setDefault": "Nastaviť ako predvolené",
 	"noData": "Žiadne údaje",
 	"lastUpdated": "Naposledy aktualizované",
+	"temperature": "Teplota",
+	"humidity": "Vlhkosť",
 	"dialog": {
 		"createStation": {
 			"trigger": "Pridať",

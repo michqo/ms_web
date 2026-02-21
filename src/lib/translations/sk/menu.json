@@ -67,6 +67,11 @@
 				"form_confirm_new_password": "Potvrdiť nové heslo",
 				"form_cancel": "Zrušiť"
 			}
+		},
+		"selector": {
+			"label": "Výber stanice",
+			"action": "Vyberte stanicu pre zobrazenie jej dát",
+			"success": "Stanica bola nastavená ako predvolená"
 		}
 	}
 }

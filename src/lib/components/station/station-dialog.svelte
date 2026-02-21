@@ -164,7 +164,7 @@
 <Dialog.Root bind:open {onOpenChangeComplete}>
 	<Dialog.MobileContent
 		class={[
-			'flex max-h-[90vh] max-w-4xl flex-col [&>button]:hidden',
+			'[&>button]:hidden',
 			{ 'h-screen! max-h-none! w-screen! max-w-none! rounded-none border-0': isMaximized }
 		]}
 	>

@@ -4,21 +4,20 @@
 		icon: any;
 	};
 
-	export { type Route, logo };
+	export { logo, type Route };
 </script>
 
 <script lang="ts">
+	import { page } from '$app/state';
 	import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
-	import { Cloud, Github } from 'lucide-svelte';
+	import { t } from '@/translations';
+	import { get } from 'svelte/store';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Actions from './actions.svelte';
 	import I18n from './i18n.svelte';
 	import Links from './links.svelte';
+	import StationSelector from './station-selector.svelte';
 	import ThemeToggle from './themetoggle.svelte';
-	import { page } from '$app/state';
-	import { t } from '@/translations';
-	import { Button } from '../button';
-	import { get } from 'svelte/store';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
@@ -47,9 +46,7 @@
 	]}
 >
 	<div class="flex w-full max-w-6xl items-center justify-between">
-		<Button variant="ghost" class="p-0" href="/">
-			{@render logo()}
-		</Button>
+		<StationSelector />
 		<Links />
 		<div class="hidden items-center gap-x-2 sm:flex">
 			<ThemeToggle />

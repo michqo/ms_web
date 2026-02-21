@@ -108,9 +108,9 @@
 <Dialog.Root {open} {onOpenChange} {onOpenChangeComplete}>
 	<Dialog.MobileContent
 		class={[
-			'flex flex-col [&>button]:hidden',
+			'[&>button]:hidden',
 			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized },
-			{ 'max-h-[80vh]': !isMaximized }
+			{ 'sm:max-h-[90vh]': !isMaximized }
 		]}
 	>
 		<Dialog.Header class="flex flex-row items-center justify-between">

@@ -67,6 +67,11 @@
 				"form_confirm_new_password": "Confirm New Password",
 				"form_cancel": "Cancel"
 			}
+		},
+		"selector": {
+			"label": "Station selector",
+			"action": "Choose a station to view its data",
+			"success": "Station selected as default"
 		}
 	}
 }

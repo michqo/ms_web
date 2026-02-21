@@ -5,6 +5,8 @@
 	"setDefault": "Set as default",
 	"noData": "No data",
 	"lastUpdated": "Last updated",
+	"temperature": "Temp",
+	"humidity": "Hum",
 	"dialog": {
 		"createStation": {
 			"trigger": "New",
