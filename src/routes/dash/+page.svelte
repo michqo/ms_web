@@ -20,18 +20,12 @@
 		refetchOnWindowFocus: false
 	});
 
-	const defaultStationId = useLocalStorage('defaultStationId', undefined);
-
 	let selectedStation: Station | undefined | null = $state();
 	let dialogOpen = $state(false);
 	let startInEditMode = $state(false);
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
 	let search = $state('');
-
-	const defaultStation = $derived(
-		$stationsQuery.data?.results.find((station) => station.id.toString() === defaultStationId.value)
-	);
 
 	const filteredStations = $derived(
 		$stationsQuery.data?.results.filter((station) =>
@@ -52,7 +46,6 @@
 	);
 
 	$effect(() => {
-		// When stations load, fetch measurements for all stations
 		if ($stationsQuery.data?.results.length) {
 			fetchAllLatestMeasurements();
 		}
@@ -87,24 +80,26 @@
 	}
 
 	function setSelectedStation(stationId: number) {
-		defaultStationId.value = stationId.toString();
-		toast.success('Station selected as default');
+		globalState.stationId = stationId;
+		toast.success($t('menu.actions.selector.success'));
 	}
 </script>
 
 {#snippet card(station: Station)}
 	{@const latest = latestMeasurements[station.id]}
 	{@const loading = loadingMeasurements[station.id]}
+	{@const isSelected = globalState.stationId === station.id}
 	<li
-		class="group border-border hover:border-primary relative flex w-sm flex-col rounded-lg border px-8 py-4 shadow-lg"
+		class="group border-border hover:border-primary bg-card relative flex h-full w-full flex-col rounded-xl border p-6 shadow-sm transition-all hover:shadow-md"
 	>
 		{#if globalState.user}
 			<div
-				class="absolute top-3 right-3 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
+				class="absolute top-4 right-4 z-10 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100"
 			>
 				<Button
-					variant={globalState.stationId == station.id ? 'default' : 'ghost'}
+					variant={isSelected ? 'default' : 'ghost'}
 					size="icon"
+					class="size-8"
 					onclick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
@@ -117,6 +112,7 @@
 				<Button
 					variant="ghost"
 					size="icon"
+					class="size-8"
 					onclick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
@@ -127,57 +123,85 @@
 				</Button>
 			</div>
 		{/if}
-		<div class="flex flex-col">
-			<button class="cursor-pointer text-left" onclick={() => openDialog(station)}>
+
+		<button
+			class="flex h-full flex-col justify-between text-start"
+			onclick={() => openDialog(station)}
+		>
+			<div class="mb-4 flex flex-col gap-1">
 				<div class="flex items-center gap-2">
-					<span>{station.name}</span>
-					{#if defaultStationId.value == station.id.toString()}
-						<span class="text-muted-foreground text-xs">({$t('dash.default')})</span>
+					<span class="text-xl font-bold tracking-tight">{station.name}</span>
+					{#if isSelected}
+						<Badge variant="secondary" class="h-5 px-1.5 text-[10px] tracking-wider uppercase">
+							{$t('dash.default')}
+						</Badge>
 					{/if}
 				</div>
-				<span class="text-muted-foreground">{station.city_name}</span>
+				<span class="text-muted-foreground text-sm font-medium">{station.city_name}</span>
+			</div>
 
-				{#if station.latitude && station.longitude}
-					<div class="mt-3 mb-2 w-full overflow-hidden rounded-md">
-						<Map
-							latitude={station.latitude}
-							longitude={station.longitude}
-							zoom={15}
-							class="h-[100px]"
-							preview={true}
-						/>
+			{#if station.latitude && station.longitude}
+				<div class="bg-muted/30 mb-4 w-full overflow-hidden rounded-lg border">
+					<Map
+						latitude={station.latitude}
+						longitude={station.longitude}
+						zoom={15}
+						class="h-[120px]"
+						preview={true}
+					/>
+				</div>
+			{/if}
+
+			<div>
+				<div class="grid grid-cols-2 gap-4 border-t pt-4">
+					<div class="flex items-center gap-3">
+						<div class="bg-primary/10 flex size-9 items-center justify-center rounded-lg">
+							<Thermometer class="text-primary h-5 w-5" />
+						</div>
+						<div class="flex flex-col">
+							<span class="text-muted-foreground text-[10px] font-bold tracking-tight uppercase"
+								>{$t('dash.temperature')}</span
+							>
+							{#if loading}
+								<Skeleton class="h-5 w-12" />
+							{:else if latest}
+								<span class="text-lg font-bold tabular-nums"
+									>{Math.round(latest.temperature!)}°C</span
+								>
+							{:else}
+								<span class="text-muted-foreground text-sm font-semibold">{$t('dash.noData')}</span>
+							{/if}
+						</div>
 					</div>
-				{/if}
-			</button>
+					<div class="flex items-center gap-3">
+						<div class="flex size-9 items-center justify-center rounded-lg bg-cyan-500/10">
+							<Droplets class="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+						</div>
+						<div class="flex flex-col">
+							<span class="text-muted-foreground text-[10px] font-bold tracking-tight uppercase"
+								>{$t('dash.humidity')}</span
+							>
+							{#if loading}
+								<Skeleton class="h-5 w-12" />
+							{:else if latest}
+								<span class="text-lg font-bold tabular-nums">{latest.humidity}%</span>
+							{:else}
+								<span class="text-muted-foreground text-sm font-semibold">{$t('dash.noData')}</span>
+							{/if}
+						</div>
+					</div>
+				</div>
 
-			<div class="mt-3 grid grid-cols-2 gap-2 border-t pt-2">
-				<div class="flex items-center gap-2">
-					<Thermometer class="text-muted-foreground h-4 w-4" />
-					{#if loading}
-						<Skeleton class="h-5 w-14" />
-					{:else if latest}
-						<span>{Math.round(latest.temperature!)}°C</span>
-					{:else}
-						<span class="text-muted-foreground text-sm">{$t('dash.noData')}</span>
-					{/if}
-				</div>
-				<div class="flex items-center gap-2">
-					<Droplets class="text-muted-foreground h-4 w-4" />
-					{#if loading}
-						<Skeleton class="h-5 w-14" />
-					{:else if latest}
-						<span>{latest.humidity}%</span>
-					{:else}
-						<span class="text-muted-foreground text-sm">{$t('dash.noData')}</span>
-					{/if}
-				</div>
 				{#if latest}
-					<div class="text-muted-foreground text-xs">
+					<div
+						class="text-muted-foreground mt-4 flex items-center gap-1.5 text-[10px] font-medium tracking-wider uppercase"
+					>
+						<div class="size-1 animate-pulse rounded-full bg-emerald-500"></div>
 						{$t('dash.lastUpdated')}: {latest.timestamp.format('MMM D, HH:mm')}
 					</div>
 				{/if}
 			</div>
-		</div>
+		</button>
 	</li>
 {/snippet}
 
@@ -202,7 +226,7 @@
 						}
 					]}
 				>
-					{#if defaultStation}
+					{#if globalState.station}
 						<Input
 							type="text"
 							placeholder={$t('dash.searchPlaceholder')}
@@ -237,7 +261,7 @@
 		</div>
 
 		<!-- Catalogue view with sorted stations by temperature -->
-		<div class="my-10 flex w-full max-w-4xl flex-wrap items-start justify-center gap-6">
+		<div class="my-10 grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
 			{#if $stationsQuery.data?.results.length > 0 && filteredStations.length === 0}
 				<div class="text-muted-foreground w-full py-10 text-center text-lg">
 					{$t('dash.noStationsFound')}
