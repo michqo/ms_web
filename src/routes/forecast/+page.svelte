@@ -7,6 +7,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
 	import { t } from '@/translations';
+	import { Cloud } from 'lucide-svelte';
 
 	const dataQuery = $derived(
 		createQuery({
@@ -36,7 +37,10 @@
 	{#if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
 		<div class="mb-6 flex w-full flex-col items-center">
-			<h1 class="text-4xl font-medium">{globalState.station?.name}</h1>
+			<div class="flex items-center gap-2">
+				<Cloud class="text-primary h-8 w-8" />
+				<h1 class="text-4xl font-medium">{globalState.station?.name}</h1>
+			</div>
 			<h2 class="text-muted-foreground mt-1 text-xl font-light">
 				{globalState.station?.city_name}
 			</h2>

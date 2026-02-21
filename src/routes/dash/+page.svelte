@@ -10,7 +10,7 @@
 	import type { Measurement, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { CheckCircle2, Droplets, Edit, Plus, Thermometer } from 'lucide-svelte';
+	import { CheckCircle2, Columns3, Droplets, Edit, Plus, Thermometer } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
 
@@ -189,7 +189,10 @@
 	{#if $stationsQuery.data?.results}
 		<div class="mt-24 flex w-full max-w-4xl flex-col">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<h1 class="text-3xl font-medium">{$t('dash.title')}</h1>
+				<div class="flex items-center gap-2">
+					<Columns3 class="text-primary h-6 w-6" />
+					<h1 class="text-3xl font-medium">{$t('dash.title')}</h1>
+				</div>
 				<div
 					class={[
 						'flex w-full items-center gap-2',
