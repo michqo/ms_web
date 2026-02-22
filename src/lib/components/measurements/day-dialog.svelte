@@ -109,7 +109,7 @@
 	<Dialog.MobileContent
 		class={[
 			'[&>button]:hidden',
-			{ 'h-[100vh] w-screen! max-w-none! rounded-none border-0': isMaximized },
+			{ 'h-[100vh] max-h-screen! w-screen! max-w-none! rounded-none border-0': isMaximized },
 			{ 'sm:max-h-[90vh]': !isMaximized }
 		]}
 	>
