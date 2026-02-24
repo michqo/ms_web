@@ -1,4 +1,7 @@
-# Weather Station System
+<div align="center">
+  <img src="static/favicon.png" alt="Weather Station Logo" width="100" />
+  <h1>Weather Station System</h1>
+</div>
 
 This project is a complete IoT weather station monitoring system, featuring a robust backend API, a modern web-based frontend dashboard, and ESP32 hardware clients for data collection.
 
