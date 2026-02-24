@@ -33,32 +33,34 @@
 	<title>{$t('forecast.pageTitle')}</title>
 </svelte:head>
 
-<main class="grid h-svh place-items-center p-4">
+<main class="flex min-h-screen flex-col items-center p-4">
 	{#if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
-		<div class="mb-6 flex w-full flex-col items-center">
+		<div class="mt-4 mb-6 flex w-full flex-col items-center">
 			<div class="flex items-center gap-2">
 				<Cloud class="text-primary h-8 w-8" />
-				<h1 class="text-4xl font-medium">{globalState.station?.name}</h1>
+				<h1 class="text-3xl font-bold sm:text-4xl">{globalState.station?.name}</h1>
 			</div>
-			<h2 class="text-muted-foreground mt-1 text-xl font-light">
+			<h2 class="text-muted-foreground mt-1 text-lg font-light sm:text-xl">
 				{globalState.station?.city_name}
 			</h2>
 			<!-- Preview map -->
 			{#if forecast.latitude && forecast.longitude}
-				<div class="mt-2 w-full max-w-lg overflow-hidden rounded-lg shadow-md">
+				<div
+					class="border-border mt-4 w-full max-w-2xl overflow-hidden rounded-xl border shadow-sm"
+				>
 					<Map
 						latitude={forecast.latitude}
 						longitude={forecast.longitude}
 						zoom={14}
-						class="h-[150px]"
+						class="h-[150px] sm:h-[200px]"
 						preview={true}
 					/>
 				</div>
 			{/if}
 		</div>
 
-		<div class="mt-5 flex w-full max-w-sm flex-col items-center gap-y-8">
+		<div class="mt-4 flex w-full max-w-2xl flex-col items-stretch gap-y-6 sm:mt-6 sm:gap-y-10">
 			<Card forecast={forecast.results[0]} stationId={globalState.stationId} />
 			<Table forecast={forecast.results} updatedDate={forecast.created_at} />
 		</div>

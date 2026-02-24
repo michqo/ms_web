@@ -1,8 +1,8 @@
 <script lang="ts">
-	const { width = 32, height = 32 } = $props();
+	const { width = 32, height = 32, class: className = '' } = $props();
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" {width} {height} viewBox="0 0 64 64"
+<svg xmlns="http://www.w3.org/2000/svg" class={className} {width} {height} viewBox="0 0 64 64"
 	><defs
 		><linearGradient
 			id="thermometer_a"

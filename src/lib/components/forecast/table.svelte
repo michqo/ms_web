@@ -33,8 +33,8 @@
 	}
 </script>
 
-<div class="my-10 w-full overflow-hidden rounded-lg border shadow-xs">
-	<Table.Root>
+<div class="bg-card my-6 w-full overflow-x-auto rounded-xl border shadow-sm sm:my-10">
+	<Table.Root class="min-w-[320px]">
 		<Table.Header>
 			<Table.Row>
 				<Table.Head class="w-[100px]">{$t('forecast.table.header.day')}</Table.Head>

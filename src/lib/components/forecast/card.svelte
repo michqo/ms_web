@@ -35,91 +35,113 @@
 	);
 </script>
 
-<div class="border-border flex flex-col rounded-lg border px-8 py-6 shadow-lg">
-	<div class="mb-4 flex items-center justify-center gap-x-2">
-		<Calendar class="inline h-4 w-4" />
-		<p class="text-muted-foreground text-sm">{forecast.time.format('MMM D, YYYY')}</p>
+<div class="border-border bg-card flex flex-col rounded-xl border p-5 shadow-sm sm:p-8">
+	<div class="mt-2 mb-4 flex items-center justify-center gap-x-2">
+		<Calendar class="text-muted-foreground h-4 w-4" />
+		<p class="text-muted-foreground text-sm font-medium">{forecast.time.format('dddd, MMMM D')}</p>
 	</div>
 
-	<div class="grid grid-cols-2 gap-4">
-		<div class="flex flex-col">
-			<p class="text-muted-foreground text-center text-sm">{$t('forecast.card.title')}</p>
-			<div class="flex items-center justify-center gap-x-2">
-				<forecast.icon width={100} height={100} />
+	<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">
+		<div class="flex flex-col items-center">
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.title')}
+			</p>
+			<div class="flex items-center justify-center gap-x-4">
+				<forecast.icon width={80} height={80} class="sm:h-[100px] sm:w-[100px]" />
 				<div class="flex flex-col items-center">
-					<p class="text-4xl font-medium">{Math.round(forecast.temperature_max)}°</p>
-					<div class="flex items-center">
-						<span class="text-muted-foreground text-base"
-							>{Math.round(forecast.temperature_min)}°</span
-						>
-					</div>
+					<p class="text-4xl font-bold sm:text-5xl">{Math.round(forecast.temperature_max)}°</p>
+					<span class="text-muted-foreground text-lg sm:text-xl"
+						>{Math.round(forecast.temperature_min)}°</span
+					>
 				</div>
 			</div>
 		</div>
 
-		<div class="border-l pl-4">
-			<p class="text-muted-foreground text-center text-sm">
+		<div class="border-t pt-6 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-4">
+			<p class="text-muted-foreground text-center text-xs font-semibold tracking-wider uppercase">
 				{$t('forecast.card.current_temperature')}
 			</p>
 			{#if $measurementQuery.isLoading}
-				<div class="flex items-center justify-center">
-					<Skeleton class="h-10 w-20" />
+				<div class="flex h-full min-h-[80px] items-center justify-center">
+					<Skeleton class="h-10 w-24" />
 				</div>
 			{:else if $measurementQuery.isError}
-				<p class="text-center text-red-500">{$t('forecast.card.error_current')}</p>
+				<div class="flex h-full min-h-[80px] items-center justify-center">
+					<p class="text-center text-sm font-medium text-red-500">
+						{$t('forecast.card.error_current')}
+					</p>
+				</div>
 			{:else if latestMeasurement}
 				<Tooltip.Provider>
 					<Tooltip.Root>
-						<Tooltip.Trigger>
-							<div class="flex items-center justify-center">
-								<Thermometer width={32} height={32} />
-								<p class="ml-2 text-4xl font-medium">{latestMeasurement.temperature}°</p>
+						<Tooltip.Trigger class="w-full cursor-default">
+							<div class="flex items-center justify-center gap-3 pt-2">
+								<Thermometer width={40} height={40} class="sm:h-12 sm:w-12" />
+								<p class="text-4xl font-bold sm:text-5xl">{latestMeasurement.temperature}°</p>
 							</div>
 						</Tooltip.Trigger>
 						<Tooltip.Content>
-							{$t('forecast.card.last_updated')}: {latestMeasurement.created_at.format(
-								'MMM D, YYYY HH:mm:ss'
-							)}
+							{$t('forecast.card.last_updated')}: {latestMeasurement.created_at.format('HH:mm:ss')}
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Tooltip.Provider>
 			{:else}
-				<p class="text-center text-sm">{$t('forecast.card.no_current_data')}</p>
+				<div class="flex h-full min-h-[80px] items-center justify-center">
+					<p class="text-center text-sm font-medium">{$t('forecast.card.no_current_data')}</p>
+				</div>
 			{/if}
 		</div>
 	</div>
 
-	<div class="mt-4 grid grid-cols-3 gap-4 border-t pt-4">
-		<div class="flex flex-col items-center">
-			<Wind width={28} height={28} />
-			<p class="text-muted-foreground mt-1 text-sm">{$t('forecast.card.wind')}</p>
-			<p class="font-medium">{Math.floor(forecast.windspeed_mean)} m/s</p>
+	<div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 border-t pt-8 sm:grid-cols-3 sm:gap-4 sm:pt-6">
+		<div class="flex flex-col items-center gap-1">
+			<Wind width={28} height={28} class="text-muted-foreground" />
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.wind')}
+			</p>
+			<p class="text-lg font-bold">
+				{Math.floor(forecast.windspeed_mean)} <span class="text-xs font-normal">m/s</span>
+			</p>
 		</div>
 
-		<div class="flex flex-col items-center">
-			<Droplets class="h-7 w-7" />
-			<p class="text-muted-foreground mt-1 text-sm">{$t('forecast.card.humidity')}</p>
-			<p class="font-medium">{forecast.relativehumidity_mean}%</p>
+		<div class="flex flex-col items-center gap-1">
+			<Droplets class="h-7 w-7 text-blue-500" />
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.humidity')}
+			</p>
+			<p class="text-lg font-bold">
+				{forecast.relativehumidity_mean}<span class="text-sm font-normal">%</span>
+			</p>
 		</div>
 
-		<div class="flex flex-col items-center">
-			<Umbrella class="h-7 w-7" />
-			<p class="text-muted-foreground mt-1 text-sm">{$t('forecast.card.precipitation')}</p>
-			<p class="font-medium">{forecast.precipitation} mm</p>
-		</div>
-	</div>
-
-	<div class="mt-4 grid grid-cols-2 gap-4">
-		<div class="flex flex-col items-center">
-			<Gauge class="h-5 w-5" />
-			<span class="text-muted-foreground text-sm">{$t('forecast.card.pressure')}</span>
-			<span class="font-medium">{Math.round(forecast.sealevelpressure_mean)} hPa</span>
+		<div class="flex flex-col items-center gap-1">
+			<Umbrella class="h-7 w-7 text-cyan-500" />
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.precipitation')}
+			</p>
+			<p class="text-lg font-bold">
+				{forecast.precipitation.toFixed(1)} <span class="text-sm font-normal">mm</span>
+			</p>
 		</div>
 
-		<div class="flex flex-col items-center">
-			<CloudFog class="h-5 w-5" />
-			<span class="text-muted-foreground text-sm">{$t('forecast.card.predictability')}</span>
-			<span class="font-medium">{forecast.predictability}%</span>
+		<div class="flex flex-col items-center gap-1">
+			<Gauge class="text-muted-foreground h-6 w-6" />
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.pressure')}
+			</p>
+			<p class="text-lg font-bold">
+				{Math.round(forecast.sealevelpressure_mean)} <span class="text-xs font-normal">hPa</span>
+			</p>
+		</div>
+
+		<div class="flex flex-col items-center gap-1">
+			<CloudFog class="text-muted-foreground h-6 w-6" />
+			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+				{$t('forecast.card.predictability')}
+			</p>
+			<p class="text-lg font-bold">
+				{forecast.predictability}<span class="text-sm font-normal">%</span>
+			</p>
 		</div>
 	</div>
 </div>
