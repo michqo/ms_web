@@ -1,10 +1,36 @@
 {
-	"pageTitle": "MS - Vaša osobná meteorologická stanica",
+	"pageTitle": "MS - Platforma na monitorovanie počasia od Michala Urbana",
 	"hero": {
-		"title": "Vaša osobná <span class='bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent'>meteo</span> stanica",
-		"subtitle": "Sledujte počasie v reálnom čase, analyzujte historické dáta a získajte presné predpovede. Všetko na jednom mieste.",
-		"cta": "Prejsť do aplikácie",
-		"badge": "Platforma meteorologickej stanice"
+		"title": "Platforma na <span class='text-primary'>monitorovanie</span> počasia",
+		"subtitle": "Full-stack riešenie na monitorovanie počasia postavené na moderných webových technológiách. Vizualizácia údajov v reálnom čase, interaktívne mapy a komplexné predpovede.",
+		"cta": "Preskúmať aplikáciu",
+		"badge": "Full-Stack projekt",
+		"viewSource": "Zobraziť zdrojový kód"
+	},
+	"about": {
+		"title": "O tomto projekte",
+		"description": "Táto platforma na monitorovanie počasia demonštruje moderné postupy full-stack vývoja, vrátane spracovania údajov v reálnom čase, responzívneho dizajnu a plynulej používateľskej skúsenosti.",
+		"builtBy": "Vytvoril Michal Urban"
+	},
+	"techStack": {
+		"title": "Postavené na moderných technológiách",
+		"description": "Tento projekt prezentuje znalosť najmodernejších nástrojov a frameworkov pre webový vývoj.",
+		"sveltekit": {
+			"name": "SvelteKit",
+			"description": "Server-side rendering, file-based routing a optimálny výkon"
+		},
+		"typescript": {
+			"name": "TypeScript",
+			"description": "Typovo bezpečný kód s lepšou vývojárskou skúsenosťou"
+		},
+		"tailwind": {
+			"name": "Tailwind CSS",
+			"description": "Utility-first štýlovanie s vlastným dizajnovým systémom"
+		}
+	},
+	"demo": {
+		"title": "Náhľad živej aplikácie",
+		"description": "Preskúmajte kľúčové funkcie platformy na monitorovanie počasia prostredníctvom týchto interaktívnych ukážok."
 	},
 	"features": {
 		"title": "Funkcie",

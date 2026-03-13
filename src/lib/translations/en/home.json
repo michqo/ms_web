@@ -1,10 +1,36 @@
 {
-	"pageTitle": "MS - Your Personal Weather Station",
+	"pageTitle": "MS - Weather Monitoring Platform by Michal Urban",
 	"hero": {
-		"title": "Your personal <span class='bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent'>weather</span> station",
-		"subtitle": "Track real-time weather, analyze historical data, and get accurate forecasts. All in one place.",
-		"cta": "Go to App",
-		"badge": "Weather Station Platform"
+		"title": "Weather <span class='text-primary'>Monitoring</span> Platform",
+		"subtitle": "A full-stack weather monitoring solution built with modern web technologies. Real-time data visualization, interactive maps, and comprehensive forecasting.",
+		"cta": "Explore the App",
+		"badge": "Full-Stack Project",
+		"viewSource": "View Source"
+	},
+	"about": {
+		"title": "About This Project",
+		"description": "This weather monitoring platform demonstrates modern full-stack development practices, featuring real-time data processing, responsive design, and seamless user experience.",
+		"builtBy": "Built by Michal Urban"
+	},
+	"techStack": {
+		"title": "Built With Modern Technologies",
+		"description": "This project showcases proficiency in cutting-edge web development tools and frameworks.",
+		"sveltekit": {
+			"name": "SvelteKit",
+			"description": "Server-side rendering, file-based routing, and optimal performance"
+		},
+		"typescript": {
+			"name": "TypeScript",
+			"description": "Type-safe code with enhanced developer experience"
+		},
+		"tailwind": {
+			"name": "Tailwind CSS",
+			"description": "Utility-first styling with custom design system"
+		}
+	},
+	"demo": {
+		"title": "Live Application Preview",
+		"description": "Explore the key features of the weather monitoring platform through these interactive demos."
 	},
 	"features": {
 		"title": "Features",
