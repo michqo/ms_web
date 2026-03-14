@@ -157,6 +157,23 @@
 
 <svelte:head>
 	<title>{$t('home.pageTitle')}</title>
+	<meta name="description" content={$t('home.hero.subtitle')} />
+	<link rel="canonical" href="https://ms.miqal.xyz" />
+
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Meteostation" />
+	<meta property="og:title" content={$t('home.pageTitle')} />
+	<meta property="og:description" content={$t('home.hero.subtitle')} />
+	<meta property="og:url" content="https://ms.miqal.xyz" />
+	<meta property="og:image" content="https://ms.miqal.xyz/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Meteostation – Your personal weather station" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={$t('home.pageTitle')} />
+	<meta name="twitter:description" content={$t('home.hero.subtitle')} />
+	<meta name="twitter:image" content="https://ms.miqal.xyz/og.png" />
 </svelte:head>
 
 <main bind:this={pageRoot} class="min-h-screen">
