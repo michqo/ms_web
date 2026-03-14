@@ -6,7 +6,7 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Map } from '@/components/ui/map';
 	import { api } from '@/shared';
-	import { useLocalStorage, globalState } from '@/shared/runes.svelte';
+	import { globalState } from '@/shared/runes.svelte';
 	import type { Measurement, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
@@ -58,12 +58,16 @@
 			for (const station of $stationsQuery.data.results) {
 				try {
 					loadingMeasurements[station.id] = true;
-					const measurement = await api.getLatestMeasurement(station.id);
-					measurement.timestamp = dayjs(measurement.timestamp);
-					latestMeasurements[station.id] = measurement || null;
-				} catch (error) {
-					console.error(`Error fetching measurement for station ${station.id}:`, error);
-					latestMeasurements[station.id] = null;
+					let measurement: Measurement | null = null;
+					try {
+						measurement = await api.getLatestMeasurement(station.id);
+						if (measurement) measurement.timestamp = dayjs(measurement.timestamp);
+					} catch (error: any) {
+						if (error?.response?.status !== 404) {
+							console.error(`Error fetching measurement for station ${station.id}:`, error);
+						}
+					}
+					latestMeasurements[station.id] = measurement;
 				} finally {
 					loadingMeasurements[station.id] = false;
 				}

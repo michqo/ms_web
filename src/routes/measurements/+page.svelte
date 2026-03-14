@@ -75,14 +75,24 @@
 	const latestMeasurementQuery = $derived(
 		createQuery({
 			queryKey: ['latestMeasurement', globalState.stationId],
-			queryFn: () => api.getLatestMeasurement(globalState.stationId),
+			queryFn: async () => {
+				try {
+					return await api.getLatestMeasurement(globalState.stationId);
+				} catch (error: any) {
+					if (error?.response?.status === 404) return null;
+					throw error;
+				}
+			},
 			enabled: !!globalState.stationId,
-			select: (data) => ({
-				...data,
-				temperature: parseFloat(data.temperature.toFixed(2)),
-				humidity: parseFloat(data.humidity.toFixed(2)),
-				timestamp: dayjs(data.timestamp)
-			})
+			select: (data) =>
+				data
+					? {
+							...data,
+							temperature: parseFloat(data.temperature.toFixed(2)),
+							humidity: parseFloat(data.humidity.toFixed(2)),
+							timestamp: dayjs(data.timestamp)
+						}
+					: null
 		})
 	);
 
@@ -118,7 +128,7 @@
 					{globalState.station.name}
 					{$t('measurements.title')}
 				</h1>
-			{:else if hasStationSelection}
+			{:else if hasStationSelection && !$weekStatsQuery.isSuccess && !$weekStatsQuery.isError}
 				<div class="flex items-center gap-2">
 					<Skeleton class="h-7 w-36" />
 					<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
@@ -170,7 +180,7 @@
 		{:else}
 			<CurrentDayCard
 				{todayStat}
-				latestMeasurement={$latestMeasurementQuery.data}
+				latestMeasurement={$latestMeasurementQuery.data ?? undefined}
 				isLoading={$weekStatsQuery.isLoading || $latestMeasurementQuery.isLoading}
 				{handleLastDay}
 			/>

@@ -20,7 +20,14 @@
 
 	const measurementQuery = createQuery({
 		queryKey: ['lastMeasurement', stationId],
-		queryFn: () => api.getLatestMeasurement(stationId),
+		queryFn: async () => {
+			try {
+				return await api.getLatestMeasurement(stationId);
+			} catch (error: any) {
+				if (error?.response?.status === 404) return null;
+				throw error;
+			}
+		},
 		enabled: !!stationId
 	});
 
