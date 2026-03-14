@@ -66,13 +66,15 @@
 	<Dialog.Trigger
 		class={buttonVariants({
 			variant: 'ghost',
-			class: 'h-auto max-w-[calc(100vw-5rem)] min-w-0 gap-3 px-2 py-1.5 sm:max-w-none'
+			class: 'h-auto max-w-44 min-w-0 shrink gap-3 px-2 py-1.5 sm:max-w-56'
 		})}
 	>
 		<img src="/favicon.png" alt="logo" class="size-9 rounded-xl" />
 		{#if globalState.station}
 			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-sm font-semibold">{globalState.station.name}</span>
+				<span class="w-full truncate text-start text-sm font-semibold"
+					>{globalState.station.name}</span
+				>
 				<span class="text-muted-foreground w-full truncate text-[10px]"
 					>{globalState.station.city_name}</span
 				>
@@ -85,7 +87,7 @@
 			</div>
 		{:else if apiUnavailable}
 			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-sm font-semibold sm:text-start"
+				<span class="w-full truncate text-start text-sm font-semibold sm:text-start"
 					>{$t('menu.actions.selector.api_unavailable')}</span
 				>
 				<span class="text-muted-foreground hidden w-full truncate text-[10px] sm:block"

@@ -32,7 +32,6 @@ export const config: Config = {
 		{
 			locale: 'en',
 			key: 'dash',
-			routes: ['/dash'],
 			loader: async () => (await import('./en/dash.json')).default
 		},
 		{
@@ -64,7 +63,6 @@ export const config: Config = {
 		{
 			locale: 'sk',
 			key: 'dash',
-			routes: ['/dash'],
 			loader: async () => (await import('./sk/dash.json')).default
 		},
 		{
