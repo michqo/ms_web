@@ -5,33 +5,6 @@
 import { onMount } from 'svelte';
 import type { Station } from './types';
 
-const useLocalStorage = (key: string, initialValue: any) => {
-	let value = $state<any>(initialValue);
-
-	onMount(() => {
-		const currentValue = localStorage.getItem(key);
-		if (currentValue) value = JSON.parse(currentValue);
-	});
-
-	const save = () => {
-		if (value) {
-			localStorage.setItem(key, JSON.stringify(value));
-		} else {
-			localStorage.removeItem(key);
-		}
-	};
-
-	return {
-		get value() {
-			return value;
-		},
-		set value(v: string) {
-			value = v;
-			save();
-		}
-	};
-};
-
 const useMediaQuery = (query: string) => {
 	let matches = $state(false);
 
@@ -79,4 +52,4 @@ export const globalState: GlobalState = $state({
 	}
 });
 
-export { useLocalStorage, useMediaQuery };
+export { useMediaQuery };

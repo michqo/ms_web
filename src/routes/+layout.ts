@@ -29,9 +29,13 @@ export const load = (async ({ data, url }) => {
 			queryFn: () => api.getUsersMe(),
 			initialData: data.user
 		});
-		await Promise.all([prefetchedUser]);
-		return { ...data, queryClient, locale, route };
+		const prefetchedStations = queryClient.prefetchQuery({
+			queryKey: ['stations'],
+			queryFn: () => api.getStations()
+		});
+		await Promise.all([prefetchedUser, prefetchedStations]);
+		return { ...data, queryClient, locale, route, defaultStationId: data.defaultStationId };
 	}
 
-	return { ...data, queryClient, locale, route };
+	return { ...data, queryClient, locale, route, defaultStationId: data.defaultStationId };
 }) satisfies LayoutLoad;

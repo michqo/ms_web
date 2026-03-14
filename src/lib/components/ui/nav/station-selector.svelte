@@ -6,6 +6,7 @@
 	import { t } from '@/translations';
 	import { cn } from '@/utils';
 	import { createQuery } from '@tanstack/svelte-query';
+	import Cookies from 'js-cookie';
 	import dayjs from 'dayjs';
 	import { AlertCircle, CheckCircle2, ChevronDown, Droplets, Thermometer, X } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
@@ -21,6 +22,9 @@
 
 	const noStations = $derived(($stationsQuery.data?.results?.length ?? 0) === 0);
 	const apiUnavailable = $derived($stationsQuery.isError);
+	const selectedStation = $derived(
+		$stationsQuery.data?.results?.find((s) => s.id === globalState.stationId) ?? globalState.station
+	);
 
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
@@ -57,6 +61,7 @@
 
 	function setSelectedStation(stationId: number) {
 		globalState.stationId = stationId;
+		Cookies.set('defaultStationId', stationId.toString(), { expires: 365 });
 		toast.success($t('menu.actions.selector.success'));
 		invalidateAll();
 	}
@@ -70,13 +75,11 @@
 		})}
 	>
 		<img src="/favicon.png" alt="logo" class="size-9 rounded-xl" />
-		{#if globalState.station}
+		{#if selectedStation}
 			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-start text-sm font-semibold"
-					>{globalState.station.name}</span
-				>
+				<span class="w-full truncate text-start text-sm font-semibold">{selectedStation.name}</span>
 				<span class="text-muted-foreground w-full truncate text-[10px]"
-					>{globalState.station.city_name}</span
+					>{selectedStation.city_name}</span
 				>
 			</div>
 			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />

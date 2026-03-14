@@ -32,6 +32,7 @@ export const load = (async ({ url, locals, cookies, request }) => {
 		deleteForm: await superValidate(zod(deleteSchema)),
 		authForm: await superValidate(zod(loginSchema)),
 		i18n: { locale, route: pathname },
-		translations: translations.get()
+		translations: translations.get(),
+		defaultStationId: cookies.get('defaultStationId') ?? null
 	};
 }) satisfies LayoutServerLoad;

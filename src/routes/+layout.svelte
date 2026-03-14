@@ -25,7 +25,7 @@
 
 <QueryClientProvider client={data.queryClient}>
 	{#key page.url}
-		<StateContext locale={data.locale} user={data.user}>
+		<StateContext locale={data.locale} user={data.user} defaultStationId={data.defaultStationId}>
 			<Nav authForm={data.authForm} deleteForm={data.deleteForm} />
 			<div class="h-full w-full" in:fade>
 				{@render children()}
