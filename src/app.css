@@ -121,3 +121,24 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+html.js #hero-content {
+	opacity: 0;
+	transform: translateY(50px);
+}
+
+html.js #features-heading,
+html.js .primary-feature {
+	opacity: 0;
+	transform: translateY(30px);
+}
+
+html.js .preview-card {
+	opacity: 0;
+	transform: translateY(30px) scale(0.95);
+}
+
+html.js #footer > * {
+	opacity: 0;
+	transform: translateY(30px);
+}

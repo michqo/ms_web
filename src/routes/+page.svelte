@@ -30,6 +30,8 @@
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
+	let pageRoot: HTMLElement;
+
 	const date = dayjs();
 
 	const todayStat = {
@@ -70,74 +72,86 @@
 
 	// GSAP Animations
 	onMount(() => {
-		if (browser) {
-			gsap.registerPlugin(ScrollTrigger);
+		if (!browser) return;
 
+		gsap.registerPlugin(ScrollTrigger);
+
+		const ctx = gsap.context(() => {
 			// Hero section animation
-			gsap.from('#hero-content', {
-				y: 50,
-				opacity: 0,
-				stagger: 0.2,
+			gsap.to('#hero-content', {
+				y: 0,
+				opacity: 1,
 				duration: 1,
-				ease: 'power2.out'
+				ease: 'power2.out',
+				overwrite: 'auto'
 			});
 
 			// Features heading animation
-			gsap.from('#features-heading', {
+			gsap.to('#features-heading', {
 				scrollTrigger: {
 					trigger: '#features-heading',
 					start: 'top 80%',
-					toggleActions: 'play none none none'
+					toggleActions: 'play none none none',
+					once: true
 				},
-				y: 50,
-				opacity: 0,
+				y: 0,
+				opacity: 1,
 				duration: 0.8,
-				ease: 'power2.out'
+				ease: 'power2.out',
+				overwrite: 'auto'
 			});
 
 			// Primary features animation
-			gsap.from('.primary-feature', {
+			gsap.to('.primary-feature', {
 				scrollTrigger: {
 					trigger: '.primary-feature',
 					start: 'top 80%',
-					toggleActions: 'play none none none'
+					toggleActions: 'play none none none',
+					once: true
 				},
-				y: 30,
-				opacity: 0,
+				y: 0,
+				opacity: 1,
 				stagger: 0.15,
 				duration: 0.7,
-				ease: 'power2.out'
+				ease: 'power2.out',
+				overwrite: 'auto'
 			});
 
 			// Preview cards animation
-			gsap.from('.preview-card', {
+			gsap.to('.preview-card', {
 				scrollTrigger: {
 					trigger: '.preview-card',
 					start: 'top 80%',
-					toggleActions: 'play none none none'
+					toggleActions: 'play none none none',
+					once: true
 				},
-				scale: 0.95,
-				y: 30,
-				opacity: 0,
+				scale: 1,
+				y: 0,
+				opacity: 1,
 				stagger: 0.2,
 				duration: 0.8,
-				ease: 'back.out(1.7)'
+				ease: 'back.out(1.7)',
+				overwrite: 'auto'
 			});
 
 			// Footer animation
-			gsap.from('#footer > *', {
+			gsap.to('#footer > *', {
 				scrollTrigger: {
 					trigger: '#footer',
 					start: 'top 80%',
-					toggleActions: 'play none none none'
+					toggleActions: 'play none none none',
+					once: true
 				},
-				y: 30,
-				opacity: 0,
+				y: 0,
+				opacity: 1,
 				stagger: 0.15,
 				duration: 0.7,
-				ease: 'power2.out'
+				ease: 'power2.out',
+				overwrite: 'auto'
 			});
-		}
+		}, pageRoot);
+
+		return () => ctx.revert();
 	});
 </script>
 
@@ -145,7 +159,7 @@
 	<title>{$t('home.pageTitle')}</title>
 </svelte:head>
 
-<main class="min-h-screen">
+<main bind:this={pageRoot} class="min-h-screen">
 	<!-- Hero Section -->
 	<section
 		id="hero"
