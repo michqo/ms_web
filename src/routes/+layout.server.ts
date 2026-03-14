@@ -5,7 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ url, locals, cookies, request }) => {
-	const { pathname } = url;
+	const pathname = url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
 
 	let locale = (cookies.get('lang') || '').toLowerCase();
 

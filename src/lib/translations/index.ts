@@ -10,7 +10,7 @@ export const config: Config = {
 	},
 	translations: {
 		en: { lang },
-		cs: { lang }
+		sk: { lang }
 	},
 	loaders: [
 		{
@@ -38,13 +38,11 @@ export const config: Config = {
 		{
 			locale: 'en',
 			key: 'measurements',
-			routes: ['/measurements', '/dash'],
 			loader: async () => (await import('./en/measurements.json')).default
 		},
 		{
 			locale: 'en',
 			key: 'forecast',
-			routes: ['/forecast', '/dash'],
 			loader: async () => (await import('./en/forecast.json')).default
 		},
 		{

@@ -6,10 +6,11 @@ import type { LayoutLoad } from './$types';
 
 export const load = (async ({ data, url }) => {
 	const { i18n, translations } = data;
-	const { locale, route } = i18n;
+	const { locale } = i18n;
+	const route = i18n.route === '/' ? '/' : i18n.route.replace(/\/$/, '');
 	addTranslations(translations);
-	await setRoute(route);
 	await setLocale(locale);
+	await setRoute(route);
 
 	const queryClient = new QueryClient({
 		defaultOptions: {
