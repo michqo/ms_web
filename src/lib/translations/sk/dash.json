@@ -52,6 +52,12 @@
 	"searchPlaceholder": "Hľadať stanicu",
 	"totalStations": "Celkový počet staníc",
 	"avgTemperature": "Priemerná teplota",
+	"status": {
+		"api_unavailable": "API je nedostupné",
+		"api_unavailable_hint": "Server nie je dostupný. Skontrolujte, či API beží.",
+		"no_data": "Údaje staníc nie sú dostupné",
+		"no_data_hint": "Skúste stránku obnoviť alebo vytvorte svoju prvú stanicu."
+	},
 	"noStationsFound": "Nenašli sa žiadne stanice",
 	"station": {
 		"dialog": {

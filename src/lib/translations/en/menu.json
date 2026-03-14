@@ -71,7 +71,11 @@
 		"selector": {
 			"label": "Station selector",
 			"action": "Choose a station to view its data",
-			"success": "Station selected as default"
+			"success": "Station selected as default",
+			"no_stations": "No stations available",
+			"no_stations_hint": "Create a station first to start viewing data.",
+			"api_unavailable": "API unavailable",
+			"api_unavailable_hint": "Cannot reach the server. Check if the API is running."
 		}
 	}
 }

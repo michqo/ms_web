@@ -52,6 +52,12 @@
 	"searchPlaceholder": "Search station",
 	"totalStations": "Total stations",
 	"avgTemperature": "Average temperature",
+	"status": {
+		"api_unavailable": "API unavailable",
+		"api_unavailable_hint": "Cannot reach the server. Check if the API is running.",
+		"no_data": "No station data available",
+		"no_data_hint": "Try refreshing the page or creating your first station."
+	},
 	"noStationsFound": "No stations found",
 	"station": {
 		"dialog": {

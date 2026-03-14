@@ -41,6 +41,14 @@
 	"temperature": "Temperature",
 	"humidity": "Humidity",
 	"lastUpdated": "Last updated",
+	"status": {
+		"no_station": "No station selected",
+		"no_station_hint": "Choose a station in the navbar to view measurements.",
+		"api_unavailable": "API unavailable",
+		"api_unavailable_hint": "Cannot reach the server. Check if the API is running.",
+		"no_data": "No measurements available",
+		"no_data_hint": "There is no data for this station in the selected period."
+	},
 	"chart": {
 		"temperature": "Temperature",
 		"humidity": "Humidity",

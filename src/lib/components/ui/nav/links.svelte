@@ -69,6 +69,7 @@
 	};
 
 	const isRoot = $derived(page.url.pathname === '/');
+	const mobileRoutes = $derived(isRoot ? homeRoutes : routesMap);
 	const currentPage = $derived(
 		isRoot
 			? page.url.hash == ''
@@ -117,7 +118,7 @@
 </div>
 
 <!-- Mobile Navigation -->
-<div class={['sm:hidden', { hidden: isRoot }]}>
+<div class="sm:hidden">
 	<Dialog.Root bind:open={mobileMenuOpen}>
 		<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
 			<Menu />
@@ -139,7 +140,7 @@
 				<h3 class="text-primary mb-3 font-semibold">{$t('menu.routes.label')}</h3>
 
 				<div class="space-y-1">
-					{#each Object.entries(routesMap) as [route, data]}
+					{#each Object.entries(mobileRoutes) as [route, data]}
 						{@const isActive = currentPage.name === data.name}
 						<a
 							href={route}
@@ -153,17 +154,19 @@
 							]}
 							onclick={() => (mobileMenuOpen = false)}
 						>
-							<div
-								class={[
-									'flex h-9 w-9 items-center justify-center rounded-md',
-									{
-										'bg-primary/20 text-primary': isActive,
-										'bg-muted text-muted-foreground': !isActive
-									}
-								]}
-							>
-								<data.icon class="h-5 w-5" />
-							</div>
+							{#if data.icon}
+								<div
+									class={[
+										'flex h-9 w-9 items-center justify-center rounded-md',
+										{
+											'bg-primary/20 text-primary': isActive,
+											'bg-muted text-muted-foreground': !isActive
+										}
+									]}
+								>
+									<data.icon class="h-5 w-5" />
+								</div>
+							{/if}
 							<span class={['text-base', { 'font-medium': isActive }]}>{data.name}</span>
 						</a>
 					{/each}

@@ -8,6 +8,7 @@
 </script>
 
 <script lang="ts">
+	import Loading from '@/components/Loading.svelte';
 	import { page } from '$app/state';
 	import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
 	import { t } from '@/translations';
@@ -54,4 +55,5 @@
 			<Actions {authForm} {deleteForm} />
 		</div>
 	</div>
+	<Loading />
 </div>

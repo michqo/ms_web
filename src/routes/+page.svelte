@@ -159,10 +159,22 @@
 			<p class="text-muted-foreground mx-auto mt-4 max-w-[700px] text-lg md:text-xl">
 				{$t('home.hero.subtitle')}
 			</p>
-			<div class="mt-6">
+			<div class="mt-6 flex items-center gap-2">
 				<Button variant="outline" size="lg" href="/dash">
 					{$t('home.hero.cta')}
 					<ArrowRight class="ml-2 h-5 w-5" />
+				</Button>
+				<Button
+					variant="secondary"
+					href="https://github.com/michqo/ms_web"
+					target="_blank"
+					class="group w-fit sm:items-center"
+				>
+					<Github class="h-4 w-4" />
+					{$t('home.footer.code')}
+					<ExternalLink
+						class="hidden h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100 sm:flex"
+					/>
 				</Button>
 			</div>
 		</div>
@@ -255,16 +267,6 @@
 				</div>
 
 				<div class="flex flex-col items-center gap-2">
-					<Button
-						variant="ghost"
-						href="https://github.com/michqo/ms_web"
-						target="_blank"
-						class="group w-fit"
-					>
-						<Github class="h-4 w-4" />
-						{$t('home.footer.code')}
-						<ExternalLink class="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
-					</Button>
 					<div class="flex gap-2 md:hidden">
 						<ThemeToggle />
 						<I18n />

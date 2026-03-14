@@ -210,7 +210,20 @@
 </svelte:head>
 
 <main class="flex w-screen flex-col items-center px-4">
-	{#if $stationsQuery.data?.results}
+	{#if $stationsQuery.isPending}
+		<div class="mt-24 flex w-full max-w-4xl flex-col gap-4">
+			<Skeleton class="h-10 w-56" />
+			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-64 w-full" />
+		</div>
+	{:else if $stationsQuery.isError}
+		<div
+			class="mt-24 w-full max-w-4xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+		>
+			<p class="text-base font-semibold">{$t('dash.status.api_unavailable')}</p>
+			<p class="mt-1 text-sm">{$t('dash.status.api_unavailable_hint')}</p>
+		</div>
+	{:else if $stationsQuery.data?.results}
 		<div class="mt-24 flex w-full max-w-4xl flex-col">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div class="flex items-center gap-2">
@@ -271,6 +284,13 @@
 					{@render card(station)}
 				{/each}
 			{/if}
+		</div>
+	{:else}
+		<div
+			class="mt-24 w-full max-w-4xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
+		>
+			<p class="text-base font-semibold">{$t('dash.status.no_data')}</p>
+			<p class="mt-1 text-sm">{$t('dash.status.no_data_hint')}</p>
 		</div>
 	{/if}
 

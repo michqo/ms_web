@@ -71,7 +71,11 @@
 		"selector": {
 			"label": "Výber stanice",
 			"action": "Vyberte stanicu pre zobrazenie jej dát",
-			"success": "Stanica bola nastavená ako predvolená"
+			"success": "Stanica bola nastavená ako predvolená",
+			"no_stations": "Žiadne stanice nie sú dostupné",
+			"no_stations_hint": "Najprv vytvorte stanicu, aby ste mohli zobrazovať dáta.",
+			"api_unavailable": "API je nedostupné",
+			"api_unavailable_hint": "Server nie je dostupný. Skontrolujte, či API beží."
 		}
 	}
 }

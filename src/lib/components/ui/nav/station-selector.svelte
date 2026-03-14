@@ -7,7 +7,7 @@
 	import { cn } from '@/utils';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { CheckCircle2, ChevronDown, Droplets, Thermometer, X } from 'lucide-svelte';
+	import { AlertCircle, CheckCircle2, ChevronDown, Droplets, Thermometer, X } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { buttonVariants } from '../button';
 	import * as Dialog from '../dialog';
@@ -18,6 +18,9 @@
 		queryFn: () => api.getStations(),
 		refetchOnWindowFocus: false
 	});
+
+	const noStations = $derived(($stationsQuery.data?.results?.length ?? 0) === 0);
+	const apiUnavailable = $derived($stationsQuery.isError);
 
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
@@ -60,12 +63,19 @@
 </script>
 
 <Dialog.Root>
-	<Dialog.Trigger class={buttonVariants({ variant: 'ghost', class: 'h-auto gap-3 px-2 py-1.5' })}>
+	<Dialog.Trigger
+		class={buttonVariants({
+			variant: 'ghost',
+			class: 'h-auto max-w-[calc(100vw-5rem)] min-w-0 gap-3 px-2 py-1.5 sm:max-w-none'
+		})}
+	>
 		<img src="/favicon.png" alt="logo" class="size-9 rounded-xl" />
 		{#if globalState.station}
-			<div class="flex flex-col items-start gap-0.5 leading-none">
-				<span class="text-sm font-semibold">{globalState.station.name}</span>
-				<span class="text-muted-foreground text-[10px]">{globalState.station.city_name}</span>
+			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
+				<span class="w-full truncate text-sm font-semibold">{globalState.station.name}</span>
+				<span class="text-muted-foreground w-full truncate text-[10px]"
+					>{globalState.station.city_name}</span
+				>
 			</div>
 			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
 		{:else if $stationsQuery.isPending}
@@ -73,6 +83,26 @@
 				<Skeleton class="h-3 w-20" />
 				<Skeleton class="h-2 w-12" />
 			</div>
+		{:else if apiUnavailable}
+			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
+				<span class="w-full truncate text-sm font-semibold sm:text-start"
+					>{$t('menu.actions.selector.api_unavailable')}</span
+				>
+				<span class="text-muted-foreground hidden w-full truncate text-[10px] sm:block"
+					>{$t('menu.actions.selector.api_unavailable_hint')}</span
+				>
+			</div>
+			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
+		{:else if noStations}
+			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
+				<span class="w-full truncate text-sm font-semibold"
+					>{$t('menu.actions.selector.no_stations')}</span
+				>
+				<span class="text-muted-foreground hidden w-full truncate text-[10px] sm:block"
+					>{$t('menu.actions.selector.no_stations_hint')}</span
+				>
+			</div>
+			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
 		{/if}
 	</Dialog.Trigger>
 	<Dialog.MobileContent class="flex max-w-4xl flex-col sm:max-h-[90vh] [&>button]:hidden">
@@ -99,6 +129,23 @@
 						</div>
 					</div>
 				{/each}
+			{:else if apiUnavailable}
+				<div
+					class="col-span-full flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+				>
+					<AlertCircle class="mt-0.5 size-4 shrink-0" />
+					<div class="space-y-1">
+						<p class="text-sm font-semibold">{$t('menu.actions.selector.api_unavailable')}</p>
+						<p class="text-xs">{$t('menu.actions.selector.api_unavailable_hint')}</p>
+					</div>
+				</div>
+			{:else if noStations}
+				<div
+					class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
+				>
+					<p class="text-sm font-semibold">{$t('menu.actions.selector.no_stations')}</p>
+					<p class="mt-1 text-xs">{$t('menu.actions.selector.no_stations_hint')}</p>
+				</div>
 			{:else if $stationsQuery.data?.results}
 				{#each $stationsQuery.data.results as station}
 					{@const latest = latestMeasurements[station.id]}

@@ -34,7 +34,34 @@
 </svelte:head>
 
 <main class="flex min-h-screen flex-col items-center p-4">
-	{#if $dataQuery.data}
+	{#if !globalState.stationId}
+		<div
+			class="mt-24 w-full max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
+		>
+			<p class="text-base font-semibold">{$t('forecast.status.no_station')}</p>
+			<p class="mt-1 text-sm">{$t('forecast.status.no_station_hint')}</p>
+		</div>
+	{:else if $dataQuery.isPending}
+		<div class="mt-24 w-full max-w-2xl space-y-4">
+			<div class="bg-muted h-10 w-2/3 animate-pulse rounded"></div>
+			<div class="bg-muted h-44 w-full animate-pulse rounded"></div>
+			<div class="bg-muted h-40 w-full animate-pulse rounded"></div>
+		</div>
+	{:else if $dataQuery.isError}
+		<div
+			class="mt-24 w-full max-w-2xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+		>
+			<p class="text-base font-semibold">{$t('forecast.status.api_unavailable')}</p>
+			<p class="mt-1 text-sm">{$t('forecast.status.api_unavailable_hint')}</p>
+		</div>
+	{:else if $dataQuery.data && $dataQuery.data.results.length === 0}
+		<div
+			class="mt-24 w-full max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
+		>
+			<p class="text-base font-semibold">{$t('forecast.status.no_data')}</p>
+			<p class="mt-1 text-sm">{$t('forecast.status.no_data_hint')}</p>
+		</div>
+	{:else if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
 		<div class="mt-4 mb-6 flex w-full flex-col items-center">
 			<div class="flex items-center gap-2">

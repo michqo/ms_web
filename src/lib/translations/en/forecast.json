@@ -1,5 +1,13 @@
 {
 	"pageTitle": "MS Web - Forecast",
+	"status": {
+		"no_station": "No station selected",
+		"no_station_hint": "Choose a station in the navbar to view forecast data.",
+		"api_unavailable": "API unavailable",
+		"api_unavailable_hint": "Cannot reach the server. Check if the API is running.",
+		"no_data": "No forecast data available",
+		"no_data_hint": "Forecast data has not been generated yet for this station."
+	},
 	"card": {
 		"title": "Forecast",
 		"error_current": "Failed to load current data",
