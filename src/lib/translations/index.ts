@@ -68,13 +68,11 @@ export const config: Config = {
 		{
 			locale: 'sk',
 			key: 'measurements',
-			routes: ['/measurements', '/dash'],
 			loader: async () => (await import('./sk/measurements.json')).default
 		},
 		{
 			locale: 'sk',
 			key: 'forecast',
-			routes: ['/forecast', '/dash'],
 			loader: async () => (await import('./sk/forecast.json')).default
 		}
 	]
