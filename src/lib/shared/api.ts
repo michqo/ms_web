@@ -11,6 +11,26 @@ import type {
 	RefreshJWTResponse,
 	Station
 } from './types';
+import {
+	delay as mockDelay,
+	mockAuthGetUser,
+	mockAuthLogin,
+	mockAuthRegister,
+	mockCreateStation,
+	mockDeleteAccount,
+	mockDeleteMeasurement,
+	mockDeleteMeasurements,
+	mockDeleteStation,
+	mockGetForecast,
+	mockGetLatestMeasurement,
+	mockGetMeasurementStats,
+	mockGetMeasurements,
+	mockGetStations,
+	mockSetPassword,
+	mockSetUsername,
+	mockUpdateStation
+} from './mock';
+import { isMockMode } from './mock-mode';
 
 const instanceConfig: CreateAxiosDefaults = {
 	baseURL: PUBLIC_API_URL,
@@ -54,21 +74,25 @@ class AxiosInterceptor {
 
 class AuthenticationApi extends AxiosInterceptor {
 	async createJwt(credentials: LoginSchema): Promise<LoginResponse> {
+		if (isMockMode()) return mockAuthLogin(credentials);
 		const response = await this.post('/auth/jwt/create/', credentials);
 		return response.data;
 	}
 
 	async postUser(credentials: LoginSchema): Promise<any> {
+		if (isMockMode()) return mockAuthRegister();
 		const response = await this.post('/auth/users/', credentials);
 		return response.data;
 	}
 
 	async refreshJwt(refresh: string): Promise<RefreshJWTResponse> {
+		if (isMockMode()) return { access: 'mock_access_token_xxx' };
 		const response = await this.post('/auth/jwt/refresh/', { refresh });
 		return response.data;
 	}
 
 	async getUsersMe(token?: string): Promise<string> {
+		if (isMockMode()) return mockAuthGetUser();
 		const headers = token ? { Authorization: `JWT ${token}` } : undefined;
 		const response = await this.get('/auth/users/me/', { headers });
 		return response.data.username;
@@ -77,18 +101,22 @@ class AuthenticationApi extends AxiosInterceptor {
 
 class AuthenticatedApi extends AxiosInterceptor {
 	async setUsername(profile: UsernameSchema) {
+		if (isMockMode()) return mockSetUsername();
 		await this.post('/auth/users/set_username/', profile);
 	}
 
 	async setPassword(profile: Omit<PasswordSchema, 'confirm_password'>) {
+		if (isMockMode()) return mockSetPassword();
 		await this.post('/auth/users/set_password/', profile);
 	}
 
 	async deleteAccount(profile: DeleteSchema) {
+		if (isMockMode()) return mockDeleteAccount();
 		await this.delete('/auth/users/me/', { data: profile });
 	}
 
 	async getUsersMe(): Promise<string> {
+		if (isMockMode()) return mockAuthGetUser();
 		const response = await this.get('/auth/users/me/');
 		return response.data.username;
 	}
@@ -99,6 +127,7 @@ class AuthenticatedApi extends AxiosInterceptor {
 		date: Dayjs,
 		pageSize: number = 10
 	): Promise<ListResponse<Measurement>> {
+		if (isMockMode()) return mockGetMeasurements(station, page, date, pageSize);
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		params.append('page', page.toString());
@@ -111,6 +140,7 @@ class AuthenticatedApi extends AxiosInterceptor {
 	}
 
 	async getMeasurementStats(station: number, gt: string, lt: string): Promise<MeasurementStat[]> {
+		if (isMockMode()) return mockGetMeasurementStats(station, gt, lt);
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		params.append('timestamp__gt', gt);
@@ -122,6 +152,7 @@ class AuthenticatedApi extends AxiosInterceptor {
 	}
 
 	async getLatestMeasurement(station: number): Promise<Measurement> {
+		if (isMockMode()) return mockGetLatestMeasurement(station);
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		const response = await this.get<Measurement>('/api/measurements/latest/', {
@@ -131,10 +162,12 @@ class AuthenticatedApi extends AxiosInterceptor {
 	}
 
 	async deleteMeasurement(measurementId: number): Promise<void> {
+		if (isMockMode()) return mockDeleteMeasurement();
 		await this.delete(`/api/measurements/${measurementId}/`);
 	}
 
 	async deleteMeasurements(stationId: number, gt?: string, lt?: string): Promise<void> {
+		if (isMockMode()) return mockDeleteMeasurements();
 		const params = new URLSearchParams();
 		params.append('station', stationId.toString());
 		if (gt) params.append('timestamp__gt', gt);
@@ -144,6 +177,7 @@ class AuthenticatedApi extends AxiosInterceptor {
 	}
 
 	async getForecast(station: number): Promise<Forecast> {
+		if (isMockMode()) return mockGetForecast(station);
 		const params = new URLSearchParams();
 		params.append('station', station.toString());
 		const response = await this.get<Forecast>('/api/forecast/', { params });
@@ -151,20 +185,24 @@ class AuthenticatedApi extends AxiosInterceptor {
 	}
 
 	async getStations(): Promise<ListResponse<Station>> {
+		if (isMockMode()) return mockGetStations();
 		const response = await this.get<ListResponse<Station>>('/api/stations/');
 		return response.data;
 	}
 
 	async updateStation(stationId: number, station: Partial<Station>): Promise<Station> {
+		if (isMockMode()) return mockUpdateStation(stationId, station);
 		const response = await this.put<Station>(`/api/stations/${stationId}/`, station);
 		return response.data;
 	}
 
 	async deleteStation(stationId: number): Promise<void> {
+		if (isMockMode()) return mockDeleteStation();
 		await this.delete(`/api/stations/${stationId}/`);
 	}
 
 	async createStation(station: Partial<Station>): Promise<Station> {
+		if (isMockMode()) return mockCreateStation(station);
 		const response = await this.post<Station>('/api/stations/', station);
 		return response.data;
 	}

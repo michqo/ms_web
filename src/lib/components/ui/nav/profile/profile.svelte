@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { globalState } from '@/shared/runes.svelte';
+	import { globalState, setMockMode } from '@/shared/runes.svelte';
 	import type { DeleteSchema } from '@/shared/schemas';
 	import { t } from '@/translations';
-	import { KeyRound, Trash2, User } from 'lucide-svelte';
+	import { KeyRound, Trash2, User, FlaskConical } from 'lucide-svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Dialog from '../../dialog';
 	import DeleteDialog from './delete-dialog.svelte';
@@ -34,6 +34,33 @@
 				<PasswordDialog />
 			</div>
 		</div>
+
+		<div class="mb-4 rounded-lg border p-4">
+			<button
+				onclick={() => setMockMode(!globalState.mockMode)}
+				class="flex w-full items-center justify-between gap-3 text-left transition-colors"
+			>
+				<div class="flex items-center gap-3">
+					<FlaskConical class="text-muted-foreground size-5 shrink-0" />
+					<div>
+						<p class="text-sm font-medium">Mock data mode</p>
+						<p class="text-muted-foreground text-xs">Browse with fake data when API is offline</p>
+					</div>
+				</div>
+				<div
+					class="flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors"
+					class:bg-primary={globalState.mockMode}
+					class:bg-muted={!globalState.mockMode}
+				>
+					<div
+						class="bg-background h-4 w-4 rounded-full shadow-sm transition-transform"
+						class:translate-x-4={globalState.mockMode}
+						class:translate-x-0={!globalState.mockMode}
+					></div>
+				</div>
+			</button>
+		</div>
+
 		<div class="border-destructive/50 bg-destructive/5 space-y-4 rounded-lg border p-4">
 			<div class="space-y-1">
 				<h3 class="text-destructive font-semibold">
