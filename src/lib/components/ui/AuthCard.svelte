@@ -61,8 +61,7 @@
 
 <Card.Root class="border-0 bg-transparent shadow-none">
 	<Card.Header>
-		<Card.Title
-			class="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-3xl font-bold text-transparent dark:from-white dark:to-slate-300"
+		<Card.Title class="text-foreground text-xl font-semibold"
 			>{actionWord} {$t('auth.card_title')}</Card.Title
 		>
 		<Card.Description>{$t('auth.card_description')}</Card.Description>
@@ -73,7 +72,7 @@
 		{/if}
 	</Card.Header>
 	<form method="POST" action="/actions?/auth" use:enhance>
-		<Card.Content class="space-y-6">
+		<Card.Content class="space-y-4">
 			<Form.Field {form} name="username">
 				<Form.Control>
 					{#snippet children({ props })}
@@ -93,7 +92,7 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		</Card.Content>
-		<Card.Footer class="mt-8 flex flex-col items-center gap-2">
+		<Card.Footer class="mt-4 flex flex-col items-center gap-2">
 			<Form.Button class="w-full">{actionWord}</Form.Button>
 			{#if globalState.isMobile.value}
 				{@render switchButton()}

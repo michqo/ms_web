@@ -1,35 +1,24 @@
 {
 	"app": {
-		"title": "Meteostanica",
-		"description": "Váš osobný asistent počasia"
+		"title": "Meteostation"
 	},
 	"routes": {
 		"home": "Domov",
 		"dash": "Prehľad",
 		"measurements": "Merania",
 		"forecast": "Predpoveď",
-		"unknown": "Neznáme",
-		"action": "Menu",
-		"label": "Navigácia",
-		"features": "Funkcie",
-		"footer": "Pätička"
+		"label": "Navigácia"
 	},
 	"theme": {
-		"action": "Zmeniť tému",
-		"active": "Aktívna",
-		"label": "Vzhľad",
-		"light": "Svetlý",
-		"dark": "Tmavý",
-		"system": "Systém",
-		"light_description": "Svetlé a čisté rozhranie",
-		"dark_description": "Tmavé a pohodlné",
-		"system_description": "Nasleduje systémové nastavenie"
+		"action": "Prepínať tému",
+		"light": "Svetlá",
+		"dark": "Tmavá",
+		"system": "Systém"
 	},
 	"language": {
 		"label": "Jazyk",
-		"en": "Anglicky",
-		"sk": "Slovensky",
-		"hint": "Vyberte si preferovaný jazyk."
+		"en": "Angličtina",
+		"sk": "Slovenčina"
 	},
 	"actions": {
 		"account": {
@@ -37,28 +26,28 @@
 			"item": "Profil",
 			"login": "Prihlásiť sa",
 			"logout": "Odhlásiť sa",
-			"register": "Registrovať",
+			"register": "Registrovať sa",
 			"title": "Upraviť profil",
 			"dialog": {
 				"title": "Upraviť profil",
-				"description": "Aktualizujte svoje profilové informácie tu",
+				"description": "Tu môžete aktualizovať informácie o svojom profile",
 				"username": "Používateľské meno",
-				"username_action": "Zmeniť meno",
-				"username_description": "Zmeňte si svoje používateľské meno tu.",
+				"username_action": "Zmeniť používateľské meno",
+				"username_description": "Tu môžete zmeniť svoje používateľské meno.",
 				"username_success": "Používateľské meno bolo úspešne aktualizované",
-				"username_error": "Pri aktualizácii používateľského mena došlo k chybe",
+				"username_error": "Chyba pri aktualizácii používateľského mena",
 				"password": "Heslo",
 				"password_action": "Zmeniť heslo",
-				"password_description": "Zmeňte si svoje heslo tu.",
+				"password_description": "Tu môžete zmeniť svoje heslo.",
 				"password_success": "Heslo bolo úspešne aktualizované",
-				"password_error": "Pri aktualizácii hesla došlo k chybe",
+				"password_error": "Chyba pri aktualizácii hesla",
 				"delete": "Účet",
 				"delete_title": "Zmazať účet",
-				"delete_description": "Po zmazaní účtu sa k nemu už nebudete môcť vrátiť.",
+				"delete_description": "Po zmazaní účtu už nie je cesta späť.",
 				"delete_action": "Zmazať účet",
-				"delete_confirm_description": "Ste si istý, že chcete zmazať svoj účet? Tento krok nie je možné vrátiť späť.",
+				"delete_confirm_description": "Ste si istý, že chcete zmazať svoj účet? Táto akcia sa nedá vrátiť späť.",
 				"delete_success": "Váš účet bol úspešne zmazaný.",
-				"delete_error": "Prišlo k chybe pri mazaní vášho účtu. Skúste to prosím neskôr ešte raz.",
+				"delete_error": "Pri mazání účtu sa vyskytla chyba. Skúste to prosím neskôr.",
 				"form_new_username": "Nové používateľské meno",
 				"form_current_password": "Aktuálne heslo",
 				"form_save_changes": "Uložiť zmeny",
@@ -70,10 +59,10 @@
 		},
 		"selector": {
 			"label": "Výber stanice",
-			"action": "Vyberte stanicu pre zobrazenie jej dát",
-			"success": "Stanica bola nastavená ako predvolená",
-			"no_stations": "Žiadne stanice nie sú dostupné",
-			"no_stations_hint": "Najprv vytvorte stanicu, aby ste mohli zobrazovať dáta.",
+			"action": "Vyberte stanicu pre zobrazenie jej údajov",
+			"success": "Stanica vybraná ako predvolená",
+			"no_stations": "Žiadne stanice nie sú k dispozícii",
+			"no_stations_hint": "Najprv vytvorte stanicu, aby ste mohli začať zobrazovať údaje.",
 			"api_unavailable": "API je nedostupné",
 			"api_unavailable_hint": "Server nie je dostupný. Skontrolujte, či API beží."
 		}

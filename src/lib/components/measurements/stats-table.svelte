@@ -14,12 +14,11 @@
 	const { weekStats, onSelectDay }: Props = $props();
 
 	function getTemperatureColor(temp: number): string {
-		if (temp <= 0) return 'text-blue-600';
-		if (temp <= 10) return 'text-blue-400';
-		if (temp <= 20) return 'text-green-500';
-		if (temp <= 25) return 'text-yellow-500';
-		if (temp <= 30) return 'text-orange-500';
-		return 'text-red-600';
+		if (temp <= 0) return 'text-chart-1';
+		if (temp <= 15) return 'text-chart-2';
+		if (temp <= 25) return 'text-primary';
+		if (temp <= 32) return 'text-chart-4';
+		return 'text-destructive';
 	}
 
 	const today = dayjs();
@@ -27,7 +26,7 @@
 	const isCurrentDay = (date: Dayjs) => date.isSame(today, 'day');
 </script>
 
-<div class="overflow-hidden rounded-lg border shadow-xs">
+<div class="border-border/50 overflow-hidden rounded-lg border shadow-xs backdrop-blur-sm">
 	<Table.Root class="caption-top">
 		<Table.Caption class="my-4">
 			<div class="flex items-center justify-center gap-2">
@@ -81,10 +80,10 @@
 					</Table.Cell>
 					<Table.Cell>
 						<div class="flex flex-col">
-							<span class="font-medium text-blue-500">{stat.humidity}%</span>
+							<span class="text-primary font-medium">{stat.humidity}%</span>
 							<div class="bg-muted mt-1 h-2 w-full overflow-hidden rounded-full">
 								<div
-									class="h-full bg-blue-500"
+									class="bg-primary h-full"
 									style={`width: ${stat.humidity}%; opacity: 0.7`}
 								></div>
 							</div>

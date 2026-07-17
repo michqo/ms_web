@@ -1,35 +1,24 @@
 {
 	"app": {
-		"title": "Meteostation",
-		"description": "Your personal weather assistant"
+		"title": "Meteostation"
 	},
 	"routes": {
 		"home": "Home",
 		"dash": "Overview",
 		"measurements": "Measurements",
 		"forecast": "Forecast",
-		"unknown": "Unknown",
-		"action": "Menu",
-		"label": "Navigation",
-		"features": "Features",
-		"footer": "Footer"
+		"label": "Navigation"
 	},
 	"theme": {
 		"action": "Toggle theme",
-		"active": "Active",
-		"label": "Appearance",
 		"light": "Light",
 		"dark": "Dark",
-		"system": "System",
-		"light_description": "Light and clean interface",
-		"dark_description": "Dark and comfortable",
-		"system_description": "Follows system preference"
+		"system": "System"
 	},
 	"language": {
 		"label": "Language",
 		"en": "English",
-		"sk": "Slovak",
-		"hint": "Select your preferred language"
+		"sk": "Slovak"
 	},
 	"actions": {
 		"account": {

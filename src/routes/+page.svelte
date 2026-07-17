@@ -1,30 +1,21 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import ForecastCard from '@/components/forecast/card.svelte';
-	import FeatureCard from '@/components/home/card.svelte';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import ClearDay from '@/components/svgs/clear-day.svelte';
-	import { Badge } from '@/components/ui/badge';
 	import { Button } from '@/components/ui/button';
 	import { Map } from '@/components/ui/map';
-	import { Separator } from '@/components/ui/separator';
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import dayjs from 'dayjs';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-	import ThemeToggle from '@/components/ui/nav/themetoggle.svelte';
-	import I18n from '@/components/ui/nav/i18n.svelte';
 	import {
 		ArrowRight,
-		BarChart3,
 		Cloud,
-		CloudRain,
 		CloudSun,
 		ExternalLink,
-		Gauge,
 		Github,
-		Heart,
 		MapPin,
 		Thermometer
 	} from 'lucide-svelte';
@@ -70,84 +61,30 @@
 		pictocode: 1
 	};
 
-	// GSAP Animations
 	onMount(() => {
 		if (!browser) return;
 
 		gsap.registerPlugin(ScrollTrigger);
 
 		const ctx = gsap.context(() => {
-			// Hero section animation
 			gsap.to('#hero-content', {
 				y: 0,
 				opacity: 1,
-				duration: 1,
-				ease: 'power2.out',
-				overwrite: 'auto'
-			});
-
-			// Features heading animation
-			gsap.to('#features-heading', {
-				scrollTrigger: {
-					trigger: '#features-heading',
-					start: 'top 80%',
-					toggleActions: 'play none none none',
-					once: true
-				},
-				y: 0,
-				opacity: 1,
 				duration: 0.8,
-				ease: 'power2.out',
-				overwrite: 'auto'
+				ease: 'power2.out'
 			});
 
-			// Primary features animation
-			gsap.to('.primary-feature', {
+			gsap.to('.fade-in', {
 				scrollTrigger: {
-					trigger: '.primary-feature',
-					start: 'top 80%',
-					toggleActions: 'play none none none',
-					once: true
+					trigger: '.fade-in',
+					start: 'top 85%',
+					toggleActions: 'play none none none'
 				},
 				y: 0,
 				opacity: 1,
-				stagger: 0.15,
-				duration: 0.7,
-				ease: 'power2.out',
-				overwrite: 'auto'
-			});
-
-			// Preview cards animation
-			gsap.to('.preview-card', {
-				scrollTrigger: {
-					trigger: '.preview-card',
-					start: 'top 80%',
-					toggleActions: 'play none none none',
-					once: true
-				},
-				scale: 1,
-				y: 0,
-				opacity: 1,
-				stagger: 0.2,
-				duration: 0.8,
-				ease: 'back.out(1.7)',
-				overwrite: 'auto'
-			});
-
-			// Footer animation
-			gsap.to('#footer > *', {
-				scrollTrigger: {
-					trigger: '#footer',
-					start: 'top 80%',
-					toggleActions: 'play none none none',
-					once: true
-				},
-				y: 0,
-				opacity: 1,
-				stagger: 0.15,
-				duration: 0.7,
-				ease: 'power2.out',
-				overwrite: 'auto'
+				stagger: 0.12,
+				duration: 0.6,
+				ease: 'power2.out'
 			});
 		}, pageRoot);
 
@@ -159,7 +96,6 @@
 	<title>{$t('home.pageTitle')}</title>
 	<meta name="description" content={$t('home.hero.subtitle')} />
 	<link rel="canonical" href="https://ms.miqal.xyz" />
-
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="Meteostation" />
 	<meta property="og:title" content={$t('home.pageTitle')} />
@@ -169,7 +105,6 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:alt" content="Meteostation – Your personal weather station" />
-
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={$t('home.pageTitle')} />
 	<meta name="twitter:description" content={$t('home.hero.subtitle')} />
@@ -177,29 +112,56 @@
 </svelte:head>
 
 <main bind:this={pageRoot} class="min-h-screen">
-	<!-- Hero Section -->
 	<section
 		id="hero"
-		class="from-background relative overflow-hidden bg-gradient-to-t to-cyan-100/60 px-6 py-20 sm:py-32 dark:to-blue-950/50"
+		class="from-background to-primary/5 relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-gradient-to-t px-6 py-20 sm:py-32"
 	>
-		<div id="hero-content" class="container mx-auto flex flex-col items-center px-4 text-center">
-			<img src="/favicon.png" alt="MS Logo" class="h-40 w-40 md:mb-4" />
-			<h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+		<div class="absolute inset-0 overflow-hidden">
+			<div
+				class="bg-primary/5 absolute -top-40 right-0 h-[500px] w-[500px] translate-x-1/3 rounded-full blur-3xl"
+			></div>
+			<div
+				class="bg-primary/5 absolute -bottom-20 left-0 h-[400px] w-[400px] -translate-x-1/4 rounded-full blur-3xl"
+			></div>
+		</div>
+
+		<div
+			id="hero-content"
+			class="relative container mx-auto flex flex-col items-center px-4 text-center"
+		>
+			<span
+				class="border-primary/30 bg-primary/5 text-primary mb-6 inline-flex items-center gap-2 rounded border px-3 py-1 font-mono text-xs"
+			>
+				<span class="bg-primary/70 h-1.5 w-1.5 animate-pulse rounded-full"></span>
+				{$t('home.hero.badge')}
+			</span>
+
+			<div
+				class="bg-primary/10 ring-primary/20 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl ring-1"
+			>
+				<img src="/favicon.png" alt="MS Logo" class="h-10 w-10" />
+			</div>
+
+			<h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
 				{@html $t('home.hero.title')}
 			</h1>
-			<p class="text-muted-foreground mx-auto mt-4 max-w-[700px] text-lg md:text-xl">
+			<p
+				class="text-muted-foreground mx-auto mt-4 max-w-[600px] text-base leading-relaxed sm:text-lg"
+			>
 				{$t('home.hero.subtitle')}
 			</p>
-			<div class="mt-6 flex items-center gap-4">
-				<Button variant="outline" size="lg" href="/dash">
+			<div class="mt-8 flex items-center gap-3">
+				<Button variant="default" size="default" class="gap-2" href="/dash">
 					{$t('home.hero.cta')}
-					<ArrowRight class="ml-2 h-5 w-5" />
+					<ArrowRight class="h-4 w-4" />
 				</Button>
 				<Button
-					variant="secondary"
+					variant="outline"
 					href="https://github.com/michqo/ms_web"
 					target="_blank"
-					class="w-fit"
+					rel="noopener noreferrer"
+					size="default"
+					class="gap-2"
 				>
 					<Github class="h-4 w-4" />
 					{$t('home.footer.code')}
@@ -209,114 +171,94 @@
 		</div>
 	</section>
 
-	<!-- Features Section -->
-	<section id="features" class="px-6 py-20">
-		<div class="mx-auto max-w-7xl">
-			<div id="features-heading" class="mb-16 text-center">
-				<h2 class="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl dark:text-white">
+	<section id="features" class="px-6 py-20 sm:py-28">
+		<div class="mx-auto max-w-5xl">
+			<div class="mb-14 flex items-center gap-3">
+				<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
 					{$t('home.features.overview_title')}
-				</h2>
-				<p class="mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-300">
-					{$t('home.features.overview_description')}
-				</p>
+				</span>
+				<div class="bg-border h-px flex-1"></div>
 			</div>
 
-			<!-- Feature Preview Cards -->
-			<div class="flex flex-wrap items-start justify-center gap-8">
-				<FeatureCard class="preview-card">
-					{#snippet header()}
-						<Thermometer class="text-primary h-8 w-8" />
-						<h3>{$t('home.features.feature1.title')}</h3>
-					{/snippet}
-					{#snippet content()}
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+				<div
+					class="fade-in border-border bg-card hover:border-primary/50 flex flex-col rounded border p-6 transition-colors"
+				>
+					<div class="mb-5 flex items-center gap-2.5">
+						<Thermometer class="text-primary h-4 w-4" />
+						<h3 class="text-sm font-semibold">{$t('home.features.feature1.title')}</h3>
+					</div>
+					<div class="flex-1">
 						<CurrentDayCard {todayStat} {latestMeasurement} isLoading={false} />
-					{/snippet}
-				</FeatureCard>
+					</div>
+				</div>
 
-				<FeatureCard class="preview-card">
-					{#snippet header()}
-						<MapPin class="text-primary h-8 w-8" />
-						<h3>{$t('home.features.feature3.title')}</h3>
-					{/snippet}
-					{#snippet content()}
-						<div class="w-full max-w-lg overflow-hidden rounded-lg shadow-md">
-							<Map latitude={48.1486} longitude={17.1077} zoom={13} class="h-[200px]" preview />
+				<div
+					class="fade-in border-border bg-card hover:border-primary/50 flex flex-col rounded border p-6 transition-colors"
+				>
+					<div class="mb-5 flex items-center gap-2.5">
+						<MapPin class="text-primary h-4 w-4" />
+						<h3 class="text-sm font-semibold">{$t('home.features.feature3.title')}</h3>
+					</div>
+					<div class="flex flex-1 flex-col">
+						<div class="border-border/50 overflow-hidden rounded-lg border">
+							<Map latitude={48.1486} longitude={17.1077} zoom={13} class="h-[220px]" preview />
 						</div>
-					{/snippet}
-				</FeatureCard>
+					</div>
+				</div>
 
-				<FeatureCard class="preview-card">
-					{#snippet header()}
-						<CloudSun class="text-primary h-8 w-8" />
-						<h3>{$t('home.features.feature2.title')}</h3>
-					{/snippet}
-					{#snippet content()}
+				<div
+					class="fade-in border-border bg-card hover:border-primary/50 flex flex-col rounded border p-6 transition-colors md:col-span-2"
+				>
+					<div class="mb-5 flex items-center gap-2.5">
+						<CloudSun class="text-primary h-4 w-4" />
+						<h3 class="text-sm font-semibold">{$t('home.features.feature2.title')}</h3>
+					</div>
+					<div class="flex-1">
 						<ForecastCard {forecast} stationId={0} measurementPreview={latestMeasurement} />
-					{/snippet}
-				</FeatureCard>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Footer Section -->
-	<section
-		id="footer"
-		class="from-background w-full space-y-10 bg-gradient-to-b to-blue-100/60 pt-20 md:pt-32 lg:pt-40 dark:to-cyan-950/40"
-	>
-		<div class="container mx-auto px-4 text-center">
-			<h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">
+	<section id="footer" class="w-full pt-20 md:pt-28">
+		<div class="container mx-auto px-4 pb-20 text-center">
+			<h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
 				{$t('home.register.title')}
 			</h2>
-			<p class="text-muted-foreground mx-auto mt-4 max-w-[600px] md:text-lg">
+			<p class="text-muted-foreground mx-auto mt-4 max-w-[500px] md:text-base">
 				{$t('home.register.description')}
 			</p>
-			<div class="mt-6">
-				<Button size="lg" onclick={() => (globalState.authOpen = true)}
+			<div class="mt-8">
+				<Button variant="default" size="default" onclick={() => (globalState.authOpen = true)}
 					>{$t('auth.register')}</Button
 				>
 			</div>
 		</div>
 
-		<div class="flex w-full justify-center">
+		<footer class="border-border/50 bg-background/70 border-t backdrop-blur-md">
 			<div
-				class="border-accent-foreground/30 mt-10 mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-4 rounded-md border-0 p-8 shadow-none md:my-15 md:items-start md:border md:shadow-xs"
+				class="text-muted-foreground mx-auto flex max-w-7xl items-center justify-between px-4 py-3 font-mono text-xs sm:px-8"
 			>
-				<div class="flex items-center gap-3">
-					<div
-						class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg"
-					>
-						<Cloud class="h-7 w-7 text-white" />
-					</div>
-					<div>
-						<h3 class="text-2xl font-bold">{$t('menu.app.title')}</h3>
-						<p class="text-sm text-slate-600 dark:text-slate-300">
-							{$t('menu.app.description')}
-						</p>
-					</div>
-				</div>
-
-				<div class="flex flex-col items-center gap-2">
-					<div class="flex gap-2 md:hidden">
-						<ThemeToggle />
-						<I18n />
-					</div>
-				</div>
-
-				<Separator />
-
-				<!-- Bottom Bar -->
-				<div class="flex w-full flex-col items-center justify-between gap-4 p-3 md:flex-row">
-					<div class="flex items-center gap-4 text-sm">
-						<span>© {date.year()} {$t('menu.app.title')}. {$t('home.footer.rights')}.</span>
-					</div>
-
-					<div class="flex items-center gap-2 text-sm">
-						<span>{$t('home.footer.made_with.part1')}</span>
-						<Heart class="h-4 w-4 fill-current text-red-500" />
-						<span>{$t('home.footer.made_with.part2')}</span>
-					</div>
-				</div>
+				<a href="/" class="group flex items-center gap-1 font-bold tracking-tight no-underline">
+					<span class="text-primary group-hover:text-primary/70 transition-colors">/</span>
+					<span class="group-hover:text-primary transition-colors">meteo</span>
+				</a>
+				<span>&copy; {date.year()} Meteostation. {$t('home.footer.rights')}.</span>
 			</div>
-		</div>
+		</footer>
 	</section>
 </main>
+
+<style>
+	#hero-content {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	.fade-in {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+</style>

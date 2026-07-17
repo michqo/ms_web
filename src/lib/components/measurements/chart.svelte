@@ -16,19 +16,19 @@
 
 	const lineColors: Record<LineColor, { stroke: string; fill: string; highlight: string }> = {
 		red: {
-			stroke: 'stroke-red-500',
-			fill: 'fill-red-500/10',
-			highlight: 'fill-red-500 stroke-red-600'
+			stroke: 'stroke-[var(--chart-4)]',
+			fill: 'fill-[var(--chart-4)]/10',
+			highlight: 'fill-[var(--chart-4)] stroke-[var(--chart-5)]'
 		},
 		purple: {
-			stroke: 'stroke-purple-500',
-			fill: 'fill-purple-500/10',
-			highlight: 'fill-purple-500 stroke-purple-600'
+			stroke: 'stroke-[var(--chart-2)]',
+			fill: 'fill-[var(--chart-2)]/10',
+			highlight: 'fill-[var(--chart-2)] stroke-[var(--chart-3)]'
 		},
 		blue: {
-			stroke: 'stroke-blue-500',
-			fill: 'fill-blue-500/10',
-			highlight: 'fill-blue-500 stroke-blue-600'
+			stroke: 'stroke-[var(--chart-1)]',
+			fill: 'fill-[var(--chart-1)]/10',
+			highlight: 'fill-[var(--chart-1)] stroke-[var(--chart-2)]'
 		}
 	};
 

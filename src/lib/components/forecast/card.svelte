@@ -42,7 +42,9 @@
 	);
 </script>
 
-<div class="border-border bg-card flex flex-col rounded-xl border p-5 shadow-sm sm:p-8">
+<div
+	class="border-border/50 bg-card hover:border-primary/50 flex flex-col rounded-xl border p-5 shadow-sm backdrop-blur-sm transition-colors sm:p-8"
+>
 	<div class="mt-2 mb-4 flex items-center justify-center gap-x-2">
 		<Calendar class="text-muted-foreground h-4 w-4" />
 		<p class="text-muted-foreground text-sm font-medium">{forecast.time.format('dddd, MMMM D')}</p>
@@ -64,7 +66,7 @@
 			</div>
 		</div>
 
-		<div class="border-t pt-6 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-4">
+		<div class="border-border/50 border-t pt-6 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-4">
 			<p class="text-muted-foreground text-center text-xs font-semibold tracking-wider uppercase">
 				{$t('forecast.card.current_temperature')}
 			</p>
@@ -74,7 +76,7 @@
 				</div>
 			{:else if $measurementQuery.isError}
 				<div class="flex h-full min-h-[80px] items-center justify-center">
-					<p class="text-center text-sm font-medium text-red-500">
+					<p class="text-destructive text-center text-sm font-medium">
 						{$t('forecast.card.error_current')}
 					</p>
 				</div>
@@ -100,7 +102,9 @@
 		</div>
 	</div>
 
-	<div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 border-t pt-8 sm:grid-cols-3 sm:gap-4 sm:pt-6">
+	<div
+		class="border-border/50 mt-8 grid grid-cols-2 gap-x-4 gap-y-6 border-t pt-8 sm:grid-cols-3 sm:gap-4 sm:pt-6"
+	>
 		<div class="flex flex-col items-center gap-1">
 			<Wind width={28} height={28} class="text-muted-foreground" />
 			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
@@ -112,7 +116,7 @@
 		</div>
 
 		<div class="flex flex-col items-center gap-1">
-			<Droplets class="h-7 w-7 text-blue-500" />
+			<Droplets class="text-primary h-7 w-7" />
 			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
 				{$t('forecast.card.humidity')}
 			</p>
@@ -122,7 +126,7 @@
 		</div>
 
 		<div class="flex flex-col items-center gap-1">
-			<Umbrella class="h-7 w-7 text-cyan-500" />
+			<Umbrella class="text-primary h-7 w-7" />
 			<p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
 				{$t('forecast.card.precipitation')}
 			</p>

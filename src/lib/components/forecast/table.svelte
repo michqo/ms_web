@@ -33,7 +33,9 @@
 	}
 </script>
 
-<div class="bg-card my-6 w-full overflow-x-auto rounded-xl border shadow-sm sm:my-10">
+<div
+	class="border-border/50 bg-card hover:border-primary/50 my-6 w-full overflow-x-auto rounded-xl border shadow-sm backdrop-blur-sm transition-colors sm:my-10"
+>
 	<Table.Root class="min-w-[320px]">
 		<Table.Header>
 			<Table.Row>
@@ -53,10 +55,10 @@
 					<Table.Cell>
 						<item.icon class="h-10 w-10" />
 					</Table.Cell>
-					<Table.Cell class="text-base font-semibold text-red-500">
+					<Table.Cell class="text-destructive text-base font-semibold">
 						{Math.round(item.temperature_max)}°
 					</Table.Cell>
-					<Table.Cell class="text-base text-blue-500">
+					<Table.Cell class="text-primary text-base">
 						{Math.round(item.temperature_min)}°
 					</Table.Cell>
 				</Table.Row>

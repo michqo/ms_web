@@ -170,7 +170,9 @@
 				</div>
 			{:else}
 				<Tabs.Root value={activeTab} onValueChange={(value) => (activeTab = value)}>
-					<Tabs.List class="bg-background sticky top-0 z-10 grid w-full grid-cols-2">
+					<Tabs.List
+						class="bg-background sticky top-0 z-10 grid w-full grid-cols-2 backdrop-blur-sm"
+					>
 						<Tabs.Trigger value="chart">{$t('measurements.dialog.day.tabs_chart')}</Tabs.Trigger>
 						<Tabs.Trigger value="table">{$t('measurements.dialog.day.tabs_table')}</Tabs.Trigger>
 					</Tabs.List>

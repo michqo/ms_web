@@ -7,7 +7,6 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
 	import { t } from '@/translations';
-	import { Cloud } from 'lucide-svelte';
 
 	const dataQuery = $derived(
 		createQuery({
@@ -35,11 +34,9 @@
 
 <main class="flex min-h-screen flex-col items-center p-4">
 	{#if !globalState.stationId}
-		<div
-			class="mt-24 w-full max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-		>
-			<p class="text-base font-semibold">{$t('forecast.status.no_station')}</p>
-			<p class="mt-1 text-sm">{$t('forecast.status.no_station_hint')}</p>
+		<div class="border-border/50 bg-card mt-24 w-full max-w-2xl rounded-lg border p-6">
+			<p class="text-sm font-semibold">{$t('forecast.status.no_station')}</p>
+			<p class="text-muted-foreground mt-1 text-xs">{$t('forecast.status.no_station_hint')}</p>
 		</div>
 	{:else if $dataQuery.isPending}
 		<div class="mt-24 w-full max-w-2xl space-y-4">
@@ -48,34 +45,29 @@
 			<div class="bg-muted h-40 w-full animate-pulse rounded"></div>
 		</div>
 	{:else if $dataQuery.isError}
-		<div
-			class="mt-24 w-full max-w-2xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-		>
-			<p class="text-base font-semibold">{$t('forecast.status.api_unavailable')}</p>
-			<p class="mt-1 text-sm">{$t('forecast.status.api_unavailable_hint')}</p>
+		<div class="border-border/50 bg-card mt-24 w-full max-w-2xl rounded-lg border p-6">
+			<p class="text-sm font-semibold">{$t('forecast.status.api_unavailable')}</p>
+			<p class="text-muted-foreground mt-1 text-xs">{$t('forecast.status.api_unavailable_hint')}</p>
 		</div>
 	{:else if $dataQuery.data && $dataQuery.data.results.length === 0}
-		<div
-			class="mt-24 w-full max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-		>
-			<p class="text-base font-semibold">{$t('forecast.status.no_data')}</p>
-			<p class="mt-1 text-sm">{$t('forecast.status.no_data_hint')}</p>
+		<div class="border-border/50 bg-card mt-24 w-full max-w-2xl rounded-lg border p-6">
+			<p class="text-sm font-semibold">{$t('forecast.status.no_data')}</p>
+			<p class="text-muted-foreground mt-1 text-xs">{$t('forecast.status.no_data_hint')}</p>
 		</div>
 	{:else if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
-		<div class="mt-4 mb-6 flex w-full flex-col items-center">
-			<div class="flex items-center gap-2">
-				<Cloud class="text-primary h-8 w-8" />
-				<h1 class="text-3xl font-bold sm:text-4xl">{globalState.station?.name}</h1>
-			</div>
-			<h2 class="text-muted-foreground mt-1 text-lg font-light sm:text-xl">
-				{globalState.station?.city_name}
-			</h2>
-			<!-- Preview map -->
-			{#if forecast.latitude && forecast.longitude}
-				<div
-					class="border-border mt-4 w-full max-w-2xl overflow-hidden rounded-xl border shadow-sm"
+		<div class="mt-20 mb-6 flex w-full max-w-2xl flex-col items-center">
+			<div class="mb-5 flex w-full items-center gap-3">
+				<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
+					{globalState.station?.name}
+				</span>
+				<div class="bg-border h-px flex-1"></div>
+				<span class="text-muted-foreground font-mono text-xs">{globalState.station?.city_name}</span
 				>
+			</div>
+
+			{#if forecast.latitude && forecast.longitude}
+				<div class="border-border/50 mb-6 w-full overflow-hidden rounded-lg border">
 					<Map
 						latitude={forecast.latitude}
 						longitude={forecast.longitude}
@@ -87,7 +79,7 @@
 			{/if}
 		</div>
 
-		<div class="mt-4 flex w-full max-w-2xl flex-col items-stretch gap-y-6 sm:mt-6 sm:gap-y-10">
+		<div class="flex w-full max-w-2xl flex-col gap-y-6">
 			<Card forecast={forecast.results[0]} stationId={globalState.stationId} />
 			<Table forecast={forecast.results} updatedDate={forecast.created_at} />
 		</div>

@@ -54,7 +54,7 @@
 <AlertDialog.Root bind:open>
 	<AlertDialog.Content
 		class={[
-			'flex flex-col sm:max-w-md',
+			'flex flex-col backdrop-blur-sm sm:max-w-md',
 			{ 'h-[100vh] w-screen max-w-none rounded-none border-0': globalState.isMobile.value }
 		]}
 	>

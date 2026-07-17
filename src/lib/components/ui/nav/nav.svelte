@@ -4,56 +4,85 @@
 		icon: any;
 	};
 
-	export { logo, type Route };
+	export { type Route };
 </script>
 
 <script lang="ts">
-	import Loading from '@/components/Loading.svelte';
-	import { page } from '$app/state';
 	import type { DeleteSchema, LoginSchema } from '@/shared/schemas';
 	import { t } from '@/translations';
 	import { get } from 'svelte/store';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Actions from './actions.svelte';
+	import Loading from '@/components/Loading.svelte';
 	import I18n from './i18n.svelte';
 	import Links from './links.svelte';
 	import StationSelector from './station-selector.svelte';
 	import ThemeToggle from './themetoggle.svelte';
+	import { cn } from '@/utils';
 
 	interface Props {
 		authForm: SuperValidated<LoginSchema>;
 		deleteForm: SuperValidated<DeleteSchema>;
 	}
 
-	const isRoot = $derived(page.url.pathname === '/');
-
 	let { authForm, deleteForm }: Props = $props();
+
+	let scrolled = $state(false);
+	const FLOAT_IN = 80;
+	const FLOAT_OUT = 40;
+
+	$effect(() => {
+		const update = () => {
+			const y = window.scrollY;
+			scrolled = scrolled ? y >= FLOAT_OUT : y > FLOAT_IN;
+		};
+		update();
+		window.addEventListener('scroll', update, { passive: true });
+		return () => window.removeEventListener('scroll', update);
+	});
 </script>
 
-{#snippet logo()}
-	<img src="/favicon.png" alt="logo" class="h-8 w-8 rounded-xl" />
-	<h1 class="text-accent-foreground hidden text-xl font-bold sm:block">
-		{get(t)('menu.app.title')}
-	</h1>
-{/snippet}
+<div class="sticky top-0 z-50 w-full">
+	<div
+		class={cn(
+			'mx-auto transition-all duration-500 ease-out',
+			scrolled ? 'w-full max-w-4xl px-4 pt-2' : 'w-full max-w-[100%] px-0 pt-0'
+		)}
+	>
+		<header
+			class={cn(
+				'border-border/50 bg-background/80 relative backdrop-blur-md transition-all duration-500 ease-out',
+				scrolled
+					? 'rounded-xl border shadow-lg shadow-black/8 dark:shadow-black/20'
+					: 'rounded-none border-b'
+			)}
+		>
+			<div
+				class="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-x-6 px-4 py-3 font-mono text-sm sm:px-6"
+			>
+				<a
+					href="/"
+					class="group flex items-center gap-1 text-sm font-bold tracking-tight no-underline"
+				>
+					<span class="text-primary group-hover:text-primary/70 transition-colors">/</span>
+					<span class="text-foreground group-hover:text-primary transition-colors">
+						{get(t)('menu.app.title')}
+					</span>
+				</a>
 
-<div
-	class={[
-		'border-border/40 sticky top-0 z-50 flex w-full justify-center border-b px-4 py-3 backdrop-blur-md sm:px-8',
-		{
-			'dark:bg-primary-foreground/40 bg-cyan-50/60': isRoot,
-			'bg-primary-foreground/60': !isRoot
-		}
-	]}
->
-	<div class="flex w-full max-w-6xl items-center justify-between">
-		<StationSelector />
-		<Links />
-		<div class="hidden items-center gap-x-2 sm:flex">
-			<ThemeToggle />
-			<I18n />
-			<Actions {authForm} {deleteForm} />
-		</div>
+				<div class="flex items-center justify-center gap-2">
+					<StationSelector />
+					<Links />
+				</div>
+
+				<div class="flex items-center gap-2">
+					<ThemeToggle />
+					<I18n />
+					<Actions {authForm} {deleteForm} />
+				</div>
+			</div>
+
+			<Loading />
+		</header>
 	</div>
-	<Loading />
 </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Pagination from '@/components/ui/pagination';
 	import { countPerPage } from '@/shared/const';
+	import { t } from '@/translations';
 	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
 	interface Props {
@@ -18,7 +19,7 @@
 			<Pagination.Item>
 				<Pagination.PrevButton>
 					<ChevronLeft class="size-4" />
-					<span class="hidden sm:block">Previous</span>
+					<span class="hidden sm:block">{$t('measurements.pagination.previous')}</span>
 				</Pagination.PrevButton>
 			</Pagination.Item>
 			{#each pages as page (page.key)}
@@ -36,7 +37,7 @@
 			{/each}
 			<Pagination.Item>
 				<Pagination.NextButton>
-					<span class="hidden sm:block">Next</span>
+					<span class="hidden sm:block">{$t('measurements.pagination.next')}</span>
 					<ChevronRight class="size-4" />
 				</Pagination.NextButton>
 			</Pagination.Item>

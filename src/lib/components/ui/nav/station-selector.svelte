@@ -71,43 +71,21 @@
 	<Dialog.Trigger
 		class={buttonVariants({
 			variant: 'ghost',
-			class: 'h-auto max-w-44 min-w-0 shrink gap-3 px-2 py-1.5 sm:max-w-56'
+			class: 'h-auto max-w-36 min-w-0 shrink gap-2 px-2 py-1.5'
 		})}
 	>
-		<img src="/favicon.png" alt="logo" class="size-9 rounded-xl" />
+		<img src="/favicon.png" alt="logo" class="size-5 rounded" />
 		{#if selectedStation}
-			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-start text-sm font-semibold">{selectedStation.name}</span>
-				<span class="text-muted-foreground w-full truncate text-[10px]"
-					>{selectedStation.city_name}</span
-				>
-			</div>
-			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
+			<span class="min-w-0 truncate text-start text-xs font-semibold">{selectedStation.name}</span>
+			<ChevronDown class="size-3 shrink-0 opacity-40" />
 		{:else if $stationsQuery.isPending}
-			<div class="flex flex-col items-start gap-1 leading-none">
-				<Skeleton class="h-3 w-20" />
-				<Skeleton class="h-2 w-12" />
-			</div>
+			<Skeleton class="h-3 w-16" />
 		{:else if apiUnavailable}
-			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-start text-sm font-semibold sm:text-start"
-					>{$t('menu.actions.selector.api_unavailable')}</span
-				>
-				<span class="text-muted-foreground hidden w-full truncate text-[10px] sm:block"
-					>{$t('menu.actions.selector.api_unavailable_hint')}</span
-				>
-			</div>
-			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
+			<AlertCircle class="text-destructive size-4 shrink-0" />
+			<span class="sr-only">{$t('menu.actions.selector.api_unavailable')}</span>
 		{:else if noStations}
-			<div class="flex min-w-0 flex-col items-start gap-0.5 leading-none">
-				<span class="w-full truncate text-sm font-semibold"
-					>{$t('menu.actions.selector.no_stations')}</span
-				>
-				<span class="text-muted-foreground hidden w-full truncate text-[10px] sm:block"
-					>{$t('menu.actions.selector.no_stations_hint')}</span
-				>
-			</div>
-			<ChevronDown class="ml-1 size-4 shrink-0 opacity-40" />
+			<AlertCircle class="text-muted-foreground size-4 shrink-0" />
+			<span class="sr-only">{$t('menu.actions.selector.no_stations')}</span>
 		{/if}
 	</Dialog.Trigger>
 	<Dialog.MobileContent class="flex max-w-4xl flex-col sm:max-h-[90vh] [&>button]:hidden">

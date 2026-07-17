@@ -216,85 +216,76 @@
 <main class="flex w-screen flex-col items-center px-4">
 	{#if $stationsQuery.isPending}
 		<div class="mt-24 flex w-full max-w-4xl flex-col gap-4">
-			<Skeleton class="h-10 w-56" />
-			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-8 w-56" />
+			<Skeleton class="h-6 w-full" />
+			<Skeleton class="h-64 w-full" />
 			<Skeleton class="h-64 w-full" />
 		</div>
 	{:else if $stationsQuery.isError}
-		<div
-			class="mt-24 w-full max-w-4xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-		>
-			<p class="text-base font-semibold">{$t('dash.status.api_unavailable')}</p>
-			<p class="mt-1 text-sm">{$t('dash.status.api_unavailable_hint')}</p>
+		<div class="border-border/50 bg-card mt-24 w-full max-w-4xl rounded-lg border p-6">
+			<p class="text-sm font-semibold">{$t('dash.status.api_unavailable')}</p>
+			<p class="text-muted-foreground mt-1 text-xs">{$t('dash.status.api_unavailable_hint')}</p>
 		</div>
 	{:else if $stationsQuery.data?.results}
-		<div class="mt-24 flex w-full max-w-4xl flex-col">
-			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<div class="flex items-center gap-2">
-					<Columns3 class="text-primary h-6 w-6" />
-					<h1 class="text-3xl font-medium">{$t('dash.title')}</h1>
+		<div class="mt-20 w-full max-w-4xl">
+			<div class="mb-5 flex items-center gap-3">
+				<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
+					{$t('dash.title')}
+				</span>
+				<div class="bg-border h-px flex-1"></div>
+			</div>
+
+			<div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+				<div class="flex flex-wrap gap-2">
+					<Badge variant="soft">
+						<Columns3 class="h-3 w-3" />
+						{$t('dash.totalStations')}: {totalStations}
+					</Badge>
+					{#if avgTemperature !== null}
+						<Badge variant="outline">
+							<Thermometer class="h-3 w-3" />
+							{$t('dash.avgTemperature')}: {Math.round(avgTemperature)}°C
+						</Badge>
+					{/if}
 				</div>
-				<div
-					class={[
-						'flex w-full items-center gap-2',
-						{
-							'max-w-xs': globalState.user,
-							'max-w-2xs': !globalState.user
-						}
-					]}
-				>
+				<div class="flex items-center gap-2">
 					{#if globalState.station}
 						<Input
 							type="text"
 							placeholder={$t('dash.searchPlaceholder')}
 							bind:value={search}
-							class="h-8"
+							class="h-8 w-40 font-mono text-xs"
 						/>
 					{/if}
 					{#if globalState.user}
-						<Button onclick={() => openDialog()} variant="outline" size="sm">
-							<Plus class="mr-2 h-4 w-4" />
+						<Button onclick={() => openDialog()} variant="default" size="sm" class="gap-1.5">
+							<Plus class="h-3.5 w-3.5" />
 							{$t('dash.dialog.createStation.trigger')}
 						</Button>
 					{/if}
 				</div>
 			</div>
 
-			<!-- Summary section -->
-			<div class="mt-4 flex flex-wrap gap-4">
-				<Badge>
-					{$t('dash.totalStations')}: {totalStations}
-				</Badge>
-				{#if avgTemperature !== null}
-					<Badge>
-						{$t('dash.avgTemperature')}: {Math.round(avgTemperature)}°C
-					</Badge>
+			<div class="border-border/50 mb-8 overflow-hidden rounded-lg border">
+				<Map stations={$stationsQuery.data?.results} {openDialog} preview={true} />
+			</div>
+
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				{#if filteredStations.length === 0}
+					<div class="text-muted-foreground col-span-full py-10 text-center font-mono text-xs">
+						{$t('dash.noStationsFound')}
+					</div>
+				{:else}
+					{#each filteredStations as station}
+						{@render card(station)}
+					{/each}
 				{/if}
 			</div>
 		</div>
-
-		<div class="w-full max-w-4xl overflow-hidden rounded-md py-5">
-			<Map stations={$stationsQuery.data?.results} {openDialog} preview={true} />
-		</div>
-
-		<!-- Catalogue view with sorted stations by temperature -->
-		<div class="my-10 grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-			{#if $stationsQuery.data?.results.length > 0 && filteredStations.length === 0}
-				<div class="text-muted-foreground w-full py-10 text-center text-lg">
-					{$t('dash.noStationsFound')}
-				</div>
-			{:else}
-				{#each filteredStations as station}
-					{@render card(station)}
-				{/each}
-			{/if}
-		</div>
 	{:else}
-		<div
-			class="mt-24 w-full max-w-4xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-		>
-			<p class="text-base font-semibold">{$t('dash.status.no_data')}</p>
-			<p class="mt-1 text-sm">{$t('dash.status.no_data_hint')}</p>
+		<div class="border-border/50 bg-card mt-24 w-full max-w-4xl rounded-lg border p-6">
+			<p class="text-sm font-semibold">{$t('dash.status.no_data')}</p>
+			<p class="text-muted-foreground mt-1 text-xs">{$t('dash.status.no_data_hint')}</p>
 		</div>
 	{/if}
 

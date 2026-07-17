@@ -53,5 +53,9 @@
 		"temperature": "Teplota",
 		"humidity": "Vlhkosť",
 		"label": "Hodnota"
+	},
+	"pagination": {
+		"previous": "Predchádzajúca",
+		"next": "Nasledujúca"
 	}
 }

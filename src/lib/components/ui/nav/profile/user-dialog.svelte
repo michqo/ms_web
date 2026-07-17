@@ -41,7 +41,7 @@
 	<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'sm' })}
 		>{$t('menu.actions.account.dialog.username_action')}</Dialog.Trigger
 	>
-	<Dialog.Content class="sm:max-w-md">
+	<Dialog.Content class="backdrop-blur-sm sm:max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>{$t('menu.actions.account.dialog.username_action')}</Dialog.Title>
 			<Dialog.Description>

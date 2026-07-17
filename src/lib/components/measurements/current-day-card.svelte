@@ -17,12 +17,11 @@
 	const { todayStat, latestMeasurement, isLoading, handleLastDay }: Props = $props();
 
 	function getTemperatureColor(temp: number): string {
-		if (temp <= 0) return 'text-blue-600';
-		if (temp <= 10) return 'text-blue-400';
-		if (temp <= 20) return 'text-green-500';
-		if (temp <= 25) return 'text-yellow-500';
-		if (temp <= 30) return 'text-orange-500';
-		return 'text-red-600';
+		if (temp <= 0) return 'text-chart-1';
+		if (temp <= 15) return 'text-chart-2';
+		if (temp <= 25) return 'text-primary';
+		if (temp <= 32) return 'text-chart-4';
+		return 'text-destructive';
 	}
 </script>
 
@@ -70,8 +69,8 @@
 						</span>
 					</div>
 					<div class="flex items-center gap-2">
-						<Droplets class="size-4 text-blue-500" />
-						<span class="text-lg font-semibold text-blue-500">
+						<Droplets class="text-primary size-4" />
+						<span class="text-primary text-lg font-semibold">
 							{todayStat.humidity}%
 						</span>
 					</div>
@@ -97,8 +96,8 @@
 							</span>
 						</div>
 						<div class="flex items-center gap-2">
-							<Droplets class="size-4 text-blue-500" />
-							<span class="text-lg font-semibold text-blue-500">
+							<Droplets class="text-primary size-4" />
+							<span class="text-primary text-lg font-semibold">
 								{latestMeasurement.humidity}%
 							</span>
 						</div>

@@ -273,8 +273,14 @@
 						<!-- Map Section -->
 						{#if station.latitude && station.longitude}
 							<div class="space-y-2">
-								<h3 class="text-lg font-semibold">{$t('dash.station.dialog.location')}</h3>
-								<div class="w-full overflow-hidden rounded-lg border">
+								<div class="mb-3 flex items-center gap-3">
+									<span
+										class="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase"
+										>{$t('dash.station.dialog.location')}</span
+									>
+									<div class="bg-border h-px flex-1"></div>
+								</div>
+								<div class="border-border/50 w-full overflow-hidden rounded-lg border">
 									{#key isMaximized}
 										<Map
 											class={['w-full', { 'h-[500px]': isMaximized, 'h-[250px]': !isMaximized }]}
@@ -290,7 +296,13 @@
 
 						<!-- Latest Measurement -->
 						<div class="space-y-2">
-							<h3 class="text-lg font-semibold">{$t('dash.station.dialog.latestMeasurement')}</h3>
+							<div class="mb-3 flex items-center gap-3">
+								<span
+									class="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase"
+									>{$t('dash.station.dialog.latestMeasurement')}</span
+								>
+								<div class="bg-border h-px flex-1"></div>
+							</div>
 							{#if $latestMeasurementQuery.isLoading}
 								<div class="flex gap-4">
 									<Skeleton class="h-16 w-full" />
@@ -298,7 +310,7 @@
 								</div>
 							{:else if $latestMeasurementQuery.data}
 								<div class="grid grid-cols-2 gap-4">
-									<div class="flex items-center gap-3 rounded-lg border p-4">
+									<div class="border-border/50 flex items-center gap-3 rounded-lg border p-4">
 										<Thermometer class="text-primary size-8" />
 										<div>
 											<p class="text-2xl font-bold">
@@ -309,10 +321,10 @@
 											</p>
 										</div>
 									</div>
-									<div class="flex items-center gap-3 rounded-lg border p-4">
-										<Droplets class="size-8 text-blue-500" />
+									<div class="border-border/50 flex items-center gap-3 rounded-lg border p-4">
+										<Droplets class="text-primary size-8" />
 										<div>
-											<p class="text-2xl font-bold text-blue-500">
+											<p class="text-primary text-2xl font-bold">
 												{$latestMeasurementQuery.data.humidity}%
 											</p>
 											<p class="text-muted-foreground text-sm">
@@ -334,7 +346,13 @@
 
 						<!-- Forecast -->
 						<div class="space-y-2">
-							<h3 class="text-lg font-semibold">{$t('dash.station.dialog.forecast')}</h3>
+							<div class="mb-3 flex items-center gap-3">
+								<span
+									class="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase"
+									>{$t('dash.station.dialog.forecast')}</span
+								>
+								<div class="bg-border h-px flex-1"></div>
+							</div>
 							{#if $forecastQuery.isLoading}
 								<Skeleton class="h-24 w-full" />
 							{:else if $forecastQuery.data}
@@ -394,7 +412,7 @@
 				<AlertDialog.Cancel>{$t('dash.dialog.manageStation.cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					onclick={deleteStation}
-					class="bg-destructive text-destructive-foreground"
+					class="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 				>
 					{$t('dash.dialog.manageStation.delete')}
 				</AlertDialog.Action>

@@ -14,17 +14,19 @@
 	}
 
 	const lineColors: Record<LineColor, string> = {
-		red: 'stroke-red-500',
-		purple: 'stroke-purple-500',
-		blue: 'stroke-blue-500',
-		green: 'stroke-green-500',
-		orange: 'stroke-orange-500'
+		red: 'stroke-[var(--chart-4)]',
+		purple: 'stroke-[var(--chart-2)]',
+		blue: 'stroke-[var(--chart-1)]',
+		green: 'stroke-[var(--chart-3)]',
+		orange: 'stroke-[var(--chart-5)]'
 	};
 
 	const { chartData, lineColor, suffix = '', title = '' }: Props = $props();
 </script>
 
-<div class="bg-background relative h-[300px] w-full rounded-lg border p-5 shadow-xs">
+<div
+	class="border-border/50 bg-background relative h-[300px] w-full rounded-lg border p-5 shadow-xs backdrop-blur-sm"
+>
 	{#if title}
 		<div class="text-muted-foreground absolute top-2 left-3 text-sm font-medium">
 			{title}

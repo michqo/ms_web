@@ -1,66 +1,21 @@
 {
 	"pageTitle": "MS - Vaša osobná meteorologická stanica",
 	"hero": {
-		"title": "Vaša osobná <span class='bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent'>meteo</span> stanica",
+		"title": "Vaša osobná <span class='text-primary'>meteo</span> stanica",
 		"subtitle": "Sledujte počasie v reálnom čase, analyzujte historické dáta a získajte presné predpovede. Všetko na jednom mieste.",
 		"cta": "Prejsť do aplikácie",
 		"badge": "Platforma meteorologickej stanice"
 	},
 	"features": {
-		"title": "Funkcie",
+		"overview_title": "Všetko, čo potrebujete na monitorovanie počasia",
 		"feature1": {
-			"title": "Merania v reálnom čase",
-			"description": "Získajte aktuálne údaje o teplote a vlhkosti z vašich staníc."
+			"title": "Merania v reálnom čase"
 		},
 		"feature2": {
-			"title": "Predpoveď počasia",
-			"description": "Detailná predpoveď počasia pre každú vašu stanicu."
+			"title": "Predpoveď počasia"
 		},
 		"feature3": {
-			"title": "Interaktívna mapa",
-			"description": "Vizualizujte polohu vašich staníc na mape."
-		},
-		"overview_title": "Všetko, čo potrebujete na monitorovanie počasia",
-		"overview_description": "Od zberu údajov v reálnom čase až po pokročilé predpovede, naša platforma poskytuje všetky nástroje potrebné na profesionálnu analýzu počasia.",
-		"real_time": {
-			"title": "Údaje v reálnom čase",
-			"description": "Sledujte teplotu, vlhkosť, tlak, rýchlosť vetra a ďalšie údaje s aktualizáciami každú sekundu."
-		},
-		"analytics": {
-			"title": "Pokročilá analytika",
-			"description": "Komplexná analýza údajov s trendmi, vzormi a štatistickými prehľadmi pre informované rozhodnutia."
-		},
-		"forecast": {
-			"title": "Predpoveď počasia",
-			"description": "AI predpovede s hodinovými, dennými a rozšírenými predpoveďami na základe vašich lokálnych údajov."
-		},
-		"dashboard": {
-			"title": "Inteligentný dashboard",
-			"description": "Intuitívny dashboard pre správu senzorov, prezeranie údajov a konfiguráciu upozornení."
-		},
-		"history": {
-			"title": "Historické údaje",
-			"description": "Prístup k rokom historických údajov o počasí s výkonnými možnosťami vyhľadávania a filtrovania."
-		},
-		"alerts": {
-			"title": "Inteligentné upozornenia",
-			"description": "Prispôsobiteľné upozornenia na extrémne poveternostné podmienky a prekročenie prahových hodnôt."
-		},
-		"locations": {
-			"title": "Viac lokalít",
-			"description": "Sledujte viacero meteorologických staníc a lokalít z jedného jednotného rozhrania."
-		},
-		"mobile": {
-			"title": "Mobilná pripravenosť",
-			"description": "Plne responzívny dizajn funguje dokonale na všetkých zariadeniach a veľkostiach obrazoviek."
-		},
-		"export": {
-			"title": "Export údajov",
-			"description": "Export údajov vo viacerých formátoch vrátane CSV, JSON a PDF reportov."
-		},
-		"api": {
-			"title": "API prístup",
-			"description": "RESTful API pre integráciu údajov o počasí do vašich vlastných aplikácií a systémov."
+			"title": "Interaktívna mapa"
 		}
 	},
 	"register": {
@@ -69,10 +24,6 @@
 	},
 	"footer": {
 		"rights": "Všetky práva vyhradené",
-		"made_with": {
-			"part1": "Vytvorené so",
-			"part2": "Michal Urban"
-		},
 		"code": "Zdrojový kód"
 	}
 }

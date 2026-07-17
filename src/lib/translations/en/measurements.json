@@ -53,5 +53,9 @@
 		"temperature": "Temperature",
 		"humidity": "Humidity",
 		"label": "Value"
+	},
+	"pagination": {
+		"previous": "Previous",
+		"next": "Next"
 	}
 }

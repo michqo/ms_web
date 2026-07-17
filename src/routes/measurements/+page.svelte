@@ -121,61 +121,54 @@
 
 <div class="flex w-full flex-col items-center gap-y-6 p-5">
 	<div class="flex w-full max-w-xl items-center justify-between">
-		<div class="flex items-center gap-2">
-			<Thermometer class="text-primary h-6 w-6" />
-			{#if globalState.station?.name}
-				<h1 class="text-2xl font-bold tracking-tight">
+		<div class="mb-5 flex w-full items-center gap-3">
+			<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
+				{#if globalState.station?.name}
 					{globalState.station.name}
-					{$t('measurements.title')}
-				</h1>
-			{:else if hasStationSelection && !$weekStatsQuery.isSuccess && !$weekStatsQuery.isError}
-				<div class="flex items-center gap-2">
-					<Skeleton class="h-7 w-36" />
-					<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
-				</div>
-			{:else}
-				<h1 class="text-2xl font-bold tracking-tight">{$t('measurements.title')}</h1>
+				{/if}
+				{$t('measurements.title')}
+			</span>
+			<div class="bg-border h-px flex-1"></div>
+			{#if globalState.user}
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}>
+						<Ellipsis class="h-3.5 w-3.5" />
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-40 p-1 font-mono">
+						<DropdownMenu.Item
+							onclick={() => (deleteDialogOpen = true)}
+							class="text-destructive hover:bg-destructive/10 cursor-pointer rounded-md px-2 py-2 text-xs transition-colors"
+						>
+							<Trash2 class="h-3.5 w-3.5" />
+							{$t('measurements.dialog.delete.title')}
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			{/if}
 		</div>
-		{#if globalState.user}
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger class={buttonVariants({ variant: 'secondary', size: 'sm' })}>
-					<Ellipsis />
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content>
-					<DropdownMenu.Item
-						onclick={() => (deleteDialogOpen = true)}
-						class="flex items-center gap-x-2"
-					>
-						<Trash2 />
-						{$t('measurements.dialog.delete.title')}
-					</DropdownMenu.Item>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
-		{/if}
 	</div>
 
 	<main class="flex w-full flex-col items-center gap-6">
 		{#if !hasStationSelection}
-			<div
-				class="w-full max-w-xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-			>
-				<p class="text-base font-semibold">{$t('measurements.status.no_station')}</p>
-				<p class="mt-1 text-sm">{$t('measurements.status.no_station_hint')}</p>
+			<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+				<p class="text-sm font-semibold">{$t('measurements.status.no_station')}</p>
+				<p class="text-muted-foreground mt-1 text-xs">
+					{$t('measurements.status.no_station_hint')}
+				</p>
 			</div>
 		{:else if isPageLoading}
 			<div class="w-full max-w-xl space-y-6">
-				<Skeleton class="h-40 w-full rounded-xl" />
-				<Skeleton class="h-12 w-full rounded-xl" />
-				<Skeleton class="h-12 w-full rounded-xl" />
-				<Skeleton class="h-56 w-full rounded-xl" />
+				<Skeleton class="h-40 w-full rounded-lg" />
+				<Skeleton class="h-12 w-full rounded-lg" />
+				<Skeleton class="h-12 w-full rounded-lg" />
+				<Skeleton class="h-56 w-full rounded-lg" />
 			</div>
 		{:else if $weekStatsQuery.isError || $latestMeasurementQuery.isError}
-			<div
-				class="w-full max-w-xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-			>
-				<p class="text-base font-semibold">{$t('measurements.status.api_unavailable')}</p>
-				<p class="mt-1 text-sm">{$t('measurements.status.api_unavailable_hint')}</p>
+			<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+				<p class="text-sm font-semibold">{$t('measurements.status.api_unavailable')}</p>
+				<p class="text-muted-foreground mt-1 text-xs">
+					{$t('measurements.status.api_unavailable_hint')}
+				</p>
 			</div>
 		{:else}
 			<CurrentDayCard
@@ -209,11 +202,9 @@
 					{/if}
 				</div>
 			{:else}
-				<div
-					class="w-full max-w-xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-				>
-					<p class="text-base font-semibold">{$t('measurements.status.no_data')}</p>
-					<p class="mt-1 text-sm">{$t('measurements.status.no_data_hint')}</p>
+				<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+					<p class="text-sm font-semibold">{$t('measurements.status.no_data')}</p>
+					<p class="text-muted-foreground mt-1 text-xs">{$t('measurements.status.no_data_hint')}</p>
 				</div>
 			{/if}
 		{/if}

@@ -38,7 +38,7 @@
 	<AlertDialog.Trigger class={buttonVariants({ variant: 'destructive', size: 'sm' })}
 		>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Trigger
 	>
-	<AlertDialog.Content class="sm:max-w-md">
+	<AlertDialog.Content class="backdrop-blur-sm sm:max-w-md">
 		<AlertDialog.Header>
 			<AlertDialog.Title>{$t('menu.actions.account.dialog.delete_action')}</AlertDialog.Title>
 			<AlertDialog.Description>
