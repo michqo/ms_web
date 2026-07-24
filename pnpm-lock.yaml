@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@miqal/theme':
+        specifier: ^0.1.1
+        version: 0.1.1(tailwindcss@4.1.11)
       '@tanstack/svelte-query':
         specifier: ^5.82.0
         version: 5.82.0(svelte@5.35.5)
@@ -388,6 +391,11 @@ packages:
     resolution: {integrity: sha512-dyUxkXzepagLUzL8jHQNdeH286nC66ClLACsg+Neu/bjkRJWPWMzkT+H0DKlE70QdkicGCfs1ZGmXCc351hmZA==}
     peerDependencies:
       svelte: ^5
+
+  '@miqal/theme@0.1.1':
+    resolution: {integrity: sha512-M38t6/WFQHYNV4y0m9Eo/IGcY37bo6sJ1w74xieqjUAG59WGxzNo5rybnSTfttJc5uDsWOyXZjHpKapecwsNxQ==}
+    peerDependencies:
+      tailwindcss: ^4.0.0
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
@@ -1603,6 +1611,9 @@ packages:
   tw-animate-css@1.3.5:
     resolution: {integrity: sha512-t3u+0YNoloIhj1mMXs779P6MO9q3p3mvGn4k1n3nJPqJw/glZcuijG2qTSN4z4mgNRfW5ZC3aXJFLwDtiipZXA==}
 
+  tw-animate-css@1.4.0:
+    resolution: {integrity: sha512-7bziOlRqH0hJx80h/3mbicLW7o8qLsH5+RaLR2t+OHM3D0JlWGODQKQ4cxbK7WlvmUxpcj6Kgu6EKqjrGFe3QQ==}
+
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
@@ -1896,6 +1907,11 @@ snapshots:
   '@lucide/svelte@0.525.0(svelte@5.35.5)':
     dependencies:
       svelte: 5.35.5
+
+  '@miqal/theme@0.1.1(tailwindcss@4.1.11)':
+    dependencies:
+      tailwindcss: 4.1.11
+      tw-animate-css: 1.4.0
 
   '@polka/url@1.0.0-next.28': {}
 
@@ -3034,6 +3050,8 @@ snapshots:
   tslib@2.7.0: {}
 
   tw-animate-css@1.3.5: {}
+
+  tw-animate-css@1.4.0: {}
 
   type-fest@2.19.0:
     optional: true

@@ -52,6 +52,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@miqal/theme": "^0.1.1",
 		"@tanstack/svelte-query": "^5.82.0",
 		"axios": "^1.10.0",
 		"d3-array": "^3.2.4",
