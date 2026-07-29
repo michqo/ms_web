@@ -49,7 +49,15 @@
 			{#each forecast as item}
 				<Table.Row
 					class="hover:bg-muted/50 cursor-pointer transition-colors"
+					tabindex={0}
+					role="button"
 					onclick={() => handleRowClick(item)}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							handleRowClick(item);
+						}
+					}}
 				>
 					<Table.Cell class="font-medium">{displayTime(item)}</Table.Cell>
 					<Table.Cell>

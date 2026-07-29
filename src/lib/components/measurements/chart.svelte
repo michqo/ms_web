@@ -35,10 +35,19 @@
 	const { chartData, lineColor, suffix = '', title }: Props = $props();
 </script>
 
-<div class="bg-background relative w-full rounded-lg border shadow-sm">
+<div
+	class="bg-background relative w-full rounded-lg border shadow-sm"
+	role="img"
+	aria-label={title
+		? `${title}: ${chartData.length} data points`
+		: `Chart with ${chartData.length} data points`}
+>
 	{#if title}
-		<div class="border-b px-4 py-3">
+		<div class="flex items-center justify-between border-b px-4 py-3">
 			<h3 class="text-lg font-semibold">{title}</h3>
+			<span class="text-muted-foreground font-mono text-xs" aria-hidden="true"
+				>{chartData.length} {suffix ? $t('measurements.chart.data_points') : ''}</span
+			>
 		</div>
 	{/if}
 
@@ -97,5 +106,29 @@
 				{/snippet}
 			</Tooltip.Root>
 		</Chart>
+	</div>
+
+	<div class="sr-only">
+		<table>
+			<caption>{title || $t('measurements.chart.label')}</caption>
+			<thead>
+				<tr>
+					<th scope="col">{$t('measurements.table.time')}</th>
+					<th scope="col">{$t('measurements.chart.label')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#each chartData as point}
+					{@const displayValue =
+						typeof point.value === 'number'
+							? `${Math.round(point.value * 10) / 10}${suffix}`
+							: `${point.value}${suffix}`}
+					<tr>
+						<td>{dayjs(point.date).format('HH:00')}</td>
+						<td>{displayValue}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	</div>
 </div>

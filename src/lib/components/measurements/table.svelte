@@ -27,8 +27,8 @@
 	}
 
 	const currentDate = $derived(
-		!emptyData
-			? $dataQuery.data!.results[0].timestamp.format('dddd, MMMM D, YYYY')
+		!emptyData && $dataQuery.data?.results?.[0]
+			? $dataQuery.data.results[0].timestamp.format('dddd, MMMM D, YYYY')
 			: 'No data available'
 	);
 </script>
@@ -64,32 +64,34 @@
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#each $dataQuery.data!.results as measurement}
-				<Table.Row class="hover:bg-muted/30">
-					<Table.Cell class="font-medium">
-						{measurement.timestamp.format('HH')}:00
-					</Table.Cell>
-					<Table.Cell>
-						<span class={cn('text-lg font-medium', getTemperatureColor(measurement.temperature))}>
-							{measurement.temperature}°C
-						</span>
-					</Table.Cell>
-					<Table.Cell>
-						<div class="flex items-center gap-1">
-							<span class="text-blue-500">
-								{measurement.humidity}%
+			{#if $dataQuery.data?.results}
+				{#each $dataQuery.data.results as measurement}
+					<Table.Row class="hover:bg-muted/30">
+						<Table.Cell class="font-medium">
+							{measurement.timestamp.format('HH')}:00
+						</Table.Cell>
+						<Table.Cell>
+							<span class={cn('text-lg font-medium', getTemperatureColor(measurement.temperature))}>
+								{measurement.temperature}°C
 							</span>
-							<div class="bg-muted h-2 w-10 overflow-hidden rounded-full">
-								<div
-									class="h-full bg-blue-500"
-									style={`width: ${measurement.humidity}%; opacity: 0.7`}
-								></div>
-							</div>
-						</div></Table.Cell
-					>
-				</Table.Row>
-			{/each}
+						</Table.Cell>
+						<Table.Cell>
+							<div class="flex items-center gap-1">
+								<span class="text-blue-500">
+									{measurement.humidity}%
+								</span>
+								<div class="bg-muted h-2 w-10 overflow-hidden rounded-full">
+									<div
+										class="h-full bg-blue-500"
+										style={`width: ${measurement.humidity}%; opacity: 0.7`}
+									></div>
+								</div>
+							</div></Table.Cell
+						>
+					</Table.Row>
+				{/each}
+			{/if}
 		</Table.Body>
 	</Table.Root>
 </div>
-<Pagination page={pageNumber} count={$dataQuery.data!.count} {onPageChange} />
+<Pagination page={pageNumber} count={$dataQuery.data?.count ?? 0} {onPageChange} />

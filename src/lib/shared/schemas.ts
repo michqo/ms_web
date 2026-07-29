@@ -35,11 +35,13 @@ const stationSchema = z.object({
 	latitude: z.coerce
 		.number()
 		.min(-90, 'Latitude must be between -90 and 90')
-		.max(90, 'Latitude must be between -90 and 90'),
+		.max(90, 'Latitude must be between -90 and 90')
+		.refine((n) => !isNaN(n), 'Must be a valid number'),
 	longitude: z.coerce
 		.number()
 		.min(-180, 'Longitude must be between -180 and 180')
 		.max(180, 'Longitude must be between -180 and 180')
+		.refine((n) => !isNaN(n), 'Must be a valid number')
 });
 type StationSchema = z.infer<typeof stationSchema>;
 

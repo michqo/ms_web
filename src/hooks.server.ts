@@ -1,4 +1,5 @@
 import { authApi } from '$lib/shared/api';
+import { TOKEN_COOKIE_OPTIONS } from '$lib/server/cookies';
 import { redirect, type Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -13,10 +14,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		} catch {
 			try {
 				const res = await authApi.refreshJwt(refreshToken!);
-				event.cookies.set('access_token', res.access, { path: '/' });
+				event.cookies.set('access_token', res.access, TOKEN_COOKIE_OPTIONS);
 			} catch {
-				event.cookies.delete('access_token', { path: '/' });
-				event.cookies.delete('refresh_token', { path: '/' });
+				event.cookies.delete('access_token', TOKEN_COOKIE_OPTIONS);
+				event.cookies.delete('refresh_token', TOKEN_COOKIE_OPTIONS);
 			}
 			redirect(308, event.url);
 		}

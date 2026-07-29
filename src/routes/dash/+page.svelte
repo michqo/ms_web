@@ -54,8 +54,9 @@
 	async function fetchAllLatestMeasurements() {
 		if (!$stationsQuery.data?.results.length) return;
 
-		try {
-			for (const station of $stationsQuery.data.results) {
+		const stations = $stationsQuery.data.results;
+		await Promise.allSettled(
+			stations.map(async (station) => {
 				try {
 					loadingMeasurements[station.id] = true;
 					let measurement: Measurement | null = null;
@@ -71,10 +72,8 @@
 				} finally {
 					loadingMeasurements[station.id] = false;
 				}
-			}
-		} catch (error) {
-			console.error('Error fetching measurements:', error);
-		}
+			})
+		);
 	}
 
 	function openDialog(station?: Station, edit = false) {
@@ -249,14 +248,12 @@
 					{/if}
 				</div>
 				<div class="flex items-center gap-2">
-					{#if globalState.station}
-						<Input
-							type="text"
-							placeholder={$t('dash.searchPlaceholder')}
-							bind:value={search}
-							class="h-8 w-40 font-mono text-xs"
-						/>
-					{/if}
+					<Input
+						type="text"
+						placeholder={$t('dash.searchPlaceholder')}
+						bind:value={search}
+						class="h-8 w-40 font-mono text-xs"
+					/>
 					{#if globalState.user}
 						<Button onclick={() => openDialog()} variant="default" size="sm" class="gap-1.5">
 							<Plus class="h-3.5 w-3.5" />

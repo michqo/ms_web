@@ -1,16 +1,17 @@
 import { api, authApi } from '@/shared';
 import { deleteSchema, loginSchema } from '@/shared/schemas';
 import type { PostUserErrorResponse } from '@/shared/types';
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { TOKEN_COOKIE_OPTIONS } from '$lib/server/cookies';
+import { redirect, type Actions } from '@sveltejs/kit';
 import { isAxiosError } from 'axios';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const actions = {
 	logout: async ({ cookies }) => {
-		cookies.delete('access_token', { path: '/' });
-		cookies.delete('refresh_token', { path: '/' });
-		// redirect(308, '/');
+		cookies.delete('access_token', TOKEN_COOKIE_OPTIONS);
+		cookies.delete('refresh_token', TOKEN_COOKIE_OPTIONS);
+		redirect(308, '/');
 	},
 	delete: async (event) => {
 		const form = await superValidate(event, zod(deleteSchema));
@@ -25,8 +26,8 @@ export const actions = {
 			await api.deleteAccount(form.data);
 
 			const { cookies } = event;
-			cookies.delete('access_token', { path: '/' });
-			cookies.delete('refresh_token', { path: '/' });
+			cookies.delete('access_token', TOKEN_COOKIE_OPTIONS);
+			cookies.delete('refresh_token', TOKEN_COOKIE_OPTIONS);
 			redirect(308, '/');
 		} catch {
 			return fail(401, {
@@ -47,24 +48,29 @@ export const actions = {
 			case 'login':
 				try {
 					const res = await authApi.createJwt(form.data);
-					cookies.set('access_token', res.access, { path: '/' });
-					cookies.set('refresh_token', res.refresh, { path: '/' });
+					cookies.set('access_token', res.access, TOKEN_COOKIE_OPTIONS);
+					cookies.set('refresh_token', res.refresh, TOKEN_COOKIE_OPTIONS);
 				} catch {
-					error(401);
+					return fail(401, { form, message: 'Invalid credentials' });
 				}
 				break;
 			case 'register':
 				try {
 					await authApi.postUser(form.data);
-				} catch (error) {
-					if (isAxiosError(error)) {
-						const e = error.response?.data as PostUserErrorResponse;
-						if (e.username) {
-							setError(form, 'username', e.username);
+					const res = await authApi.createJwt(form.data);
+					cookies.set('access_token', res.access, TOKEN_COOKIE_OPTIONS);
+					cookies.set('refresh_token', res.refresh, TOKEN_COOKIE_OPTIONS);
+				} catch (e) {
+					if (isAxiosError(e)) {
+						const err = e.response?.data as PostUserErrorResponse;
+						if (err.username) {
+							setError(form, 'username', err.username);
 						}
-						if (e.password) {
-							setError(form, 'password', e.password);
+						if (err.password) {
+							setError(form, 'password', err.password);
 						}
+					} else {
+						setError(form, '', 'Registration failed. Please try again.');
 					}
 				}
 				break;

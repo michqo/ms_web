@@ -40,7 +40,7 @@
 		onError: () => failed()
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 </script>
 
 {#snippet switchButton()}
@@ -93,7 +93,14 @@
 			</Form.Field>
 		</Card.Content>
 		<Card.Footer class="mt-4 flex flex-col items-center gap-2">
-			<Form.Button class="w-full">{actionWord}</Form.Button>
+			<Form.Button class="w-full" disabled={$submitting}>
+				{#if $submitting}
+					<div
+						class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+					></div>
+				{/if}
+				{actionWord}
+			</Form.Button>
 			{#if globalState.isMobile.value}
 				{@render switchButton()}
 			{/if}

@@ -10,7 +10,7 @@
 
 	const dataQuery = $derived(
 		createQuery({
-			queryKey: ['forecast'],
+			queryKey: ['forecast', globalState.stationId],
 			queryFn: () => api.getForecast(globalState.station?.id!),
 			enabled: !!globalState.stationId,
 			select: (data) => ({

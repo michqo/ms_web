@@ -12,6 +12,7 @@
 	import FormPicker from '../ui/calendar/form-picker.svelte';
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
+	import { useQueryClient } from '@tanstack/svelte-query';
 
 	interface Props {
 		open: boolean;
@@ -19,6 +20,8 @@
 	}
 
 	let { open = $bindable(), stationId }: Props = $props();
+
+	const queryClient = useQueryClient();
 
 	const form = superForm(defaults(zod(deleteMeasurementSchema)), {
 		dataType: 'json',
@@ -32,6 +35,8 @@
 					const gt = gtDate && dayjs(gtDate).startOf('day').toISOString();
 					const lt = ltDate && dayjs(ltDate).endOf('day').toISOString();
 					await api.deleteMeasurements(stationId, gt, lt);
+					queryClient.invalidateQueries({ queryKey: ['weekStats'] });
+					queryClient.invalidateQueries({ queryKey: ['latestMeasurement'] });
 					open = false;
 					toast.success($t('measurements.dialog.delete.success'));
 				} catch (error) {

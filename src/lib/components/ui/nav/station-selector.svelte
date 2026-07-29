@@ -38,25 +38,25 @@
 	async function fetchAllLatestMeasurements() {
 		if (!$stationsQuery.data?.results.length) return;
 
-		try {
-			for (const station of $stationsQuery.data.results) {
-				if (latestMeasurements[station.id] !== undefined) continue;
-
-				try {
+		const stations = $stationsQuery.data.results;
+		const results = await Promise.allSettled(
+			stations
+				.filter((s) => latestMeasurements[s.id] === undefined)
+				.map(async (station) => {
 					loadingMeasurements[station.id] = true;
-					const measurement = await api.getLatestMeasurement(station.id);
-					measurement.timestamp = dayjs(measurement.timestamp);
-					latestMeasurements[station.id] = measurement || null;
-				} catch (error) {
-					console.error(`Error fetching measurement for station ${station.id}:`, error);
-					latestMeasurements[station.id] = null;
-				} finally {
-					loadingMeasurements[station.id] = false;
-				}
-			}
-		} catch (error) {
-			console.error('Error fetching measurements:', error);
-		}
+					try {
+						const measurement = await api.getLatestMeasurement(station.id);
+						if (measurement) measurement.timestamp = dayjs(measurement.timestamp);
+						latestMeasurements[station.id] = measurement || null;
+					} catch (error) {
+						console.error(`Error fetching measurement for station ${station.id}:`, error);
+						latestMeasurements[station.id] = null;
+					} finally {
+						loadingMeasurements[station.id] = false;
+					}
+					return station.id;
+				})
+		);
 	}
 
 	function setSelectedStation(stationId: number) {
