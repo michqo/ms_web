@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import DayDialog from '@/components/measurements/day-dialog.svelte';
 	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
@@ -157,12 +158,14 @@
 				</p>
 			</div>
 		{:else if isPageLoading}
-			<div class="w-full max-w-xl space-y-6">
-				<Skeleton class="h-40 w-full rounded-lg" />
-				<Skeleton class="h-12 w-full rounded-lg" />
-				<Skeleton class="h-12 w-full rounded-lg" />
-				<Skeleton class="h-56 w-full rounded-lg" />
-			</div>
+			{#if browser}
+				<div class="w-full max-w-xl space-y-6">
+					<Skeleton class="h-40 w-full rounded-lg" />
+					<Skeleton class="h-12 w-full rounded-lg" />
+					<Skeleton class="h-12 w-full rounded-lg" />
+					<Skeleton class="h-56 w-full rounded-lg" />
+				</div>
+			{/if}
 		{:else if $weekStatsQuery.isError || $latestMeasurementQuery.isError}
 			<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
 				<p class="text-sm font-semibold">{$t('measurements.status.api_unavailable')}</p>

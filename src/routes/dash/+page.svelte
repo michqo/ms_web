@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { Map } from '@/components/ui/map';
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
@@ -221,16 +222,18 @@
 			{/if}
 		</div>
 	{:else if $latestMeasurementQuery.isPending && $measurementStatsQuery.isPending && $forecastQuery.isPending}
-		<div class="mt-20 w-full max-w-5xl">
-			<Skeleton class="mb-6 h-8 w-64" />
-			<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-				<Skeleton class="h-64 rounded-xl" />
-				<Skeleton class="h-64 rounded-xl" />
-				<Skeleton class="h-48 rounded-xl" />
-				<Skeleton class="h-48 rounded-xl" />
+		{#if browser}
+			<div class="mt-20 w-full max-w-5xl">
+				<Skeleton class="mb-6 h-8 w-64" />
+				<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+					<Skeleton class="h-64 rounded-xl" />
+					<Skeleton class="h-64 rounded-xl" />
+					<Skeleton class="h-48 rounded-xl" />
+					<Skeleton class="h-48 rounded-xl" />
+				</div>
+				<Skeleton class="mt-5 h-40 rounded-xl" />
 			</div>
-			<Skeleton class="mt-5 h-40 rounded-xl" />
-		</div>
+		{/if}
 	{:else}
 		<div class="mt-20 flex w-full max-w-5xl flex-col gap-6">
 			<!-- Station Header — Task 2 -->
