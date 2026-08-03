@@ -165,6 +165,13 @@
 
 	const hasStation = $derived(!!globalState.stationId);
 
+	$effect(() => {
+		if (!createStationOpen) {
+			selectedStation = undefined;
+			editMode = false;
+		}
+	});
+
 	function setSelectedStation(stationId: number) {
 		globalState.stationId = stationId;
 		viewAllOpen = false;
