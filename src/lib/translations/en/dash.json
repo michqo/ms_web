@@ -97,6 +97,7 @@
 		"no_data": "No station data available",
 		"no_data_hint": "Try refreshing the page or creating your first station."
 	},
+	"loading": "Loading...",
 	"noStationsFound": "No stations found",
 	"station": {
 		"dialog": {

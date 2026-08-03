@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { Map } from '@/components/ui/map';
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
@@ -11,15 +12,17 @@
 	import StationList from '@/components/station/station-list.svelte';
 	import { api, transformForecast } from '@/shared';
 	import { globalState } from '@/shared/runes.svelte';
-	import type { Station } from '@/shared/types';
+	import type { MeasurementStat, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
+	import { gsap } from 'gsap';
 	import {
 		ChartLine,
 		CloudRain,
 		CloudSun,
 		Droplets,
 		Gauge,
+		Loader2,
 		MapPin,
 		Plus,
 		Sun,
@@ -27,6 +30,7 @@
 		Wind,
 		X
 	} from 'lucide-svelte';
+	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
 	import { cn } from '@/utils';
@@ -142,6 +146,13 @@
 	let searchTerm = $state('');
 	let selectedStation: Station | undefined = $state();
 	let editMode = $state(false);
+	let cachedStats = $state<MeasurementStat[]>([]);
+
+	$effect(() => {
+		if ($measurementStatsQuery.data?.length) {
+			cachedStats = $measurementStatsQuery.data;
+		}
+	});
 
 	let dotColorClass = $derived(
 		onlineStatus.color === 'emerald'
@@ -184,6 +195,24 @@
 		createStationOpen = true;
 	}
 
+	let pageRoot: HTMLElement;
+
+	onMount(() => {
+		if (!browser) return;
+
+		const ctx = gsap.context(() => {
+			gsap.to('.dashboard-widget', {
+				y: 0,
+				opacity: 1,
+				stagger: 0.08,
+				duration: 0.5,
+				ease: 'power2.out'
+			});
+		}, pageRoot);
+
+		return () => ctx.revert();
+	});
+
 	$effect(() => {
 		if (!createStationOpen) {
 			editMode = false;
@@ -196,7 +225,7 @@
 	<title>{$t('dash.pageTitle')}</title>
 </svelte:head>
 
-<main class="flex min-h-screen flex-col items-center px-4 pb-20">
+<main bind:this={pageRoot} class="flex min-h-screen flex-col items-center px-4 pb-20">
 	{#if !hasStation}
 		<div class="mt-32 flex w-full max-w-md flex-col items-center gap-4 text-center">
 			<CloudSun class="text-muted-foreground size-16" />
@@ -226,7 +255,7 @@
 	{:else}
 		<div class="mt-20 flex w-full max-w-5xl flex-col gap-6">
 			<!-- Station Header — Task 2 -->
-			<div class="flex flex-wrap items-center justify-between gap-3">
+			<div class="dashboard-widget flex flex-wrap items-center justify-between gap-3">
 				{#if currentStation}
 					<div class="flex items-center gap-3">
 						<h1 class="text-2xl font-bold tracking-tight">{currentStation.name}</h1>
@@ -250,7 +279,9 @@
 			<!-- Widget grid -->
 			<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
 				<!-- Current Conditions — Task 3 -->
-				<div class="border-border/60 bg-card rounded-xl border p-6 shadow-xs sm:p-7">
+				<div
+					class="dashboard-widget border-border/60 bg-card rounded-xl border p-6 shadow-xs sm:p-7"
+				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<Thermometer class="text-primary size-5" />
 						<h3 class="text-sm font-semibold">{$t('dash.currentConditions')}</h3>
@@ -324,7 +355,9 @@
 				</div>
 
 				<!-- Recent Measurements — Task 4 -->
-				<div class="border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7">
+				<div
+					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+				>
 					<div class="mb-4 flex items-center gap-2.5">
 						<ChartLine class="text-primary size-5" />
 						<h3 class="text-sm font-semibold">{$t('dash.recentMeasurements')}</h3>
@@ -371,7 +404,7 @@
 						</div>
 					{/if}
 
-					{#if $measurementStatsQuery.isPending}
+					{#if $measurementStatsQuery.isPending && cachedStats.length === 0}
 						<div class="space-y-3">
 							<div class="grid grid-cols-4 gap-2">
 								{#each Array(4) as _}
@@ -380,20 +413,25 @@
 							</div>
 							<Skeleton class="h-[260px] w-full rounded-lg" />
 						</div>
-					{:else if $measurementStatsQuery.isError}
-						<div class="flex flex-1 flex-col items-center justify-center gap-3 py-6">
-							<p class="text-muted-foreground text-sm">{$t('dash.status.apiUnavailable')}</p>
-							<Button variant="outline" size="xs" onclick={() => $measurementStatsQuery.refetch()}>
-								{$t('dash.status.retry')}
-							</Button>
-						</div>
-					{:else if $measurementStatsQuery.data?.length}
-						{@const stats = $measurementStatsQuery.data}
+					{:else}
+						{@const stats = $measurementStatsQuery.data?.length
+							? $measurementStatsQuery.data
+							: cachedStats}
+						{@const isStale = $measurementStatsQuery.isPending}
 						{@const maxTemp = Math.max(...stats.map((s) => s.temperature))}
 						{@const minTemp = Math.min(...stats.map((s) => s.temperature))}
 						{@const avgHumidity = stats.reduce((a, s) => a + s.humidity, 0) / stats.length}
 
-						<div class="mb-4 grid grid-cols-4 gap-2">
+						{#if isStale}
+							<div
+								class="text-muted-foreground mb-3 flex items-center gap-1.5 font-mono text-[10px]"
+							>
+								<Loader2 class="size-3 animate-spin" />
+								<span>{$t('dash.loading')}</span>
+							</div>
+						{/if}
+
+						<div class={cn('mb-4 grid grid-cols-4 gap-2', isStale && 'opacity-50')}>
 							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
 								<span class="text-muted-foreground text-[10px]">{$t('dash.maxTemp')}</span>
 								<span class="text-sm font-bold tabular-nums">{maxTemp.toFixed(1)}°</span>
@@ -412,30 +450,40 @@
 							</div>
 						</div>
 
-						<StatsChart
-							chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.temperature }))}
-							lineColor="red"
-							suffix="°C"
-							title={$t('dash.temperature')}
-						/>
-						<div class="mt-3">
+						<div class={isStale ? 'opacity-50' : ''}>
 							<StatsChart
-								chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.humidity }))}
-								lineColor="blue"
-								suffix="%"
-								title={$t('dash.humidity')}
+								chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.temperature }))}
+								lineColor="red"
+								suffix="°C"
+								title={$t('dash.temperature')}
 							/>
+							<div class="mt-3">
+								<StatsChart
+									chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.humidity }))}
+									lineColor="blue"
+									suffix="%"
+									title={$t('dash.humidity')}
+								/>
+							</div>
 						</div>
-					{:else}
-						<div class="flex flex-1 flex-col items-center justify-center gap-2 py-6">
-							<ChartLine class="text-muted-foreground size-12 opacity-30" />
-							<p class="text-muted-foreground text-sm">{$t('dash.noDataPeriod')}</p>
-						</div>
+						{#if $measurementStatsQuery.isError}
+							<div class="mt-3 flex justify-center">
+								<Button
+									variant="outline"
+									size="xs"
+									onclick={() => $measurementStatsQuery.refetch()}
+								>
+									{$t('dash.status.retry')}
+								</Button>
+							</div>
+						{/if}
 					{/if}
 				</div>
 
 				<!-- Forecast — Task 5 -->
-				<div class="border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7">
+				<div
+					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<CloudSun class="text-primary size-5" />
 						<h3 class="text-sm font-semibold">{$t('dash.forecastWidget')}</h3>
@@ -471,7 +519,9 @@
 				</div>
 
 				<!-- Map — Task 6 -->
-				<div class="border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7">
+				<div
+					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<MapPin class="text-primary size-5" />
 						<h3 class="text-sm font-semibold">{$t('dash.mapWidget')}</h3>
@@ -497,24 +547,31 @@
 			</div>
 
 			<!-- Forecast Table — Task 7 -->
-			{#if $forecastQuery.isPending}
-				<Skeleton class="h-40 w-full rounded-xl" />
-			{:else if $forecastQuery.isError}
-				<div class="border-border/60 bg-card rounded-xl border p-6 text-center shadow-xs">
-					<p class="text-muted-foreground text-sm">{$t('dash.status.apiUnavailable')}</p>
-					<Button variant="outline" size="xs" class="mt-2" onclick={() => $forecastQuery.refetch()}>
-						{$t('dash.status.retry')}
-					</Button>
-				</div>
-			{:else if $forecastQuery.data?.results?.length}
-				<ForecastTable
-					forecast={$forecastQuery.data.results}
-					updatedDate={$forecastQuery.data.created_at}
-				/>
-			{/if}
+			<div class="dashboard-widget">
+				{#if $forecastQuery.isPending}
+					<Skeleton class="h-40 w-full rounded-xl" />
+				{:else if $forecastQuery.isError}
+					<div class="border-border/60 bg-card rounded-xl border p-6 text-center shadow-xs">
+						<p class="text-muted-foreground text-sm">{$t('dash.status.apiUnavailable')}</p>
+						<Button
+							variant="outline"
+							size="xs"
+							class="mt-2"
+							onclick={() => $forecastQuery.refetch()}
+						>
+							{$t('dash.status.retry')}
+						</Button>
+					</div>
+				{:else if $forecastQuery.data?.results?.length}
+					<ForecastTable
+						forecast={$forecastQuery.data.results}
+						updatedDate={$forecastQuery.data.created_at}
+					/>
+				{/if}
+			</div>
 
 			<!-- Bottom actions -->
-			<div class="flex items-center justify-center gap-3 pt-4">
+			<div class="dashboard-widget flex items-center justify-center gap-3 pt-4">
 				<Button variant="outline" size="sm" onclick={() => (viewAllOpen = true)}>
 					{$t('dash.viewAllStations')}
 				</Button>
@@ -569,3 +626,10 @@
 		/>
 	{/if}
 </main>
+
+<style>
+	.dashboard-widget {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+</style>

@@ -97,6 +97,7 @@
 		"no_data": "\u00dadaje stan\u00edc nie s\u00fa dostupn\u00e9",
 		"no_data_hint": "Sk\u00faste str\u00e1nku obnovi\u0165 alebo vytvorte svoju prv\u00fa stanicu."
 	},
+	"loading": "Na\u010d\u00edtavam...",
 	"noStationsFound": "Nena\u0161li sa \u017eiadne stanice",
 	"station": {
 		"dialog": {
