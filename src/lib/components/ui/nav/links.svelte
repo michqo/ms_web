@@ -5,7 +5,7 @@
 	import { globalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import { cn } from '@/utils';
-	import { CircleUser, Cloud, Columns3, Home, LogOut, Menu, Thermometer, X } from 'lucide-svelte';
+	import { CircleUser, Columns3, Home, LogOut, Menu, Thermometer, X } from 'lucide-svelte';
 	import { type Route } from './nav.svelte';
 	import ThemeToggle from './themetoggle.svelte';
 	import I18n from './i18n.svelte';
@@ -25,7 +25,6 @@
 
 		routes['/dash'] = { name: $t('menu.routes.dash'), icon: Columns3 };
 		routes['/measurements'] = { name: $t('menu.routes.measurements'), icon: Thermometer };
-		routes['/forecast'] = { name: $t('menu.routes.forecast'), icon: Cloud };
 
 		return routes;
 	});

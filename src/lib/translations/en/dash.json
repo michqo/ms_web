@@ -86,8 +86,8 @@
 	"avgTemperature": "Average temperature",
 	"status": {
 		"updatedJustNow": "Updated just now",
-		"updatedAgo": "Updated {n} ago",
-		"lastSeenAgo": "Last seen {n} ago",
+		"updatedAgo": "Updated {{n}} ago",
+		"lastSeenAgo": "Last seen {{n}} ago",
 		"noData": "No data received",
 		"apiUnavailable": "Could not fetch data",
 		"apiUnavailableHint": "The API is unavailable. Please try again later.",

@@ -4,15 +4,15 @@
 	import { globalState } from '@/shared/runes.svelte';
 	import type { Measurement } from '@/shared/types';
 	import { t } from '@/translations';
-	import { cn } from '@/utils';
 	import { createQuery } from '@tanstack/svelte-query';
 	import Cookies from 'js-cookie';
 	import dayjs from 'dayjs';
-	import { AlertCircle, CheckCircle2, ChevronDown, Droplets, Thermometer, X } from 'lucide-svelte';
+	import { AlertCircle, ChevronDown, Droplets, Thermometer, X } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { buttonVariants } from '../button';
 	import * as Dialog from '../dialog';
 	import { Skeleton } from '../skeleton';
+	import StationList from '@/components/station/station-list.svelte';
 
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
@@ -28,6 +28,7 @@
 
 	let latestMeasurements = $state<Record<number, Measurement | null>>({});
 	let loadingMeasurements = $state<Record<number, boolean>>({});
+	let searchTerm = $state('');
 
 	$effect(() => {
 		if ($stationsQuery.data?.results.length) {
@@ -39,7 +40,7 @@
 		if (!$stationsQuery.data?.results.length) return;
 
 		const stations = $stationsQuery.data.results;
-		const results = await Promise.allSettled(
+		await Promise.allSettled(
 			stations
 				.filter((s) => latestMeasurements[s.id] === undefined)
 				.map(async (station) => {
@@ -65,6 +66,16 @@
 		toast.success($t('menu.actions.selector.success'));
 		invalidateAll();
 	}
+
+	const filteredStations = $derived(
+		$stationsQuery.data?.results?.filter((s) =>
+			`${s.name} ${s.city_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+		) ?? []
+	);
+
+	const emptyState = $derived(
+		$stationsQuery.data?.results?.length === 0 && !$stationsQuery.isPending
+	);
 </script>
 
 <Dialog.Root>
@@ -100,99 +111,23 @@
 				<X class="size-4" />
 			</Dialog.Close>
 		</Dialog.Header>
-		<div class="mt-4 grid grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2">
-			{#if $stationsQuery.isPending}
-				{#each Array(4) as _}
-					<div class="border-border flex w-full flex-col gap-2 rounded-xl border p-4">
-						<Skeleton class="h-4 w-1/2 rounded-md" />
-						<Skeleton class="h-3 w-1/3 rounded-md" />
-						<div class="mt-4 flex gap-4 border-t border-black/[0.03] pt-3 dark:border-white/[0.03]">
-							<Skeleton class="h-8 w-16 rounded-lg" />
-							<Skeleton class="h-8 w-16 rounded-lg" />
-						</div>
-					</div>
-				{/each}
-			{:else if apiUnavailable}
-				<div
-					class="col-span-full flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-				>
-					<AlertCircle class="mt-0.5 size-4 shrink-0" />
-					<div class="space-y-1">
-						<p class="text-sm font-semibold">{$t('menu.actions.selector.api_unavailable')}</p>
-						<p class="text-xs">{$t('menu.actions.selector.api_unavailable_hint')}</p>
-					</div>
-				</div>
-			{:else if noStations}
-				<div
-					class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
-				>
-					<p class="text-sm font-semibold">{$t('menu.actions.selector.no_stations')}</p>
-					<p class="mt-1 text-xs">{$t('menu.actions.selector.no_stations_hint')}</p>
-				</div>
-			{:else if $stationsQuery.data?.results}
-				{#each $stationsQuery.data.results as station}
-					{@const latest = latestMeasurements[station.id]}
-					{@const loading = loadingMeasurements[station.id]}
-					{@const isSelected = globalState.stationId === station.id}
-					<button
-						class={cn([
-							'group relative flex w-full flex-col items-start gap-1 overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 active:scale-[0.98]',
-							isSelected
-								? 'border-primary bg-primary/5 shadow-sm'
-								: 'border-border hover:bg-accent hover:border-accent-foreground/20'
-						])}
-						onclick={() => setSelectedStation(station.id)}
-					>
-						{#if isSelected}
-							<CheckCircle2 class="text-primary absolute top-3 right-3 size-4" />
-						{/if}
-						<div class="z-10 flex w-full items-center justify-between">
-							<div class="flex flex-col">
-								<span class="text-sm font-bold tracking-tight">{station.name}</span>
-								<span
-									class="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase opacity-60"
-									>{station.city_name}</span
-								>
-							</div>
-						</div>
 
-						<div
-							class="mt-3 flex w-full gap-4 border-t border-black/[0.03] pt-3 dark:border-white/[0.03]"
-						>
-							<div class="flex items-center gap-2">
-								<div class="rounded-lg bg-orange-500/20 p-1.5 transition-colors">
-									<Thermometer class="size-3.5 text-orange-500" />
-								</div>
-								{#if loading}
-									<Skeleton class="h-4 w-10 rounded-md" />
-								{:else if latest}
-									<span class="text-sm font-bold tabular-nums"
-										>{Math.round(latest.temperature!)}°C</span
-									>
-								{:else}
-									<span class="text-muted-foreground text-xs font-semibold"
-										>{$t('dash.noData')}</span
-									>
-								{/if}
-							</div>
-							<div class="flex items-center gap-2">
-								<div class="rounded-lg bg-cyan-500/20 p-1.5 transition-colors">
-									<Droplets class="size-3.5 text-cyan-600 dark:text-cyan-400" />
-								</div>
-								{#if loading}
-									<Skeleton class="h-4 w-10 rounded-md" />
-								{:else if latest}
-									<span class="text-sm font-bold tabular-nums">{latest.humidity}%</span>
-								{:else}
-									<span class="text-muted-foreground text-xs font-semibold"
-										>{$t('dash.noData')}</span
-									>
-								{/if}
-							</div>
-						</div>
-					</button>
-				{/each}
-			{/if}
-		</div>
+		{#if emptyState}
+			<div
+				class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300"
+			>
+				<p class="text-sm font-semibold">{$t('menu.actions.selector.no_stations')}</p>
+				<p class="mt-1 text-xs">{$t('menu.actions.selector.no_stations_hint')}</p>
+			</div>
+		{:else}
+			<StationList
+				stations={filteredStations}
+				pending={$stationsQuery.isPending}
+				error={apiUnavailable}
+				selectedStationId={globalState.stationId}
+				bind:search={searchTerm}
+				onSelect={setSelectedStation}
+			/>
+		{/if}
 	</Dialog.MobileContent>
 </Dialog.Root>
