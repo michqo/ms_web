@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import DayDialog from '@/components/measurements/day-dialog.svelte';
 	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
@@ -14,9 +13,7 @@
 	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { gsap } from 'gsap';
 	import { Ellipsis, Thermometer, Trash2 } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 
 	const startOfWeek = dayjs().subtract(6, 'days').startOf('day');
 	const endOfWeek = dayjs().endOf('day');
@@ -116,36 +113,13 @@
 		currentStatIndex = todayStat ? $weekStatsQuery.data!.indexOf(todayStat) : -1;
 		measurementsDialogOpen = true;
 	}
-
-	let pageRoot: HTMLElement;
-
-	onMount(() => {
-		if (!browser) return;
-
-		const ctx = gsap.context(() => {
-			gsap.fromTo(
-				'.measurements-widget',
-				{ opacity: 0, y: 16, visibility: 'visible' },
-				{
-					opacity: 1,
-					y: 0,
-					visibility: 'visible',
-					stagger: 0.08,
-					duration: 0.5,
-					ease: 'power2.out'
-				}
-			);
-		}, pageRoot);
-
-		return () => ctx.revert();
-	});
 </script>
 
 <svelte:head>
 	<title>{$t('measurements.pageTitle')}</title>
 </svelte:head>
 
-<div bind:this={pageRoot} class="flex w-full flex-col items-center gap-y-6 p-5">
+<div class="flex w-full flex-col items-center gap-y-6 p-5">
 	<div class="flex w-full max-w-xl items-center justify-between">
 		<div class="mb-5 flex w-full items-center gap-3">
 			<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
@@ -197,7 +171,7 @@
 				</p>
 			</div>
 		{:else}
-			<div class="measurements-widget">
+			<div class="measurements-widget" style="--delay: 0s">
 				<CurrentDayCard
 					{todayStat}
 					latestMeasurement={$latestMeasurementQuery.data ?? undefined}
@@ -208,14 +182,14 @@
 
 			{#if !emptyWeekStats}
 				<div class="flex w-full max-w-xl flex-col gap-y-6">
-					<div class="measurements-widget">
+					<div class="measurements-widget" style="--delay: 0.08s">
 						<StatsTable weekStats={$weekStatsQuery.data!} onSelectDay={handleSelectDay} />
 					</div>
 
 					{#if $weekStatsQuery.data && $weekStatsQuery.data.length > 1}
 						<div class="w-full space-y-6">
 							<div class="grid grid-cols-1 gap-6">
-								<div class="measurements-widget">
+								<div class="measurements-widget" style="--delay: 0.16s">
 									<StatsChart
 										chartData={weekTempChartData!}
 										lineColor="red"
@@ -223,7 +197,7 @@
 										title={$t('measurements.chart.temperature')}
 									/>
 								</div>
-								<div class="measurements-widget">
+								<div class="measurements-widget" style="--delay: 0.24s">
 									<StatsChart
 										chartData={weekHumChartData!}
 										lineColor="blue"
@@ -259,6 +233,17 @@
 
 <style>
 	.measurements-widget {
-		visibility: hidden;
+		animation: widget-in 0.5s var(--delay, 0s) ease-out both;
+	}
+
+	@keyframes widget-in {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 </style>

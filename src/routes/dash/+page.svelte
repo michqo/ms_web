@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { Map } from '@/components/ui/map';
 	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
@@ -15,7 +14,6 @@
 	import type { MeasurementStat, Station } from '@/shared/types';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { gsap } from 'gsap';
 	import {
 		ChartLine,
 		CloudRain,
@@ -30,7 +28,6 @@
 		Wind,
 		X
 	} from 'lucide-svelte';
-	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import { t } from '@/translations';
 	import { cn } from '@/utils';
@@ -195,29 +192,6 @@
 		createStationOpen = true;
 	}
 
-	let pageRoot: HTMLElement;
-
-	onMount(() => {
-		if (!browser) return;
-
-		const ctx = gsap.context(() => {
-			gsap.fromTo(
-				'.dashboard-widget',
-				{ opacity: 0, y: 16, visibility: 'visible' },
-				{
-					opacity: 1,
-					y: 0,
-					visibility: 'visible',
-					stagger: 0.08,
-					duration: 0.5,
-					ease: 'power2.out'
-				}
-			);
-		}, pageRoot);
-
-		return () => ctx.revert();
-	});
-
 	$effect(() => {
 		if (!createStationOpen) {
 			editMode = false;
@@ -230,7 +204,7 @@
 	<title>{$t('dash.pageTitle')}</title>
 </svelte:head>
 
-<main bind:this={pageRoot} class="flex min-h-screen flex-col items-center px-4 pb-20">
+<main class="flex min-h-screen flex-col items-center px-4 pb-20">
 	{#if !hasStation}
 		<div class="mt-32 flex w-full max-w-md flex-col items-center gap-4 text-center">
 			<CloudSun class="text-muted-foreground size-16" />
@@ -260,7 +234,10 @@
 	{:else}
 		<div class="mt-20 flex w-full max-w-5xl flex-col gap-6">
 			<!-- Station Header — Task 2 -->
-			<div class="dashboard-widget flex flex-wrap items-center justify-between gap-3">
+			<div
+				class="dashboard-widget flex flex-wrap items-center justify-between gap-3"
+				style="--delay: 0s"
+			>
 				{#if currentStation}
 					<div class="flex items-center gap-3">
 						<h1 class="text-2xl font-bold tracking-tight">{currentStation.name}</h1>
@@ -286,6 +263,7 @@
 				<!-- Current Conditions — Task 3 -->
 				<div
 					class="dashboard-widget border-border/60 bg-card rounded-xl border p-6 shadow-xs sm:p-7"
+					style="--delay: 0.08s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<Thermometer class="text-primary size-5" />
@@ -362,6 +340,7 @@
 				<!-- Recent Measurements — Task 4 -->
 				<div
 					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					style="--delay: 0.16s"
 				>
 					<div class="mb-4 flex items-center gap-2.5">
 						<ChartLine class="text-primary size-5" />
@@ -488,6 +467,7 @@
 				<!-- Forecast — Task 5 -->
 				<div
 					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					style="--delay: 0.24s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<CloudSun class="text-primary size-5" />
@@ -526,6 +506,7 @@
 				<!-- Map — Task 6 -->
 				<div
 					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					style="--delay: 0.24s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<MapPin class="text-primary size-5" />
@@ -552,7 +533,7 @@
 			</div>
 
 			<!-- Forecast Table — Task 7 -->
-			<div class="dashboard-widget">
+			<div class="dashboard-widget" style="--delay: 0.32s">
 				{#if $forecastQuery.isPending}
 					<Skeleton class="h-40 w-full rounded-xl" />
 				{:else if $forecastQuery.isError}
@@ -576,7 +557,10 @@
 			</div>
 
 			<!-- Bottom actions -->
-			<div class="dashboard-widget flex items-center justify-center gap-3 pt-4">
+			<div
+				class="dashboard-widget flex items-center justify-center gap-3 pt-4"
+				style="--delay: 0.40s"
+			>
 				<Button variant="outline" size="sm" onclick={() => (viewAllOpen = true)}>
 					{$t('dash.viewAllStations')}
 				</Button>
@@ -634,6 +618,17 @@
 
 <style>
 	.dashboard-widget {
-		visibility: hidden;
+		animation: widget-in 0.5s var(--delay, 0s) ease-out both;
+	}
+
+	@keyframes widget-in {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 </style>
