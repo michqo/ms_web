@@ -201,13 +201,18 @@
 		if (!browser) return;
 
 		const ctx = gsap.context(() => {
-			gsap.to('.dashboard-widget', {
-				y: 0,
-				opacity: 1,
-				stagger: 0.08,
-				duration: 0.5,
-				ease: 'power2.out'
-			});
+			gsap.fromTo(
+				'.dashboard-widget',
+				{ opacity: 0, y: 16, visibility: 'visible' },
+				{
+					opacity: 1,
+					y: 0,
+					visibility: 'visible',
+					stagger: 0.08,
+					duration: 0.5,
+					ease: 'power2.out'
+				}
+			);
 		}, pageRoot);
 
 		return () => ctx.revert();
@@ -629,7 +634,6 @@
 
 <style>
 	.dashboard-widget {
-		opacity: 0;
-		transform: translateY(16px);
+		visibility: hidden;
 	}
 </style>
