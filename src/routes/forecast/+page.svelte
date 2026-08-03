@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Card from '@/components/forecast/card.svelte';
 	import Table from '@/components/forecast/table.svelte';
-	import { Map } from '@/components/ui/map';
 	import { api, transformForecast } from '@/shared';
 	import { globalState } from '@/shared/runes.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
@@ -56,27 +55,12 @@
 		</div>
 	{:else if $dataQuery.data}
 		{@const forecast = $dataQuery.data}
-		<div class="mt-20 mb-6 flex w-full max-w-2xl flex-col items-center">
-			<div class="mb-5 flex w-full items-center gap-3">
-				<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
-					{globalState.station?.name}
-				</span>
-				<div class="bg-border h-px flex-1"></div>
-				<span class="text-muted-foreground font-mono text-xs">{globalState.station?.city_name}</span
-				>
-			</div>
-
-			{#if forecast.latitude && forecast.longitude}
-				<div class="border-border/50 mb-6 w-full overflow-hidden rounded-lg border">
-					<Map
-						latitude={forecast.latitude}
-						longitude={forecast.longitude}
-						zoom={14}
-						class="h-[150px] sm:h-[200px]"
-						preview={true}
-					/>
-				</div>
-			{/if}
+		<div class="mt-20 mb-6 flex w-full max-w-2xl items-center gap-3">
+			<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
+				{globalState.station?.name}
+			</span>
+			<div class="bg-border h-px flex-1"></div>
+			<span class="text-muted-foreground font-mono text-xs">{globalState.station?.city_name}</span>
 		</div>
 
 		<div class="flex w-full max-w-2xl flex-col gap-y-6">
