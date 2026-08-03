@@ -144,6 +144,18 @@
 	let selectedStation: Station | undefined = $state();
 	let editMode = $state(false);
 
+	let dotColorClass = $derived(
+		onlineStatus.color === 'emerald'
+			? 'bg-emerald-500'
+			: onlineStatus.color === 'amber'
+				? 'bg-amber-500'
+				: onlineStatus.color === 'orange'
+					? 'bg-orange-500'
+					: onlineStatus.color === 'red'
+						? 'bg-red-500'
+						: 'bg-gray-500'
+	);
+
 	const rangePresets = $derived.by(() => [
 		{ value: '1d' as const, label: $t('dash.range1d') },
 		{ value: '7d' as const, label: $t('dash.range7d') },
@@ -218,7 +230,7 @@
 						<div
 							class={cn(
 								'size-2 rounded-full',
-								`bg-${onlineStatus.color}-500`,
+								dotColorClass,
 								onlineStatus.pulse && 'animate-pulse'
 							)}
 						></div>
