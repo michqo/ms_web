@@ -9,6 +9,7 @@
 	import { t } from '@/translations';
 	import { globalState } from '@/shared/runes.svelte';
 	import { Sparkles } from 'lucide-svelte';
+	import OAuthButtons from './OAuthButtons.svelte';
 
 	interface Props {
 		id: 'login' | 'register';
@@ -71,6 +72,7 @@
 			</Card.Action>
 		{/if}
 	</Card.Header>
+	<OAuthButtons />
 	<form method="POST" action="/actions?/auth" use:enhance>
 		<Card.Content class="space-y-4">
 			<Form.Field {form} name="username">
