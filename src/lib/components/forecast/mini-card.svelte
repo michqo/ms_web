@@ -30,14 +30,14 @@
 	<div class="grid grid-cols-3 gap-2 border-t pt-4 sm:flex sm:gap-6 sm:border-t-0 sm:pt-0">
 		<div class="flex flex-col items-center gap-1 sm:flex-row sm:gap-1.5">
 			<div class="rounded-full bg-orange-500/10 p-1.5 sm:bg-transparent sm:p-0">
-				<Thermometer class="size-4 text-orange-500 sm:size-5" />
+				<Thermometer class="size-4 text-orange-500 sm:size-5 dark:text-orange-400" />
 			</div>
 			<span class="text-sm font-bold sm:text-base">{forecast.temperature_mean.toFixed(0)}°</span>
 		</div>
 
 		<div class="flex flex-col items-center gap-1 sm:flex-row sm:gap-1.5">
 			<div class="rounded-full bg-blue-500/10 p-1.5 sm:bg-transparent sm:p-0">
-				<Droplets class="size-4 text-blue-500 sm:size-5" />
+				<Droplets class="size-4 text-blue-500 sm:size-5 dark:text-blue-400" />
 			</div>
 			<span class="text-sm font-bold sm:text-base"
 				>{forecast.relativehumidity_mean.toFixed(0)}%</span

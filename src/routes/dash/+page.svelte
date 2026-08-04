@@ -299,34 +299,34 @@
 							</div>
 							<div class="mt-6 grid grid-cols-3 gap-3">
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<Droplets class="size-4 text-cyan-500" />
+									<Droplets class="size-4 text-cyan-500 dark:text-cyan-400" />
 									<span class="text-xs font-semibold tabular-nums">{m.humidity}%</span>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.humidity')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<Gauge class="size-4 text-slate-500" />
+									<Gauge class="size-4 text-slate-400 dark:text-slate-300" />
 									<span class="text-xs font-semibold tabular-nums">{m.pressure} hPa</span>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.pressure')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<Wind class="size-4 text-sky-500" />
+									<Wind class="size-4 text-sky-500 dark:text-sky-400" />
 									<span class="text-xs font-semibold tabular-nums">{m.wind_speed} m/s</span>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.wind')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<CloudRain class="size-4 text-blue-500" />
+									<CloudRain class="size-4 text-blue-500 dark:text-blue-400" />
 									<span class="text-xs font-semibold tabular-nums">{m.rain} mm</span>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.rain')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<Sun class="size-4 text-amber-500" />
+									<Sun class="size-4 text-amber-500 dark:text-amber-400" />
 									<span class="text-xs font-semibold tabular-nums"
 										>{(m as any).uv_index ?? '\u2014'}</span
 									>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.uv')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
-									<MapPin class="size-4 text-emerald-500" />
+									<MapPin class="size-4 text-emerald-500 dark:text-emerald-400" />
 									<span class="text-xs font-semibold tabular-nums">{m.wind_direction}°</span>
 									<span class="text-muted-foreground text-[11px]">{$t('dash.windDirection')}</span>
 								</div>

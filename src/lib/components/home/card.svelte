@@ -21,17 +21,13 @@
 
 <Card.Root
 	class={cn(
-		'group relative w-full overflow-hidden border border-zinc-200 bg-white shadow-lg hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-900/70',
+		'group border-border/50 bg-card hover:border-primary/40 relative w-full overflow-hidden rounded-xl border shadow-xs transition-all hover:shadow-sm',
 		sizeClasses[size],
 		className
 	)}
 >
 	<Card.Header class="relative items-center pt-8 pb-4">
-		<div
-			class="
-			mb-6 flex items-center justify-center rounded-2xl bg-zinc-100 p-4 ring-1 ring-zinc-200 dark:bg-zinc-700 dark:ring-zinc-600
-		"
-		>
+		<div class="bg-muted ring-border mb-6 flex items-center justify-center rounded-2xl p-4 ring-1">
 			{@render header()}
 		</div>
 	</Card.Header>

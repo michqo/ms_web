@@ -80,10 +80,10 @@
 			{@const isSelected = selectedStationId === station.id}
 			<button
 				class={cn([
-					'group relative flex w-full flex-col items-start gap-1 overflow-hidden rounded-xl border p-4 text-left transition-all duration-200',
+					'group border-border/50 relative flex w-full flex-col items-start gap-1 overflow-hidden rounded-xl border p-5 text-left shadow-xs transition-all duration-200',
 					isSelected
-						? 'border-primary bg-primary/5 shadow-sm'
-						: 'border-border hover:bg-accent hover:border-accent-foreground/20'
+						? 'border-primary bg-primary/5 shadow-xs'
+						: 'border-border/50 hover:bg-accent hover:border-accent-foreground/20'
 				])}
 				onclick={() => onSelect(station.id)}
 			>

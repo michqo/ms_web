@@ -18,12 +18,11 @@
 	const { pageNumber, onPageChange, dataQuery, emptyData }: Props = $props();
 
 	function getTemperatureColor(temp: number): string {
-		if (temp <= 0) return 'text-blue-600';
-		if (temp <= 10) return 'text-blue-400';
-		if (temp <= 20) return 'text-green-500';
-		if (temp <= 25) return 'text-yellow-500';
-		if (temp <= 30) return 'text-orange-500';
-		return 'text-red-600';
+		if (temp <= 0) return 'text-chart-1';
+		if (temp <= 15) return 'text-chart-2';
+		if (temp <= 25) return 'text-primary';
+		if (temp <= 32) return 'text-chart-4';
+		return 'text-destructive';
 	}
 
 	const currentDate = $derived(
@@ -82,7 +81,7 @@
 								</span>
 								<div class="bg-muted h-2 w-10 overflow-hidden rounded-full">
 									<div
-										class="h-full bg-blue-500"
+										class="bg-chart-1 h-full"
 										style={`width: ${measurement.humidity}%; opacity: 0.7`}
 									></div>
 								</div>
