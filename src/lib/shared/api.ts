@@ -73,6 +73,12 @@ class AxiosInterceptor {
 }
 
 class AuthenticationApi extends AxiosInterceptor {
+	// Server-only: use through $lib/server/oauth to keep OAuth tickets out of client bundles.
+	async exchangeOAuthTicket(code: string): Promise<LoginResponse> {
+		const response = await this.post('/auth/social/token/', { code });
+		return response.data;
+	}
+
 	async createJwt(credentials: LoginSchema): Promise<LoginResponse> {
 		if (isMockMode()) return mockAuthLogin(credentials);
 		const response = await this.post('/auth/jwt/create/', credentials);

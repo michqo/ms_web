@@ -1,6 +1,4 @@
-export const TOKEN_COOKIE_OPTIONS = {
-	path: '/',
-	httpOnly: true,
-	secure: true,
-	sameSite: 'lax'
-} as const;
+import { dev } from '$app/environment';
+import { createTokenCookieOptions } from './cookie-options';
+
+export const TOKEN_COOKIE_OPTIONS = createTokenCookieOptions(dev);
