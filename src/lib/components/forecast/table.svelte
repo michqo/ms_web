@@ -34,7 +34,7 @@
 </script>
 
 <div
-	class="border-border/50 bg-card hover:border-primary/50 my-6 w-full overflow-x-auto rounded-xl border shadow-sm backdrop-blur-sm transition-colors sm:my-10"
+	class="border-border/50 bg-card hover:border-primary/50 my-6 w-full overflow-x-auto rounded-xl border shadow-xs backdrop-blur-sm transition-colors sm:my-10"
 >
 	<Table.Root class="min-w-[320px]">
 		<Table.Header>

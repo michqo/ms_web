@@ -26,7 +26,7 @@
 	const isCurrentDay = (date: Dayjs) => date.isSame(today, 'day');
 </script>
 
-<div class="border-border/50 overflow-hidden rounded-lg border shadow-xs backdrop-blur-sm">
+<div class="border-border/50 overflow-hidden rounded-xl border shadow-xs backdrop-blur-sm">
 	<Table.Root class="caption-top">
 		<Table.Caption class="my-4">
 			<div class="flex items-center justify-center gap-2">

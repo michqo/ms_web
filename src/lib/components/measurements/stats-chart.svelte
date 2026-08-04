@@ -25,7 +25,7 @@
 </script>
 
 <div
-	class="border-border/50 bg-background relative h-[300px] w-full rounded-lg border p-5 shadow-xs backdrop-blur-sm"
+	class="border-border/50 bg-card relative h-[300px] w-full rounded-xl border p-6 shadow-xs backdrop-blur-sm sm:p-7"
 >
 	{#if title}
 		<div class="text-muted-foreground absolute top-2 left-3 text-sm font-medium">

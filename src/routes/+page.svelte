@@ -189,7 +189,7 @@
 
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<div
-					class="fade-in border-border/60 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-xs transition-all hover:shadow-sm sm:p-7"
+					class="fade-in border-border/50 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-sm transition-all hover:shadow-sm sm:p-7"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<Thermometer class="text-primary h-5 w-5" />
@@ -201,7 +201,7 @@
 				</div>
 
 				<div
-					class="fade-in border-border/60 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-xs transition-all hover:shadow-sm sm:p-7"
+					class="fade-in border-border/50 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-sm transition-all hover:shadow-sm sm:p-7"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<MapPin class="text-primary h-5 w-5" />
@@ -213,7 +213,7 @@
 								latitude={48.1486}
 								longitude={17.1077}
 								zoom={13}
-								class="border-border/60 h-[220px] rounded-lg border"
+								class="border-border/50 h-[220px] rounded-lg border"
 								preview
 							/>
 						</div>
@@ -221,7 +221,7 @@
 				</div>
 
 				<div
-					class="fade-in border-border/60 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-xs transition-all hover:shadow-sm sm:p-7 md:col-span-2"
+					class="fade-in border-border/50 bg-card hover:border-primary/40 flex flex-col rounded-xl border p-6 shadow-xs backdrop-blur-sm transition-all hover:shadow-sm sm:p-7 md:col-span-2"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<CloudSun class="text-primary h-5 w-5" />

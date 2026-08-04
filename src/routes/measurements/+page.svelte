@@ -120,7 +120,7 @@
 	<title>{$t('measurements.pageTitle')}</title>
 </svelte:head>
 
-<div class="flex w-full flex-col items-center gap-y-6 p-5">
+<div class="flex w-full flex-col items-center gap-y-6 px-4 pt-20 pb-20">
 	<div class="flex w-full max-w-xl items-center justify-between">
 		<div class="mb-5 flex w-full items-center gap-3">
 			<span class="text-foreground font-mono text-xs font-semibold tracking-widest uppercase">
@@ -151,7 +151,7 @@
 
 	<main class="flex w-full flex-col items-center gap-6">
 		{#if !hasStationSelection}
-			<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+			<div class="border-border/50 bg-card w-full max-w-xl rounded-xl border p-6">
 				<p class="text-sm font-semibold">{$t('measurements.status.no_station')}</p>
 				<p class="text-muted-foreground mt-1 text-xs">
 					{$t('measurements.status.no_station_hint')}
@@ -160,14 +160,14 @@
 		{:else if isPageLoading}
 			{#if browser}
 				<div class="w-full max-w-xl space-y-6">
-					<Skeleton class="h-40 w-full rounded-lg" />
-					<Skeleton class="h-12 w-full rounded-lg" />
-					<Skeleton class="h-12 w-full rounded-lg" />
-					<Skeleton class="h-56 w-full rounded-lg" />
+					<Skeleton class="h-40 w-full rounded-xl" />
+					<Skeleton class="h-12 w-full rounded-xl" />
+					<Skeleton class="h-12 w-full rounded-xl" />
+					<Skeleton class="h-56 w-full rounded-xl" />
 				</div>
 			{/if}
 		{:else if $weekStatsQuery.isError || $latestMeasurementQuery.isError}
-			<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+			<div class="border-border/50 bg-card w-full max-w-xl rounded-xl border p-6">
 				<p class="text-sm font-semibold">{$t('measurements.status.api_unavailable')}</p>
 				<p class="text-muted-foreground mt-1 text-xs">
 					{$t('measurements.status.api_unavailable_hint')}
@@ -213,7 +213,7 @@
 					{/if}
 				</div>
 			{:else}
-				<div class="border-border/50 bg-card w-full max-w-xl rounded-lg border p-6">
+				<div class="border-border/50 bg-card w-full max-w-xl rounded-xl border p-6">
 					<p class="text-sm font-semibold">{$t('measurements.status.no_data')}</p>
 					<p class="text-muted-foreground mt-1 text-xs">{$t('measurements.status.no_data_hint')}</p>
 				</div>

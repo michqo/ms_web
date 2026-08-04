@@ -225,7 +225,7 @@
 		{#if browser}
 			<div class="mt-20 w-full max-w-5xl">
 				<Skeleton class="mb-6 h-8 w-64" />
-				<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 					<Skeleton class="h-64 rounded-xl" />
 					<Skeleton class="h-64 rounded-xl" />
 					<Skeleton class="h-48 rounded-xl" />
@@ -262,10 +262,10 @@
 			</div>
 
 			<!-- Widget grid -->
-			<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+			<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 				<!-- Current Conditions — Task 3 -->
 				<div
-					class="dashboard-widget border-border/60 bg-card rounded-xl border p-6 shadow-xs sm:p-7"
+					class="dashboard-widget border-border/50 bg-card rounded-xl border p-6 shadow-xs sm:p-7"
 					style="--delay: 0.08s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
@@ -301,34 +301,34 @@
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<Droplets class="size-4 text-cyan-500" />
 									<span class="text-xs font-semibold tabular-nums">{m.humidity}%</span>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.humidity')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.humidity')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<Gauge class="size-4 text-slate-500" />
 									<span class="text-xs font-semibold tabular-nums">{m.pressure} hPa</span>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.pressure')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.pressure')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<Wind class="size-4 text-sky-500" />
 									<span class="text-xs font-semibold tabular-nums">{m.wind_speed} m/s</span>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.wind')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.wind')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<CloudRain class="size-4 text-blue-500" />
 									<span class="text-xs font-semibold tabular-nums">{m.rain} mm</span>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.rain')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.rain')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<Sun class="size-4 text-amber-500" />
 									<span class="text-xs font-semibold tabular-nums"
 										>{(m as any).uv_index ?? '\u2014'}</span
 									>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.uv')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.uv')}</span>
 								</div>
 								<div class="bg-muted/50 flex flex-col items-center gap-1 rounded-lg p-2.5">
 									<MapPin class="size-4 text-emerald-500" />
 									<span class="text-xs font-semibold tabular-nums">{m.wind_direction}°</span>
-									<span class="text-muted-foreground text-[10px]">{$t('dash.windDirection')}</span>
+									<span class="text-muted-foreground text-[11px]">{$t('dash.windDirection')}</span>
 								</div>
 							</div>
 						</div>
@@ -342,7 +342,7 @@
 
 				<!-- Recent Measurements — Task 4 -->
 				<div
-					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					class="dashboard-widget border-border/50 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
 					style="--delay: 0.16s"
 				>
 					<div class="mb-4 flex items-center gap-2.5">
@@ -411,7 +411,7 @@
 
 						{#if isStale}
 							<div
-								class="text-muted-foreground mb-3 flex items-center gap-1.5 font-mono text-[10px]"
+								class="text-muted-foreground mb-3 flex items-center gap-1.5 font-mono text-[11px]"
 							>
 								<Loader2 class="size-3 animate-spin" />
 								<span>{$t('dash.loading')}</span>
@@ -420,19 +420,19 @@
 
 						<div class={cn('mb-4 grid grid-cols-4 gap-2', isStale && 'opacity-50')}>
 							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[10px]">{$t('dash.maxTemp')}</span>
+								<span class="text-muted-foreground text-[11px]">{$t('dash.maxTemp')}</span>
 								<span class="text-sm font-bold tabular-nums">{maxTemp.toFixed(1)}°</span>
 							</div>
 							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[10px]">{$t('dash.minTemp')}</span>
+								<span class="text-muted-foreground text-[11px]">{$t('dash.minTemp')}</span>
 								<span class="text-sm font-bold tabular-nums">{minTemp.toFixed(1)}°</span>
 							</div>
 							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[10px]">{$t('dash.avgHumidity')}</span>
+								<span class="text-muted-foreground text-[11px]">{$t('dash.avgHumidity')}</span>
 								<span class="text-sm font-bold tabular-nums">{Math.round(avgHumidity)}%</span>
 							</div>
 							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[10px]">{$t('dash.days')}</span>
+								<span class="text-muted-foreground text-[11px]">{$t('dash.days')}</span>
 								<span class="text-sm font-bold tabular-nums">{stats.length}</span>
 							</div>
 						</div>
@@ -469,7 +469,7 @@
 
 				<!-- Forecast — Task 5 -->
 				<div
-					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					class="dashboard-widget border-border/50 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
 					style="--delay: 0.24s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
@@ -508,7 +508,7 @@
 
 				<!-- Map — Task 6 -->
 				<div
-					class="dashboard-widget border-border/60 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
+					class="dashboard-widget border-border/50 bg-card flex flex-col rounded-xl border p-6 shadow-xs sm:p-7"
 					style="--delay: 0.24s"
 				>
 					<div class="mb-5 flex items-center gap-2.5">
@@ -540,7 +540,7 @@
 				{#if $forecastQuery.isPending}
 					<Skeleton class="h-40 w-full rounded-xl" />
 				{:else if $forecastQuery.isError}
-					<div class="border-border/60 bg-card rounded-xl border p-6 text-center shadow-xs">
+					<div class="border-border/50 bg-card rounded-xl border p-6 text-center shadow-xs">
 						<p class="text-muted-foreground text-sm">{$t('dash.status.apiUnavailable')}</p>
 						<Button
 							variant="outline"

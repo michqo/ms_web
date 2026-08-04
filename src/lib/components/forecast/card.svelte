@@ -43,7 +43,7 @@
 </script>
 
 <div
-	class="border-border/50 bg-card hover:border-primary/50 flex flex-col rounded-xl border p-5 shadow-sm backdrop-blur-sm transition-colors sm:p-8"
+	class="border-border/50 bg-card hover:border-primary/50 flex flex-col rounded-xl border p-5 shadow-xs backdrop-blur-sm transition-colors sm:p-8"
 >
 	<div class="mt-2 mb-4 flex items-center justify-center gap-x-2">
 		<Calendar class="text-muted-foreground h-4 w-4" />
