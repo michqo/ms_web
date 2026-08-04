@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import CurrentDayCard from '@/components/measurements/current-day-card.svelte';
 	import DayDialog from '@/components/measurements/day-dialog.svelte';
 	import DeleteDialog from '@/components/measurements/delete-dialog.svelte';
@@ -7,14 +6,13 @@
 	import StatsTable from '@/components/measurements/stats-table.svelte';
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import { Skeleton } from '@/components/ui/skeleton';
 	import { api } from '@/shared';
 	import { globalState } from '@/shared/runes.svelte';
 	import type { MeasurementStat } from '@/shared/types';
 	import { t } from '@/translations';
 	import { createQuery } from '@tanstack/svelte-query';
 	import dayjs from 'dayjs';
-	import { Ellipsis, Thermometer, Trash2 } from 'lucide-svelte';
+	import { Ellipsis, Loader2, Thermometer, Trash2 } from 'lucide-svelte';
 
 	const startOfWeek = dayjs().subtract(6, 'days').startOf('day');
 	const endOfWeek = dayjs().endOf('day');
@@ -158,14 +156,9 @@
 				</p>
 			</div>
 		{:else if isPageLoading}
-			{#if browser}
-				<div class="w-full max-w-xl space-y-6">
-					<Skeleton class="h-40 w-full rounded-xl" />
-					<Skeleton class="h-12 w-full rounded-xl" />
-					<Skeleton class="h-12 w-full rounded-xl" />
-					<Skeleton class="h-56 w-full rounded-xl" />
-				</div>
-			{/if}
+			<div class="flex w-full max-w-xl items-center justify-center py-32">
+				<Loader2 class="text-muted-foreground size-8 animate-spin" />
+			</div>
 		{:else if $weekStatsQuery.isError || $latestMeasurementQuery.isError}
 			<div class="border-border/50 bg-card w-full max-w-xl rounded-xl border p-6">
 				<p class="text-sm font-semibold">{$t('measurements.status.api_unavailable')}</p>
