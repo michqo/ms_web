@@ -57,15 +57,4 @@ GITHUB_CLIENT_SECRET=...
 OAUTH_FRONTEND_CALLBACK=http://localhost:5173/oauth/callback
 ```
 
-## screenshots
-
-<div align="center">
-  <img src=".github/assets/dashboard.png" width="48%" />
-  <img src=".github/assets/measurements.png" width="48%" />
-  <br/>
-  <img src=".github/assets/homepage.png" width="48%" />
-</div>
-
-## license
-
-MIT
+env for backend (`ms_api/.env`):
