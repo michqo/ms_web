@@ -1,177 +1,218 @@
 # OAuth Authentication — Frontend
 
-**Date:** 2026-08-04
+**Date:** 2026-08-05 (revised)
 **Repo:** ms_web (SvelteKit frontend)
-**Status:** Design — awaiting implementation
+**Status:** Implementation in progress (branch `codex/oauth-integration`)
 
 ## Goal
 
-Add OAuth2 social login buttons (Google, GitHub) to the existing username/password auth UI. Handle the OAuth callback by reading JWT tokens from URL parameters and setting httpOnly cookies.
+Add OAuth2 social login buttons (Google, GitHub) to the existing username/password auth UI. Handle the OAuth callback by reading a one-time ticket from URL parameters, exchanging it server-side for JWT tokens, and setting httpOnly cookies.
 
 **Backend counterpart:** `ms_api/docs/superpowers/specs/2026-08-04-oauth-integration.md`
 
 ---
 
-## Architecture
+## Architecture (Ticket Exchange Pattern)
 
 ```
-User clicks "Sign in with Google" in AuthCard
-        │
-        │  href link to backend OAuth endpoint
+User clicks "Continue with Google" in AuthCard
+        │  POST form → <API_URL>/auth/social/login/google-oauth2/
         ▼
-Browser navigates to backend:
-  GET <API_URL>/auth/social/login/google-oauth2/
+Backend returns 302 redirect to Google OAuth
         │
-        │  Backend handles full OAuth flow (see backend spec)
         ▼
-Browser redirected back to frontend:
-  /oauth/callback?access=<jwt>&refresh=<jwt>
-        │
-        │  +page.server.ts reads URL params server-side
-        │  Sets httpOnly cookies (access_token, refresh_token)
-        │  Redirects to /dash
+Google OAuth — user authorizes
+        │  Redirect back to backend
         ▼
-User lands on /dash — authenticated, dashboard loads
+Backend: GET /auth/social/complete/google-oauth2/?code=xxx&state=yyy
+        │  Validates → creates/finds User → generates one-time ticket → redirects
+        ▼
+Browser: /oauth/callback?code=<ticket>
+        │  +page.server.ts reads ticket, calls:
+        │  POST <API_URL>/auth/social/token/ { code: "<ticket>" }
+        │  → receives { access, refresh }
+        ▼
+Cookies set → redirect to /dash → authenticated
 ```
 
 **Contract with backend:**
 
-- Backend redirects to `{OAUTH_FRONTEND_CALLBACK}?access=<jwt>&refresh=<jwt>`
-- Frontend reads `access` and `refresh` from URL query params
-- Same `LoginResponse` type — no new API calls, no new types
+| Step            | Frontend sends                        | Backend returns       |
+| --------------- | ------------------------------------- | --------------------- |
+| Initiate OAuth  | `POST /auth/social/login/<provider>/` | 302 to provider       |
+| Exchange ticket | `POST /auth/social/token/ { code }`   | `{ access, refresh }` |
 
 ---
 
-## Files Changed
+## What's Implemented
 
-### 1. New route: OAuth callback (`src/routes/oauth/callback/+page.server.ts`)
+### 1. OAuthButtons component (`src/lib/components/ui/OAuthButtons.svelte`)
 
-Server-side load function. Tokens extracted from URL and stored as httpOnly cookies — never touch client-side JavaScript.
+Google and GitHub buttons as POST forms. Each button:
+
+- Uses `buildOAuthActionUrls(PUBLIC_API_URL)` to construct backend URLs
+- Disables all buttons while submitting (prevents double-click)
+- Re-enables on `pageshow` (handles browser back-button after OAuth redirect)
+- Hidden in mock mode
+
+```svelte
+<form method="POST" action={actionUrls.google} onsubmit={startSubmission}>
+	<Button type="submit" variant="outline" class="w-full" disabled={submitting}>
+		<!-- Google "G" SVG icon -->
+		{$t('auth.oauth_google')}
+	</Button>
+</form>
+```
+
+### 2. AuthCard update (`src/lib/components/ui/AuthCard.svelte`)
+
+Imports `OAuthButtons` and renders it between the card header and the login/register form:
+
+```svelte
+<Card.Header>...</Card.Header>
+<OAuthButtons />
+<form method="POST" action="/actions?/auth" use:enhance>
+```
+
+### 3. OAuth callback route (`src/routes/oauth/callback/+page.server.ts`)
+
+Server-side load function that:
+
+1. Reads `code` ticket from URL query params
+2. Validates ticket format (32-256 chars, alphanumeric + dash + underscore)
+3. Calls `exchangeOAuthTicket(code)` which POSTs to `/auth/social/token/`
+4. Sets `access_token` and `refresh_token` httpOnly cookies
+5. Redirects to `/dash` on success, `/oauth/error` on failure
+6. Sets `cache-control: no-store` and `referrer-policy: no-referrer` headers
 
 ```ts
-import { redirect } from '@sveltejs/kit';
-import { TOKEN_COOKIE_OPTIONS } from '$lib/server/cookies';
+export async function load({ cookies, setHeaders, url }) {
+	setHeaders({ 'cache-control': 'no-store', 'referrer-policy': 'no-referrer' });
 
-export const load = async ({ url, cookies }) => {
-	const access = url.searchParams.get('access');
-	const refresh = url.searchParams.get('refresh');
-
-	if (access && refresh) {
-		cookies.set('access_token', access, TOKEN_COOKIE_OPTIONS);
-		cookies.set('refresh_token', refresh, TOKEN_COOKIE_OPTIONS);
-		redirect(308, '/dash');
+	const code = url.searchParams.get('code');
+	if (!code || !OAUTH_TICKET_PATTERN.test(code)) {
+		redirect(303, '/oauth/error?reason=invalid_ticket');
 	}
 
-	redirect(308, '/');
-};
-```
-
-### 2. New route: OAuth callback UI (`src/routes/oauth/callback/+page.svelte`)
-
-Minimal client-side fallback. Only renders if the server-side load hasn't redirected yet (rare race condition, or if tokens missing). Shows a centered spinner while the redirect resolves.
-
-```svelte
-<svelte:head>
-	<title>{$t('auth.oauth_callback_title')}</title>
-</svelte:head>
-
-<div class="flex min-h-screen items-center justify-center">
-	<Loader2 class="text-muted-foreground size-8 animate-spin" />
-</div>
-```
-
-### 3. Update AuthCard (`src/lib/components/ui/AuthCard.svelte`)
-
-Add OAuth provider buttons between the description and the login/register form, with an "or" divider. The buttons are `<a>` links that navigate to the backend OAuth endpoints.
-
-```svelte
-<script lang="ts">
-	// ... existing imports ...
-	import { PUBLIC_API_URL } from '$env/static/public';
-</script>
-
-<!-- Inside the Card.Content, before the form -->
-<div class="mb-6 grid grid-cols-1 gap-2">
-	<a
-		href={`${PUBLIC_API_URL}/auth/social/login/google-oauth2/`}
-		class="border-border hover:bg-muted flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm transition-colors"
-	>
-		<svg viewBox="0 0 24 24" class="size-4"><!-- Google "G" icon --></svg>
-		{$t('auth.oauth_google')}
-	</a>
-	<a
-		href={`${PUBLIC_API_URL}/auth/social/login/github/`}
-		class="border-border hover:bg-muted flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm transition-colors"
-	>
-		<svg viewBox="0 0 24 24" class="size-4"><!-- GitHub icon --></svg>
-		{$t('auth.oauth_github')}
-	</a>
-</div>
-
-<div class="mb-6 flex items-center gap-3">
-	<div class="bg-border h-px flex-1"></div>
-	<span class="text-muted-foreground text-xs">{$t('auth.oauth_or')}</span>
-	<div class="bg-border h-px flex-1"></div>
-</div>
-```
-
-**Design note:** The OAuth links use `href` (standard navigation), not `onclick` + `goto()`. This is a full-page navigation to the backend URL, which triggers the OAuth redirect chain. The `sameSite: lax` cookie policy allows this because it's a top-level navigation.
-
-### 4. Add i18n keys (`src/lib/translations/en/auth.json`)
-
-Merge these keys into the existing file:
-
-```json
-{
-	"oauth_google": "Continue with Google",
-	"oauth_github": "Continue with GitHub",
-	"oauth_or": "or",
-	"oauth_callback_title": "Signing in..."
+	try {
+		const tokens = await exchangeOAuthTicket(code);
+		if (!hasTokens(tokens)) throw new Error('Invalid token response');
+		cookies.set('access_token', tokens.access, TOKEN_COOKIE_OPTIONS);
+		cookies.set('refresh_token', tokens.refresh, TOKEN_COOKIE_OPTIONS);
+		redirect(303, '/dash');
+	} catch (error) {
+		// 400/401/404/410 → invalid ticket; 500/503/network → provider unavailable
+		redirect(303, '/oauth/error?...');
+	}
 }
 ```
 
-### 5. Add i18n keys (`src/lib/translations/sk/auth.json`)
+### 4. OAuth error route (`src/routes/oauth/error/`)
 
-```json
-{
-	"oauth_google": "Prihlásiť cez Google",
-	"oauth_github": "Prihlásiť cez GitHub",
-	"oauth_or": "alebo",
-	"oauth_callback_title": "Prihlasujem..."
+Server page with `+page.server.ts` that validates the `reason` query param and renders an error message with a "Back to home" button.
+
+### 5. Ticket exchange service (`src/lib/server/oauth.ts`)
+
+Server-only module. Validates ticket format, calls `authApi.exchangeOAuthTicket(code)`.
+
+```ts
+const OAUTH_TICKET_PATTERN = /^[A-Za-z0-9_-]{32,256}$/;
+
+export async function exchangeOAuthTicket(code: unknown): Promise<LoginResponse> {
+	if (typeof code !== 'string' || !OAUTH_TICKET_PATTERN.test(code)) {
+		throw new Error('Invalid OAuth ticket');
+	}
+	return authApi.exchangeOAuthTicket(code);
 }
 ```
+
+### 6. API client method (`src/lib/shared/api.ts`)
+
+```ts
+class AuthenticationApi extends AxiosInterceptor {
+	async exchangeOAuthTicket(code: string): Promise<LoginResponse> {
+		const response = await this.post('/auth/social/token/', { code });
+		return response.data;
+	}
+}
+```
+
+### 7. Cookie options refactor (`src/lib/server/cookie-options.ts`, `cookies.ts`)
+
+Extracted `createTokenCookieOptions(isDevelopment)` — sets `secure: !isDevelopment` so cookies work on `localhost` without HTTPS.
+
+### 8. i18n keys
+
+| Key                            | EN                                         | SK                                         |
+| ------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `auth.oauth_google`            | "Continue with Google"                     | "Prihlásiť cez Google"                     |
+| `auth.oauth_github`            | "Continue with GitHub"                     | "Prihlásiť cez GitHub"                     |
+| `auth.oauth_or`                | "or"                                       | "alebo"                                    |
+| `auth.oauth_error_title`       | "Authentication failed"                    | "Overenie zlyhalo"                         |
+| `auth.oauth_error_invalid`     | "The sign-in link is invalid..."           | "Prihlasovací odkaz je neplatný..."        |
+| `auth.oauth_error_unavailable` | "The provider is currently unavailable..." | "Poskytovateľ je momentálne nedostupný..." |
+| `auth.oauth_error_retry`       | "Back to home"                             | "Späť domov"                               |
+
+---
+
+## Tests
+
+6 test files, 28 tests — all passing with Vitest:
+
+| File                                         | Tests | Covers                                                                                                   |
+| -------------------------------------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| `src/lib/server/oauth.test.ts`               | 3     | Ticket validation, exchange call                                                                         |
+| `src/lib/server/oauth-callback.test.ts`      | 7     | Callback route: malformed ticket, valid exchange, API errors (400-503), network failures, missing tokens |
+| `src/lib/server/cookies.test.ts`             | 2     | Cookie options in dev vs prod                                                                            |
+| `src/lib/shared/api.test.ts`                 | 3     | `exchangeOAuthTicket` API method                                                                         |
+| `src/lib/components/ui/AuthCard.test.ts`     | 6     | AuthCard rendering, form modes                                                                           |
+| `src/lib/components/ui/OAuthButtons.test.ts` | 7     | Button rendering, URL construction, form actions                                                         |
 
 ---
 
 ## What does NOT change
 
-- **No new API calls** — the callback route reads URL params server-side, no fetch needed
-- **No new types** — same `LoginResponse` shape (`access` + `refresh`)
-- **No new schemas** — no form validation needed for OAuth callback
-- **No changes to** `hooks.server.ts`, `+layout.server.ts`, `+layout.ts`, `api.ts` — existing auth infrastructure handles JWT cookies exactly as before
-- **No changes to** `nav/actions.svelte` — AuthCard is rendered inside the existing dialog
-- **No cookie config changes** — `TOKEN_COOKIE_OPTIONS` (httpOnly, secure, sameSite: lax) is OAuth-compatible
-
----
-
-## Edge Cases
-
-| Scenario                                                              | Handling                                                                                                    |
-| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| OAuth callback without tokens (user cancels, error)                   | `+page.server.ts` redirects to `/`                                                                          |
-| Tokens in URL are expired/invalid                                     | `hooks.server.ts` will fail `getUsersMe` → refresh attempt → if that fails, cookies deleted (existing flow) |
-| User already has password account, logs in via Google with same email | Backend links identities. Frontend sees same JWT flow — no difference                                       |
-| User navigates directly to `/oauth/callback` without tokens           | Redirect to `/`                                                                                             |
-| Backend `OAUTH_FRONTEND_CALLBACK` doesn't match frontend URL          | Tokens sent to wrong URL. Catch-all redirect to `/`                                                         |
+- `hooks.server.ts`, `+layout.server.ts`, `+layout.ts`, `+layout.svelte` — existing JWT cookie infrastructure handles OAuth tokens identically
+- `actions/+page.server.ts` — no new auth action needed (callback sets cookies directly)
+- `nav/actions.svelte` — AuthCard is rendered inside, no nav changes
+- Types — same `LoginResponse` shape (`access` + `refresh`)
+- Cookie policy — `sameSite: lax` works with OAuth redirects
 
 ---
 
 ## Files Summary
 
-| File                                        | Action                                          |
-| ------------------------------------------- | ----------------------------------------------- |
-| `src/routes/oauth/callback/+page.server.ts` | **New** — server-side token → cookie → redirect |
-| `src/routes/oauth/callback/+page.svelte`    | **New** — minimal spinner UI                    |
-| `src/lib/components/ui/AuthCard.svelte`     | **Modify** — add OAuth buttons + divider        |
-| `src/lib/translations/en/auth.json`         | **Modify** — add 4 keys                         |
-| `src/lib/translations/sk/auth.json`         | **Modify** — add 4 keys                         |
+| File                                         | Status   | Purpose                       |
+| -------------------------------------------- | -------- | ----------------------------- |
+| `src/lib/components/ui/OAuthButtons.svelte`  | New      | Google + GitHub login buttons |
+| `src/lib/components/ui/OAuthButtons.test.ts` | New      | Button tests                  |
+| `src/lib/components/ui/AuthCard.svelte`      | Modified | Imports OAuthButtons          |
+| `src/lib/components/ui/AuthCard.test.ts`     | New      | AuthCard tests                |
+| `src/lib/server/oauth.ts`                    | New      | Ticket validation + exchange  |
+| `src/lib/server/oauth.test.ts`               | New      | Ticket tests                  |
+| `src/lib/server/oauth-callback.test.ts`      | New      | Callback route tests          |
+| `src/lib/server/cookie-options.ts`           | New      | Env-aware cookie options      |
+| `src/lib/server/cookies.ts`                  | Modified | Uses cookie-options           |
+| `src/lib/server/cookies.test.ts`             | New      | Cookie tests                  |
+| `src/lib/shared/api.ts`                      | Modified | `exchangeOAuthTicket` method  |
+| `src/lib/shared/api.test.ts`                 | New      | API tests                     |
+| `src/routes/oauth/callback/+page.server.ts`  | New      | Callback server load          |
+| `src/routes/oauth/error/+page.server.ts`     | New      | Error page server load        |
+| `src/routes/oauth/error/+page.svelte`        | New      | Error page UI                 |
+| `src/lib/translations/en/auth.json`          | Modified | 7 new keys                    |
+| `src/lib/translations/sk/auth.json`          | Modified | 7 new keys                    |
+| `vitest.config.ts`                           | New      | Vitest configuration          |
+| `tests/sveltekit/`                           | New      | Test environment mocks        |
+
+---
+
+## What's Still Needed (Backend-Actionable)
+
+The frontend is complete. The backend (`ms_api`) needs:
+
+1. `social-auth-app-django` installed and configured in settings
+2. Custom pipeline step (`api/oauth.py`): `create_ticket_and_redirect`
+3. `ExchangeOAuthTicketView` (`api/oauth.py`): `POST /auth/social/token/`
+4. Django cache configured (`LocMemCache` for dev, `RedisCache` for prod)
+5. Google + GitHub OAuth app credentials in env vars
+6. `OAUTH_FRONTEND_CALLBACK` env var pointing to `http://localhost:5173/oauth/callback`
