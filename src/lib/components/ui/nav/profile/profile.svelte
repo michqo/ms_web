@@ -15,7 +15,7 @@
 
 	const { data }: Props = $props();
 
-	const currentUser = $derived(globalState.user);
+	const currentUser = $derived(typeof globalState.user === 'object' ? globalState.user : undefined);
 	const isOAuthOnly = $derived(
 		(currentUser?.social_providers?.length ?? 0) > 0 && !currentUser?.has_usable_password
 	);
@@ -44,7 +44,7 @@
 							<span class="text-muted-foreground text-xs">{currentUser.email}</span>
 						{/if}
 					</div>
-					{#if currentUser.social_providers.length > 0}
+					{#if (currentUser.social_providers?.length ?? 0) > 0}
 						<div class="border-border/50 flex flex-wrap items-center gap-2 border-t pt-2">
 							<span class="text-muted-foreground text-[11px]"
 								>{$t('menu.actions.account.provider_label')}</span
