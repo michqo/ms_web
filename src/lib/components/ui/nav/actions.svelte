@@ -31,7 +31,7 @@
 		<DropdownMenu.Content class="w-48 p-1 font-mono">
 			<div class="px-2 py-3">
 				<div class="text-muted-foreground text-xs">{$t('menu.actions.account.label')}</div>
-				<div class="text-sm font-semibold">{globalState.user}</div>
+				<div class="text-sm font-semibold">{globalState.user?.username}</div>
 			</div>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item

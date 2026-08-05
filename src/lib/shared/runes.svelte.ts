@@ -5,6 +5,7 @@
 import { onMount } from 'svelte';
 import type { Station } from './types';
 import { isMockMode, persistMockMode } from './mock-mode';
+import type { CurrentUser } from './types';
 
 const useMediaQuery = (query: string) => {
 	let matches = $state(false);
@@ -34,7 +35,7 @@ const useMediaQuery = (query: string) => {
 interface GlobalState {
 	stationId: number;
 	station?: Station;
-	user?: string;
+	user?: CurrentUser;
 	authOpen: boolean;
 	userOpen: boolean;
 	mockMode: boolean;

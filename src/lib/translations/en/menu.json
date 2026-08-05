@@ -31,6 +31,9 @@
 			"dialog": {
 				"title": "Edit profile",
 				"description": "Update your profile information here",
+				"provider_label": "Connected with",
+				"password_account": "Password Account",
+				"oauth_no_password": "Password changes are not available for social login accounts",
 				"username": "Username",
 				"username_action": "Change username",
 				"username_description": "Change your username here.",

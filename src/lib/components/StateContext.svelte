@@ -5,11 +5,12 @@
 	import Cookies from 'js-cookie';
 	import dayjs from 'dayjs';
 	import { onMount, type Snippet } from 'svelte';
+	import type { CurrentUser } from '@/shared/types';
 
 	interface Props {
 		children: Snippet;
 		locale: string;
-		user?: string;
+		user?: CurrentUser;
 		defaultStationId?: string | null;
 	}
 

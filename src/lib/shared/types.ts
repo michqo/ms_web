@@ -90,8 +90,16 @@ interface Station {
 	created_at: string;
 }
 
+interface CurrentUser {
+	username: string;
+	email: string;
+	has_usable_password: boolean;
+	social_providers: string[];
+}
+
 export type {
 	ChartData,
+	CurrentUser,
 	Forecast,
 	ForecastBase,
 	ForecastTransformed,

@@ -17,11 +17,14 @@
 	const { data }: Props = $props();
 
 	let open = $state(false);
+	const isOAuthOnly = $derived(
+		(globalState.user?.social_providers?.length ?? 0) > 0 && !globalState.user?.has_usable_password
+	);
 
 	const form = superForm(data, {
 		validators: zodClient(deleteSchema),
 		onUpdate: async ({ form: f }) => {
-			if (f.valid) {
+			if (f.valid || isOAuthOnly) {
 				toast.success($t('menu.actions.account.dialog.delete_success'));
 				open = false;
 				globalState.userOpen = false;
@@ -46,15 +49,19 @@
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<form method="POST" use:enhance class="space-y-4">
-			<Form.Field {form} name="current_password">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>{$t('menu.actions.account.dialog.form_confirm_password')}</Form.Label>
-						<Input {...props} type="password" bind:value={$formData.current_password} />
-					{/snippet}
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
+			{#if isOAuthOnly}
+				<input type="hidden" name="is_oauth" value="true" />
+			{:else}
+				<Form.Field {form} name="current_password">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>{$t('menu.actions.account.dialog.form_confirm_password')}</Form.Label>
+							<Input {...props} type="password" bind:value={$formData.current_password} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			{/if}
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel type="button"
 					>{$t('menu.actions.account.dialog.form_cancel')}</AlertDialog.Cancel

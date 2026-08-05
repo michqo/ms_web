@@ -26,7 +26,8 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 const deleteSchema = z.object({
-	current_password: z.string().min(3).max(20)
+	current_password: z.string().min(3).max(20).optional(),
+	is_oauth: z.boolean().optional()
 });
 type DeleteSchema = z.infer<typeof deleteSchema>;
 

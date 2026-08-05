@@ -158,7 +158,7 @@
 							}}
 						>
 							<CircleUser class="mr-2 h-4 w-4" />
-							{globalState.user}
+							{globalState.user?.username}
 						</Button>
 					</div>
 				{/if}

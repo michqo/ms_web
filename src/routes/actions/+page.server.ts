@@ -15,10 +15,10 @@ export const actions = {
 	},
 	delete: async (event) => {
 		const form = await superValidate(event, zod(deleteSchema));
-		if (!form.valid) {
-			return fail(400, {
-				form
-			});
+		const isOAuthUser = !event.locals.user?.has_usable_password;
+
+		if (!isOAuthUser && !form.valid) {
+			return fail(400, { form });
 		}
 
 		try {
@@ -30,9 +30,7 @@ export const actions = {
 			cookies.delete('refresh_token', TOKEN_COOKIE_OPTIONS);
 			redirect(308, '/');
 		} catch {
-			return fail(401, {
-				form
-			});
+			return fail(401, { form });
 		}
 	},
 	auth: async (event) => {

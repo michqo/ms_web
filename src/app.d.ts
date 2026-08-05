@@ -5,7 +5,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			accessToken: string | undefined;
-			user: string;
+			user: import('$lib/shared/types').CurrentUser;
 		}
 		// interface PageData {}
 		// interface PageState {}

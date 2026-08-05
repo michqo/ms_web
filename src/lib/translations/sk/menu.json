@@ -31,6 +31,9 @@
 			"dialog": {
 				"title": "Upraviť profil",
 				"description": "Tu môžete aktualizovať informácie o svojom profile",
+				"provider_label": "Pripojené cez",
+				"password_account": "Heslový účet",
+				"oauth_no_password": "Zmena hesla nie je dostupná pre účty cez sociálne prihlásenie",
 				"username": "Používateľské meno",
 				"username_action": "Zmeniť používateľské meno",
 				"username_description": "Tu môžete zmeniť svoje používateľské meno.",

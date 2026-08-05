@@ -73,8 +73,18 @@ export function mockAuthLogin(_credentials: LoginSchema) {
 
 export function mockAuthRegister() {}
 
-export function mockAuthGetUser(): string {
-	return 'demo_user';
+export function mockAuthGetUser(): {
+	username: string;
+	email: string;
+	has_usable_password: boolean;
+	social_providers: string[];
+} {
+	return {
+		username: 'demo_user',
+		email: 'demo@example.com',
+		has_usable_password: true,
+		social_providers: []
+	};
 }
 
 export function mockGetStations(): ListResponse<Station> {

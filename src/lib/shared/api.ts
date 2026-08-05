@@ -3,6 +3,7 @@ import axios, { type CreateAxiosDefaults, type AxiosInstance } from 'axios';
 import type { Dayjs } from 'dayjs';
 import type { DeleteSchema, LoginSchema, PasswordSchema, UsernameSchema } from './schemas';
 import type {
+	CurrentUser,
 	Forecast,
 	ListResponse,
 	LoginResponse,
@@ -97,11 +98,11 @@ class AuthenticationApi extends AxiosInterceptor {
 		return response.data;
 	}
 
-	async getUsersMe(token?: string): Promise<string> {
+	async getUsersMe(token?: string): Promise<CurrentUser> {
 		if (isMockMode()) return mockAuthGetUser();
 		const headers = token ? { Authorization: `JWT ${token}` } : undefined;
 		const response = await this.get('/auth/users/me/', { headers });
-		return response.data.username;
+		return response.data;
 	}
 }
 
@@ -121,10 +122,10 @@ class AuthenticatedApi extends AxiosInterceptor {
 		await this.delete('/auth/users/me/', { data: profile });
 	}
 
-	async getUsersMe(): Promise<string> {
+	async getUsersMe(): Promise<CurrentUser> {
 		if (isMockMode()) return mockAuthGetUser();
 		const response = await this.get('/auth/users/me/');
-		return response.data.username;
+		return response.data;
 	}
 
 	async getMeasurements(

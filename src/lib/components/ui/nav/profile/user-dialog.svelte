@@ -15,7 +15,7 @@
 
 	const form = superForm(
 		{
-			new_username: globalState.user || '',
+			new_username: globalState.user?.username || '',
 			current_password: ''
 		},
 		{
