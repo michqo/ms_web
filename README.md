@@ -16,8 +16,6 @@ monitor your backyard weather station in real time. built with SvelteKit and Dja
 - **i18n** — English and Slovak
 - **stations** — manage multiple stations, switch from the navbar
 
-[homepage screenshot]
-
 ## stack
 
 | layer    | tech                                         |
