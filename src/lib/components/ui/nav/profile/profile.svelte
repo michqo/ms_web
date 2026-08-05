@@ -47,7 +47,7 @@
 					{#if (currentUser.social_providers?.length ?? 0) > 0}
 						<div class="border-border/50 flex flex-wrap items-center gap-2 border-t pt-2">
 							<span class="text-muted-foreground text-[11px]"
-								>{$t('menu.actions.account.provider_label')}</span
+								>{$t('menu.actions.account.dialog.provider_label')}</span
 							>
 							{#each currentUser.social_providers as provider}
 								<span
@@ -60,7 +60,7 @@
 					{:else}
 						<div class="border-border/50 flex items-center gap-2 border-t pt-2">
 							<span class="text-muted-foreground text-[11px]"
-								>{$t('menu.actions.account.password_account')}</span
+								>{$t('menu.actions.account.dialog.password_account')}</span
 							>
 						</div>
 					{/if}
@@ -83,7 +83,7 @@
 							{$t('menu.actions.account.dialog.password')}
 						</p>
 						<p class="text-muted-foreground text-[11px]">
-							{$t('menu.actions.account.oauth_no_password')}
+							{$t('menu.actions.account.dialog.oauth_no_password')}
 						</p>
 					</div>
 				{:else}

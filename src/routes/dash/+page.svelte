@@ -146,7 +146,7 @@
 	let cachedStats = $state<MeasurementStat[]>([]);
 
 	$effect(() => {
-		if ($measurementStatsQuery.data?.length) {
+		if ($measurementStatsQuery.data) {
 			cachedStats = $measurementStatsQuery.data;
 		}
 	});
@@ -395,64 +395,72 @@
 							? $measurementStatsQuery.data
 							: cachedStats}
 						{@const isStale = $measurementStatsQuery.isPending}
-						{@const maxTemp = Math.max(...stats.map((s) => s.temperature))}
-						{@const minTemp = Math.min(...stats.map((s) => s.temperature))}
-						{@const avgHumidity = stats.reduce((a, s) => a + s.humidity, 0) / stats.length}
 
-						{#if isStale}
-							<div
-								class="text-muted-foreground mb-3 flex items-center gap-1.5 font-mono text-[11px]"
-							>
-								<Loader2 class="size-3 animate-spin" />
-								<span>{$t('dash.loading')}</span>
+						{#if stats.length === 0}
+							<div class="flex flex-1 flex-col items-center justify-center gap-2 py-6">
+								<ChartLine class="text-muted-foreground size-12 opacity-30" />
+								<p class="text-muted-foreground text-sm">{$t('dash.noDataPeriod')}</p>
 							</div>
-						{/if}
+						{:else}
+							{@const maxTemp = Math.max(...stats.map((s) => s.temperature))}
+							{@const minTemp = Math.min(...stats.map((s) => s.temperature))}
+							{@const avgHumidity = stats.reduce((a, s) => a + s.humidity, 0) / stats.length}
 
-						<div class={cn('mb-4 grid grid-cols-4 gap-2', isStale && 'opacity-50')}>
-							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[11px]">{$t('dash.maxTemp')}</span>
-								<span class="text-sm font-bold tabular-nums">{maxTemp.toFixed(1)}°</span>
-							</div>
-							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[11px]">{$t('dash.minTemp')}</span>
-								<span class="text-sm font-bold tabular-nums">{minTemp.toFixed(1)}°</span>
-							</div>
-							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[11px]">{$t('dash.avgHumidity')}</span>
-								<span class="text-sm font-bold tabular-nums">{Math.round(avgHumidity)}%</span>
-							</div>
-							<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
-								<span class="text-muted-foreground text-[11px]">{$t('dash.days')}</span>
-								<span class="text-sm font-bold tabular-nums">{stats.length}</span>
-							</div>
-						</div>
-
-						<div class={isStale ? 'opacity-50' : ''}>
-							<StatsChart
-								chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.temperature }))}
-								lineColor="red"
-								suffix="°C"
-								title={$t('dash.temperature')}
-							/>
-							<div class="mt-3">
-								<StatsChart
-									chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.humidity }))}
-									lineColor="blue"
-									suffix="%"
-									title={$t('dash.humidity')}
-								/>
-							</div>
-						</div>
-						{#if $measurementStatsQuery.isError}
-							<div class="mt-3 flex justify-center">
-								<Button
-									variant="outline"
-									size="xs"
-									onclick={() => $measurementStatsQuery.refetch()}
+							{#if isStale}
+								<div
+									class="text-muted-foreground mb-3 flex items-center gap-1.5 font-mono text-[11px]"
 								>
-									{$t('dash.status.retry')}
-								</Button>
+									<Loader2 class="size-3 animate-spin" />
+									<span>{$t('dash.loading')}</span>
+								</div>
+							{/if}
+
+							<div class={cn('mb-4 grid grid-cols-4 gap-2', isStale && 'opacity-50')}>
+								<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
+									<span class="text-muted-foreground text-[11px]">{$t('dash.maxTemp')}</span>
+									<span class="text-sm font-bold tabular-nums">{maxTemp.toFixed(1)}°</span>
+								</div>
+								<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
+									<span class="text-muted-foreground text-[11px]">{$t('dash.minTemp')}</span>
+									<span class="text-sm font-bold tabular-nums">{minTemp.toFixed(1)}°</span>
+								</div>
+								<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
+									<span class="text-muted-foreground text-[11px]">{$t('dash.avgHumidity')}</span>
+									<span class="text-sm font-bold tabular-nums">{Math.round(avgHumidity)}%</span>
+								</div>
+								<div class="bg-muted/50 flex flex-col items-center gap-0.5 rounded-lg p-2.5">
+									<span class="text-muted-foreground text-[11px]">{$t('dash.days')}</span>
+									<span class="text-sm font-bold tabular-nums">{stats.length}</span>
+								</div>
 							</div>
+
+							<div class={isStale ? 'opacity-50' : ''}>
+								<StatsChart
+									chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.temperature }))}
+									lineColor="red"
+									suffix="°C"
+									title={$t('dash.temperature')}
+								/>
+								<div class="mt-3">
+									<StatsChart
+										chartData={stats.map((s) => ({ date: s.date.toDate(), value: s.humidity }))}
+										lineColor="blue"
+										suffix="%"
+										title={$t('dash.humidity')}
+									/>
+								</div>
+							</div>
+							{#if $measurementStatsQuery.isError}
+								<div class="mt-3 flex justify-center">
+									<Button
+										variant="outline"
+										size="xs"
+										onclick={() => $measurementStatsQuery.refetch()}
+									>
+										{$t('dash.status.retry')}
+									</Button>
+								</div>
+							{/if}
 						{/if}
 					{/if}
 				</div>
