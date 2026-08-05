@@ -15,11 +15,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 			try {
 				const res = await authApi.refreshJwt(refreshToken!);
 				event.cookies.set('access_token', res.access, TOKEN_COOKIE_OPTIONS);
+				redirect(308, event.url);
 			} catch {
 				event.cookies.delete('access_token', TOKEN_COOKIE_OPTIONS);
 				event.cookies.delete('refresh_token', TOKEN_COOKIE_OPTIONS);
 			}
-			redirect(308, event.url);
 		}
 	}
 

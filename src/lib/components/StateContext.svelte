@@ -21,6 +21,8 @@
 		globalState.stationId = parseInt(defaultStationId);
 	}
 
+	globalState.user = user;
+
 	const stationsQuery = createQuery({
 		queryKey: ['stations'],
 		queryFn: () => api.getStations()
@@ -56,7 +58,6 @@
 	});
 
 	$effect(() => {
-		globalState.user = user;
 		dayjs.locale(locale);
 	});
 </script>
