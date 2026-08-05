@@ -1,93 +1,71 @@
 <div align="center">
-  <img src="static/favicon.png" alt="Weather Station Logo" width="100" />
-  <h1>Weather Station System</h1>
+  <img src="static/favicon.png" width="64" />
+  <h3>meteostation</h3>
+  <p>personal weather station dashboard</p>
 </div>
 
-This project is a complete IoT weather station monitoring system, featuring a robust backend API, a modern web-based frontend dashboard, and ESP32 hardware clients for data collection.
+---
 
-## Project Description
+## about
 
-The system enables real-time monitoring of weather conditions from various custom-built weather stations. Each station uses an ESP32 microcontroller to collect environmental data (temperature, humidity, pressure, etc.) and transmits it via HTTP to a central Django API. The SvelteKit-powered frontend provides a comprehensive interface for users to view live data, historical measurements, and forecasts.
+monitor your backyard weather station in real time. built with SvelteKit and Django.
 
-## Key Features
+- **live dashboard** — current conditions, trends, and forecast at a glance
+- **date range picker** — explore any period: 1d, 7d, 30d, or custom
+- **oauth** — sign in with Google or GitHub
+- **i18n** — English and Slovak
+- **stations** — manage multiple stations, switch from the navbar
 
-- **Real-time Monitoring**: Instant updates of latest weather conditions.
-- **Interactive Charts**: Historical data visualization using LayerChart.
-- **Detailed Forecasts**: Multi-day weather forecasts for each station.
-- **Station Management**: Interface to add, edit, and track multiple weather terminals.
-- **Multi-language Support**: Full internalization (i18n) for different locales.
-- **Hardware Integration**: Custom ESP32 implementation for reliable field data collection.
+[homepage screenshot]
 
-## Screenshots
+## stack
+
+| layer    | tech                                         |
+| -------- | -------------------------------------------- |
+| frontend | SvelteKit 5, Tailwind CSS v4, TanStack Query |
+| backend  | Django, DRF, Djoser, SimpleJWT               |
+| auth     | JWT + OAuth2 (Google, GitHub)                |
+| charts   | LayerChart, d3-scales                        |
+| db       | PostgreSQL                                   |
+
+## run locally
+
+```bash
+# frontend
+pnpm install
+pnpm dev          # → http://localhost:5173
+
+# backend (in ms_api/)
+poetry install
+python manage.py migrate
+python manage.py runserver  # → http://localhost:8000
+```
+
+env for frontend:
+
+```
+PUBLIC_API_URL=http://localhost:8000
+```
+
+env for backend (`ms_api/.env`):
+
+```
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+OAUTH_FRONTEND_CALLBACK=http://localhost:5173/oauth/callback
+```
+
+## screenshots
 
 <div align="center">
-  <img src=".github/assets/homepage.png" alt="Homepage" width="45%" style="border-radius: 8px; margin: 5px;" />
-  <img src=".github/assets/dashboard.png" alt="Dashboard" width="45%" style="border-radius: 8px; margin: 5px;" />
-  <br />
-  <img src=".github/assets/measurements.png" alt="Measurements" width="45%" style="border-radius: 8px; margin: 5px;" />
-  <img src=".github/assets/forecast.png" alt="Forecast" width="45%" style="border-radius: 8px; margin: 5px;" />
+  <img src=".github/assets/dashboard.png" width="48%" />
+  <img src=".github/assets/measurements.png" width="48%" />
+  <br/>
+  <img src=".github/assets/homepage.png" width="48%" />
 </div>
 
-## Tech Stack
+## license
 
-### Frontend
-
-- **Framework**: [SvelteKit](https://kit.svelte.dev/)
-- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [Bits UI](https://bits-ui.com/) & [shadcn (Svelte)](https://shadcn-svelte.com/)
-- **Visualization**: [LayerChart](https://www.layerchart.com/)
-- **Form Handling**: Superforms & Zod
-
-### Backend
-
-- **Framework**: [Django](https://www.djangoproject.com/)
-- **API**: [Django REST Framework](https://www.django-rest-framework.org/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/)
-
-### Hardware
-
-- **Micocontroller**: [ESP32](https://www.espressif.com/en/products/socs/esp32)
-- **Communication**: HTTP REST requests for data transmission
-
-## Setup & Development
-
-### Prerequisities
-
-- [Node.js](https://nodejs.org/) (v18+)
-- [pnpm](https://pnpm.io/) (v10+)
-- Python 3.x
-- PostgreSQL
-
-### Frontend Installation
-
-```bash
-# Clone the repository
-cd ms-web
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm dev
-```
-
-### Backend Installation
-
-```bash
-# Navigate to API directory
-cd ms-api
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-
-# Install requirements
-pip install -r requirements.txt
-
-# Run migrations
-python manage.py migrate
-
-# Start server
-python manage.py runserver
-```
+MIT
