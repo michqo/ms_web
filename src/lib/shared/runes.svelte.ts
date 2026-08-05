@@ -59,6 +59,9 @@ export const globalState: GlobalState = $state({
 export function setMockMode(enabled: boolean) {
 	globalState.mockMode = enabled;
 	persistMockMode(enabled);
+	if (typeof window !== 'undefined') {
+		window.location.reload();
+	}
 }
 
 export { useMediaQuery };
