@@ -25,6 +25,7 @@
 			queryKey: ['weekStats', globalState.stationId, startDate, endDate],
 			queryFn: () => api.getMeasurementStats(globalState.stationId!, startDate, endDate),
 			enabled: !!globalState.stationId,
+			retry: 1,
 			select: (data) =>
 				data.map((stat) => ({
 					...stat,
@@ -83,6 +84,7 @@
 				}
 			},
 			enabled: !!globalState.stationId,
+			retry: 1,
 			select: (data) =>
 				data
 					? {

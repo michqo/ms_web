@@ -58,8 +58,16 @@
 	const latestMeasurementQuery = $derived(
 		createQuery({
 			queryKey: ['latestMeasurement', globalState.stationId],
-			queryFn: () => api.getLatestMeasurement(globalState.stationId!),
+			queryFn: async () => {
+				try {
+					return await api.getLatestMeasurement(globalState.stationId!);
+				} catch (error: any) {
+					if (error?.response?.status === 404) return null;
+					throw error;
+				}
+			},
 			enabled: !!globalState.stationId,
+			retry: 1,
 			staleTime: 60_000
 		})
 	);
@@ -79,6 +87,7 @@
 					dateTo.toISOString()
 				),
 			enabled: !!globalState.stationId,
+			retry: 1,
 			placeholderData: (prev) => prev
 		})
 	);
