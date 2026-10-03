@@ -7,7 +7,8 @@
 		"dash": "Prehľad",
 		"measurements": "Merania",
 		"forecast": "Predpoveď",
-		"label": "Navigácia"
+		"label": "Navigácia",
+		"close": "Zavrieť navigáciu"
 	},
 	"theme": {
 		"action": "Prepínať tému",
@@ -67,7 +68,8 @@
 			"no_stations": "Žiadne stanice nie sú k dispozícii",
 			"no_stations_hint": "Najprv vytvorte stanicu, aby ste mohli začať zobrazovať údaje.",
 			"api_unavailable": "API je nedostupné",
-			"api_unavailable_hint": "Server nie je dostupný. Skontrolujte, či API beží."
+			"api_unavailable_hint": "Server nie je dostupný. Skontrolujte, či API beží.",
+			"close": "Zavrieť výber stanice"
 		}
 	}
 }

@@ -78,34 +78,37 @@
 	{:else}
 		{#each stations as station}
 			{@const isSelected = selectedStationId === station.id}
-			<button
+			<div
 				class={cn([
-					'group border-border/50 relative flex w-full flex-col items-start gap-1 overflow-hidden rounded-xl border p-5 text-left shadow-xs transition-all duration-200',
+					'group border-border/50 relative flex w-full flex-col items-start gap-1 rounded-xl border p-5 text-left shadow-xs transition-all duration-200',
 					isSelected
 						? 'border-primary bg-primary/5 shadow-xs'
 						: 'border-border/50 hover:bg-accent hover:border-accent-foreground/20'
 				])}
-				onclick={() => onSelect(station.id)}
 			>
 				{#if isSelected}
 					<CheckCircle2 class="text-primary absolute top-3 right-3 size-4" />
 				{/if}
-				<div class="z-10 flex w-full items-center justify-between">
-					<div class="flex flex-col">
+				<button
+					type="button"
+					aria-pressed={isSelected}
+					class="z-10 flex min-h-11 w-full items-center justify-between rounded-sm text-left"
+					onclick={() => onSelect(station.id)}
+				>
+					<span class="flex flex-col">
 						<span class="text-sm font-bold tracking-tight">{station.name}</span>
-						<span
-							class="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase opacity-60"
-						>
+						<span class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
 							{station.city_name}
 						</span>
-					</div>
-				</div>
+					</span>
+				</button>
 				<div class="mt-3 flex w-full gap-2">
 					{#if onEdit}
 						<Button
 							variant="ghost"
 							size="icon"
-							class="size-7"
+							class="size-11"
+							aria-label={`${$t('dash.dialog.manageStation.title')}: ${station.name}`}
 							onclick={(e) => {
 								e.stopPropagation();
 								onEdit(station);
@@ -117,7 +120,7 @@
 					<Button
 						variant="ghost"
 						size="sm"
-						class="h-7 text-xs"
+						class="min-h-11 text-xs"
 						onclick={(e) => {
 							e.stopPropagation();
 							onSelect(station.id);
@@ -126,7 +129,7 @@
 						{isSelected ? $t('dash.selected') : $t('dash.selectStation')}
 					</Button>
 				</div>
-			</button>
+			</div>
 		{/each}
 	{/if}
 </div>

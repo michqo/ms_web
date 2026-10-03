@@ -43,9 +43,10 @@
 			href={route}
 			class={cn(
 				buttonVariants({ variant: isActive ? 'default' : 'ghost', size: 'sm' }),
-				'group relative transition-all duration-200'
+				'group relative min-h-11 transition-colors'
 			)}
 			title={data.name}
+			aria-current={isActive ? 'page' : undefined}
 		>
 			{#if data.icon}
 				<data.icon class={cn('h-3.5 w-3.5', isActive ? '' : 'text-muted-foreground')} />
@@ -65,7 +66,10 @@
 <!-- Mobile Navigation -->
 <div class="sm:hidden">
 	<Dialog.Root bind:open={mobileMenuOpen}>
-		<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+		<Dialog.Trigger
+			aria-label={$t('menu.routes.label')}
+			class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'size-11' })}
+		>
 			<Menu class="h-4 w-4" />
 		</Dialog.Trigger>
 		<Dialog.Content
@@ -82,12 +86,19 @@
 						{get(t)('menu.app.title')}
 					</span>
 				</a>
-				<Button variant="ghost" size="icon" onclick={() => (mobileMenuOpen = false)}>
+				<Button
+					variant="ghost"
+					size="icon"
+					aria-label={$t('menu.routes.close')}
+					class="size-11"
+					onclick={() => (mobileMenuOpen = false)}
+				>
 					<X class="h-5 w-5" />
 				</Button>
 			</div>
 
 			<div class="w-full p-4">
+				<Dialog.Title class="sr-only">{$t('menu.routes.label')}</Dialog.Title>
 				<h3
 					class="text-muted-foreground mb-3 font-mono text-xs font-semibold tracking-widest uppercase"
 				>
@@ -141,7 +152,7 @@
 						<form method="POST" action="/actions?/logout" use:enhance>
 							<button
 								type="submit"
-								class="border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive/10 flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-colors"
+								class="border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive/10 flex min-h-11 cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-colors"
 								onclick={() => (mobileMenuOpen = false)}
 							>
 								<LogOut class="h-3.5 w-3.5" />

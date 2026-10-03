@@ -213,7 +213,7 @@
 	<title>{$t('dash.pageTitle')}</title>
 </svelte:head>
 
-<main class="flex min-h-screen flex-col items-center px-4 pb-20">
+<div class="flex min-h-screen flex-col items-center px-4 pb-20">
 	{#if !hasStation}
 		<div class="mt-32 flex w-full max-w-md flex-col items-center gap-4 text-center">
 			<CloudSun class="text-muted-foreground size-16" />
@@ -269,7 +269,7 @@
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<Thermometer class="text-primary size-5" />
-						<h3 class="text-sm font-semibold">{$t('dash.currentConditions')}</h3>
+						<h2 class="text-sm font-semibold">{$t('dash.currentConditions')}</h2>
 					</div>
 
 					{#if $latestMeasurementQuery.isPending}
@@ -346,7 +346,7 @@
 				>
 					<div class="mb-4 flex items-center gap-2.5">
 						<ChartLine class="text-primary size-5" />
-						<h3 class="text-sm font-semibold">{$t('dash.recentMeasurements')}</h3>
+						<h2 class="text-sm font-semibold">{$t('dash.recentMeasurements')}</h2>
 					</div>
 
 					<div class="mb-4 flex flex-wrap gap-1">
@@ -481,7 +481,7 @@
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<CloudSun class="text-primary size-5" />
-						<h3 class="text-sm font-semibold">{$t('dash.forecastWidget')}</h3>
+						<h2 class="text-sm font-semibold">{$t('dash.forecastWidget')}</h2>
 					</div>
 
 					{#if $forecastQuery.isPending}
@@ -520,7 +520,7 @@
 				>
 					<div class="mb-5 flex items-center gap-2.5">
 						<MapPin class="text-primary size-5" />
-						<h3 class="text-sm font-semibold">{$t('dash.mapWidget')}</h3>
+						<h2 class="text-sm font-semibold">{$t('dash.mapWidget')}</h2>
 					</div>
 
 					{#if currentStation?.latitude && currentStation?.longitude}
@@ -624,7 +624,7 @@
 			startInEditMode={editMode}
 		/>
 	{/if}
-</main>
+</div>
 
 <style>
 	.dashboard-widget {

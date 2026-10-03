@@ -80,12 +80,15 @@
 
 <Dialog.Root>
 	<Dialog.Trigger
+		aria-label={selectedStation
+			? `${$t('menu.actions.selector.label')}: ${selectedStation.name}`
+			: $t('menu.actions.selector.label')}
 		class={buttonVariants({
 			variant: 'ghost',
-			class: 'h-auto max-w-36 min-w-0 shrink gap-2 px-2 py-1.5'
+			class: 'min-h-11 max-w-36 min-w-0 shrink gap-2 px-2 py-1.5'
 		})}
 	>
-		<img src="/favicon.png" alt="logo" class="size-5 rounded" />
+		<img src="/favicon.png" alt="" class="size-5 rounded" />
 		{#if selectedStation}
 			<span class="min-w-0 truncate text-start text-xs font-semibold">{selectedStation.name}</span>
 			<ChevronDown class="size-3 shrink-0 opacity-40" />
@@ -107,7 +110,10 @@
 					{$t('menu.actions.selector.action')}
 				</Dialog.Description>
 			</div>
-			<Dialog.Close class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+			<Dialog.Close
+				aria-label={$t('menu.actions.selector.close')}
+				class={buttonVariants({ variant: 'ghost', class: 'size-11' })}
+			>
 				<X class="size-4" />
 			</Dialog.Close>
 		</Dialog.Header>

@@ -4,47 +4,32 @@
 	import { setLocale } from '@/shared';
 	import { locale, t } from '@/translations';
 	import { Languages } from 'lucide-svelte';
-	import { get } from 'svelte/store';
-	import { cn } from '@/utils';
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
-		class={buttonVariants({ variant: 'outline', size: 'icon' })}
+		class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'size-11 rounded-md' })}
 		aria-label={$t('menu.language.label')}
 	>
-		<Languages class="h-4 w-4" />
+		<Languages aria-hidden="true" class="size-4" />
 	</DropdownMenu.Trigger>
-	<form method="POST" action="?/lang">
-		<DropdownMenu.Content class="w-40 p-1 font-mono">
-			<DropdownMenu.Item
-				onclick={() => setLocale('en')}
-				class={cn(
-					'relative cursor-pointer px-3 py-3 text-xs transition-colors',
-					get(locale) === 'en'
-						? 'bg-primary/5 text-primary'
-						: 'text-muted-foreground hover:bg-muted/40 hover:text-foreground'
-				)}
+	<DropdownMenu.Content class="w-40 p-1">
+		<DropdownMenu.RadioGroup
+			value={$locale}
+			onValueChange={(value) => {
+				if (value === 'en' || value === 'sk') setLocale(value);
+			}}
+		>
+			<DropdownMenu.RadioItem
+				value="en"
+				class="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground min-h-11 cursor-pointer text-sm"
+				>{$t('menu.language.en')}</DropdownMenu.RadioItem
 			>
-				{#if get(locale) === 'en'}
-					<span class="bg-primary absolute top-1/2 left-0 h-3 w-px -translate-y-1/2"></span>
-				{/if}
-				🇬🇧 {$t('menu.language.en')}
-			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				onclick={() => setLocale('sk')}
-				class={cn(
-					'relative cursor-pointer px-3 py-3 text-xs transition-colors',
-					get(locale) === 'sk'
-						? 'bg-primary/5 text-primary'
-						: 'text-muted-foreground hover:bg-muted/40 hover:text-foreground'
-				)}
+			<DropdownMenu.RadioItem
+				value="sk"
+				class="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground min-h-11 cursor-pointer text-sm"
+				>{$t('menu.language.sk')}</DropdownMenu.RadioItem
 			>
-				{#if get(locale) === 'sk'}
-					<span class="bg-primary absolute top-1/2 left-0 h-3 w-px -translate-y-1/2"></span>
-				{/if}
-				🇸🇰 {$t('menu.language.sk')}
-			</DropdownMenu.Item>
-		</DropdownMenu.Content>
-	</form>
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
 </DropdownMenu.Root>

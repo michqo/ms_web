@@ -149,7 +149,7 @@
 		</div>
 	</div>
 
-	<main class="flex w-full flex-col items-center gap-6">
+	<div class="flex w-full flex-col items-center gap-6">
 		{#if !hasStationSelection}
 			<div class="border-border/50 bg-card w-full max-w-xl rounded-xl border p-6">
 				<p class="text-sm font-semibold">{$t('measurements.status.no_station')}</p>
@@ -214,7 +214,7 @@
 				</div>
 			{/if}
 		{/if}
-	</main>
+	</div>
 
 	<DayDialog
 		open={measurementsDialogOpen}

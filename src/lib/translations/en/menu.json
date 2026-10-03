@@ -7,7 +7,8 @@
 		"dash": "Overview",
 		"measurements": "Measurements",
 		"forecast": "Forecast",
-		"label": "Navigation"
+		"label": "Navigation",
+		"close": "Close navigation"
 	},
 	"theme": {
 		"action": "Toggle theme",
@@ -67,7 +68,8 @@
 			"no_stations": "No stations available",
 			"no_stations_hint": "Create a station first to start viewing data.",
 			"api_unavailable": "API unavailable",
-			"api_unavailable_hint": "Cannot reach the server. Check if the API is running."
+			"api_unavailable_hint": "Cannot reach the server. Check if the API is running.",
+			"close": "Close station selector"
 		}
 	}
 }
