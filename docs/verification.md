@@ -82,7 +82,7 @@ Latest proof: [live PostgreSQL overview](verification/live-overview-2026-10-13.p
 | Check                               | Result                                  |
 | ----------------------------------- | --------------------------------------- |
 | `pnpm check`                        | 0 errors / 0 warnings                   |
-| `pnpm test`                         | 88 tests / 14 files pass                |
+| `pnpm test`                         | 89 tests / 15 files pass                |
 | `pnpm lint`                         | Pass                                    |
 | `pnpm build:vercel`                 | Pass; Node 24 Vercel artifact generated |
 | `pnpm audit`                        | 0 advisories                            |
@@ -92,8 +92,8 @@ Latest proof: [live PostgreSQL overview](verification/live-overview-2026-10-13.p
 | `poetry run python manage.py test`  | 75 tests pass using PostgreSQL 18.6     |
 | `verify_weather_api`                | Real HTTP reads, JWT and mutations pass |
 
-Compatible dependency updates retain SvelteKit 2, Svelte 5, Vite 7, and TanStack
-Query 5. Formatting was verified with the installed Prettier 3.6.2 and the current
+Dependency updates retain SvelteKit 2, Svelte 5 and Vite 7. The Svelte Query adapter
+uses version 6 with Svelte 5 accessors and query-core 5. Formatting was verified with the installed Prettier 3.6.2 and the current
 Svelte/Tailwind formatter plugins. Forms use matching Zod 4 / Superforms adapters. The narrowly scoped
 `@sveltejs/kit>cookie` override selects 0.7.2 to resolve its remaining advisory.
 
@@ -118,6 +118,27 @@ development/production defaults, valid overrides and malformed/loopback URLs.
 The Fly station endpoint returned 200 with CORS headers allowing
 `https://ms.miqal.xyz` and `https://meteo.miqal.xyz`. No production data was changed.
 See [deployment configuration](vercel-deployment.md).
+
+The first production smoke test also exposed `derived_inert` warnings after
+navigating between workspaces. Svelte Query 5 retained an options-store
+subscription after its component was destroyed. Migrated the three query consumers
+to Svelte Query 6's native rune accessors, whose subscriptions have component
+cleanup, while preserving the existing query identities and API contracts. A
+mounted lifecycle regression checks that destroyed views have no observers,
+produce no inert-derived warnings on station changes, and load fresh data when remounted.
+
+The Vercel Git integration successfully published the redesign at
+https://ms.miqal.xyz. Browser checks against Fly loaded both public stations,
+switched stations, displayed live Meteoblue forecasts, and loaded station One's
+7 April 2025 daily average and all 22 raw readings. The exported CSV contains
+that UTC date and the matching temperature/humidity means. Current history is
+correctly empty: the latest reading for station One is from that date, and station
+Two has no observations. No production observations or accounts were added.
+
+The API changes were pushed separately. Its GitHub Fly Deploy workflow is
+`disabled_manually`, so pushing does not deploy the backend changes. Local API
+mutations/fixtures and tests verify those changes; production writes remain
+outside the smoke check above.
 
 ## Earlier demo checks · 2026-10-11
 

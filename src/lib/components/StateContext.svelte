@@ -3,7 +3,6 @@
 	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { toStore } from 'svelte/store';
 	import Cookies from 'js-cookie';
 	import dayjs from 'dayjs';
 	import { createApiClient } from '@/shared/api';
@@ -32,9 +31,7 @@
 	const mobile = useMediaQuery('(max-width: 640px)');
 	let session = untrack(() => accessToken);
 	let mode = untrack(() => demo);
-	const stations = createQuery(
-		toStore(() => stationsOptions(api, appState, page.url.pathname !== '/'))
-	);
+	const stations = createQuery(() => stationsOptions(api, appState, page.url.pathname !== '/'));
 	$effect(() => {
 		if (session !== accessToken || mode !== demo) {
 			client.clear();
@@ -57,7 +54,7 @@
 		if (browser) document.documentElement.lang = locale;
 	});
 	$effect(() => {
-		const values = $stations.data?.results;
+		const values = stations.data?.results;
 		if (!values) return;
 		const requested = Number(page.url.searchParams.get('station'));
 		const selected =

@@ -36,8 +36,9 @@ no trailing commas, and 100 print width.
   supplies a context-owned rune object and WeatherApi instance. Never introduce
   a shared mutable server user state or mutate a singleton authorization header.
 - Components read `getGlobalState()` / `getApi()` during initialization. Shared query
-  factories are in `shared/queries.ts`; pass reactive options via `toStore` to the
-  installed TanStack Svelte Query API. Keep query keys primitive and scoped.
+  factories are in `shared/queries.ts`; pass reactive options as accessor functions
+  to TanStack Svelte Query 6 and read query properties directly. Keep query keys
+  primitive and scoped. The adapter must dispose its subscriptions on navigation.
 - `/dash`, `/measurements`, `/demo`, and `/demo/measurements` share WeatherWorkspace.
   Overview sections and history/detail controls live under `components/weather`.
 - Reads normalize JSON at the API boundary. Dates/times for measurement history are

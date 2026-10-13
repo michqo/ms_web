@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { toStore } from 'svelte/store';
 	import { getApi, getGlobalState } from '@/shared/runes.svelte';
 	import {
 		dayOptions,
@@ -30,43 +29,37 @@
 	const api = getApi();
 	const client = useQueryClient();
 	const selection = $derived(readSelection(page.url.searchParams));
-	const stations = createQuery(toStore(() => stationsOptions(api, appState)));
-	const latest = createQuery(
-		toStore(() => ({
-			...latestOptions(api, appState),
-			enabled: latestOptions(api, appState).enabled && !history
-		}))
+	const stations = createQuery(() => stationsOptions(api, appState));
+	const latest = createQuery(() => ({
+		...latestOptions(api, appState),
+		enabled: latestOptions(api, appState).enabled && !history
+	}));
+	const stats = createQuery(() =>
+		statsOptions(api, appState, selection.from, selection.to, !selection.error)
 	);
-	const stats = createQuery(
-		toStore(() => statsOptions(api, appState, selection.from, selection.to, !selection.error))
+	const intraday = createQuery(() =>
+		dayOptions(api, appState, selection.from, selection.range === '1d' && !selection.error)
 	);
-	const intraday = createQuery(
-		toStore(() =>
-			dayOptions(api, appState, selection.from, selection.range === '1d' && !selection.error)
-		)
-	);
-	const forecast = createQuery(
-		toStore(() => ({
-			...forecastOptions(api, appState),
-			enabled: forecastOptions(api, appState).enabled && !history
-		}))
-	);
+	const forecast = createQuery(() => ({
+		...forecastOptions(api, appState),
+		enabled: forecastOptions(api, appState).enabled && !history
+	}));
 	const busy = $derived(
-		$stations.isFetching ||
-			$latest.isFetching ||
-			$stats.isFetching ||
-			$intraday.isFetching ||
-			$forecast.isFetching
+		stations.isFetching ||
+			latest.isFetching ||
+			stats.isFetching ||
+			intraday.isFetching ||
+			forecast.isFetching
 	);
 	const chartData = $derived(
 		selection.range === '1d'
-			? ($intraday.data ?? []).map((d) => ({
+			? (intraday.data ?? []).map((d) => ({
 					date: d.timestamp.toDate(),
 					value: d[selection.metric]
 				}))
-			: ($stats.data ?? []).map((d) => ({ date: d.date.toDate(), value: d[selection.metric] }))
+			: (stats.data ?? []).map((d) => ({ date: d.date.toDate(), value: d[selection.metric] }))
 	);
-	const trendQuery = $derived(selection.range === '1d' ? $intraday : $stats);
+	const trendQuery = $derived(selection.range === '1d' ? intraday : stats);
 	const ownStation = $derived(
 		!appState.demo && !!appState.user && appState.station?.user === appState.user.id
 	);
@@ -99,9 +92,9 @@
 		change({ station: String(id), day: null });
 	}
 	function exportCsv() {
-		if (!$stats.data?.length || selection.error || $stats.isError) return;
+		if (!stats.data?.length || selection.error || stats.isError) return;
 		const url = URL.createObjectURL(
-			new Blob([dailyCsv($stats.data)], { type: 'text/csv;charset=utf-8' })
+			new Blob([dailyCsv(stats.data)], { type: 'text/csv;charset=utf-8' })
 		);
 		const anchor = document.createElement('a');
 		anchor.href = url;
@@ -142,14 +135,14 @@
 			)}</button
 		>
 	</div>
-	{#if $stations.isPending}<p class="state-message" aria-live="polite">{$t('weather.loading')}</p>
-	{:else if $stations.isError && !$stations.data}<div class="state-message" role="alert">
+	{#if stations.isPending}<p class="state-message" aria-live="polite">{$t('weather.loading')}</p>
+	{:else if stations.isError && !stations.data}<div class="state-message" role="alert">
 			<p>{$t('weather.stationsError')}</p>
-			<button class="weather-button" onclick={() => $stations.refetch()}
+			<button class="weather-button" onclick={() => stations.refetch()}
 				>{$t('weather.retry')}</button
 			>
 		</div>
-	{:else if !$stations.data?.results.length}<div class="empty-workspace">
+	{:else if !stations.data?.results.length}<div class="empty-workspace">
 			<h2>{$t('weather.noStations')}</h2>
 			<p>{appState.user ? $t('weather.noStationsHelp') : $t('weather.publicEmpty')}</p>
 			{#if appState.user && !appState.demo}<button
@@ -164,25 +157,24 @@
 					aria-label={$t('weather.station')}
 					value={appState.stationId}
 					onchange={(e) => selectStation(Number(e.currentTarget.value))}
-					>{#each $stations.data.results as station}<option value={station.id}
-							>{station.name}</option
+					>{#each stations.data.results as station}<option value={station.id}>{station.name}</option
 						>{/each}</select
 				></label
 			><span class="station-city">{appState.station?.city_name}</span><StationManager
-				stations={$stations.data.results}
+				stations={stations.data.results}
 				onSelect={selectStation}
 			/>
 		</div>
-		{#if $stations.isError}<p class="weather-error" role="alert">
+		{#if stations.isError}<p class="weather-error" role="alert">
 				{$t('weather.refreshError')}
 			</p>{/if}
 		{#if appState.station}
 			{#if !history}<Observations
-					reading={$latest.data}
-					pending={$latest.isPending}
-					error={$latest.isError}
+					reading={latest.data}
+					pending={latest.isPending}
+					error={latest.isError}
 					demo={appState.demo}
-					onRetry={() => $latest.refetch()}
+					onRetry={() => latest.refetch()}
 				/>{/if}
 			<div class:overview-columns={!history}>
 				<section class="measurements-section" aria-labelledby="trend-title">
@@ -217,30 +209,30 @@
 						<div class="history-actions">
 							<button
 								class="weather-button"
-								disabled={!$stats.data?.length || $stats.isError || $stats.isFetching}
+								disabled={!stats.data?.length || stats.isError || stats.isFetching}
 								onclick={exportCsv}>{$t('weather.export')}</button
-							>{#if selection.range === '1d' && $intraday.data?.length}<button
+							>{#if selection.range === '1d' && intraday.data?.length}<button
 									class="weather-button"
 									onclick={() => change({ day: selection.from })}>{$t('weather.openDay')}</button
 								>{/if}{#if ownStation}<button
 									class="weather-button danger"
-									disabled={$stats.isPending}
+									disabled={stats.isPending}
 									onclick={() => (deleteOpen = true)}>{$t('weather.deleteReadings')}</button
 								>{/if}
 						</div>
 						<p class="muted csv-scope">{$t('weather.csvScope')}</p>
-						{#if $stats.data?.length}<HistoryTable
-								rows={$stats.data}
+						{#if stats.data?.length}<HistoryTable
+								rows={stats.data}
 								onSelect={(day) => change({ day })}
 							/>{/if}
 					{/if}
 					<p class="timezone-note">{$t('weather.timezone')}</p>
 				</section>
 				{#if !history}<ForecastSection
-						data={$forecast.data}
-						pending={$forecast.isPending}
-						error={$forecast.isError}
-						onRetry={() => $forecast.refetch()}
+						data={forecast.data}
+						pending={forecast.isPending}
+						error={forecast.isError}
+						onRetry={() => forecast.refetch()}
 					/>{/if}
 			</div>
 			<section class="station-location">

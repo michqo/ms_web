@@ -4,7 +4,6 @@
 	import { dayOptions } from '@/shared/queries';
 	import { formatReading, type Metric } from '@/shared/weather';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { toStore } from 'svelte/store';
 	import * as Dialog from '@/components/ui/dialog';
 	import Trend from './Trend.svelte';
 	import dayjs from 'dayjs';
@@ -22,8 +21,8 @@
 		appState.stationId;
 		tablePage = 1;
 	});
-	const query = createQuery(toStore(() => dayOptions(api, appState, shownDay, !!day)));
-	const data = $derived($query.data ?? []);
+	const query = createQuery(() => dayOptions(api, appState, shownDay, !!day));
+	const data = $derived(query.data ?? []);
 	const chart = $derived(data.map((d) => ({ date: d.timestamp.toDate(), value: d[metric] })));
 	const pages = $derived(Math.max(1, Math.ceil(data.length / 24)));
 </script>
@@ -43,19 +42,18 @@
 				>{$t('weather.completeDay')} · {data.length} {$t('weather.readings')}</Dialog.Description
 			></Dialog.Header
 		>
-		{#if $query.isError && !data.length}<div class="state-message" role="alert">
+		{#if query.isError && !data.length}<div class="state-message" role="alert">
 				<p>{$t('weather.dayError')}</p>
-				<button class="weather-button" onclick={() => $query.refetch()}
-					>{$t('weather.retry')}</button
+				<button class="weather-button" onclick={() => query.refetch()}>{$t('weather.retry')}</button
 				>
 			</div>{:else}
 			<Trend
 				data={chart}
 				{metric}
 				intraday
-				pending={$query.isPending}
-				error={$query.isError}
-				onRetry={() => $query.refetch()}
+				pending={query.isPending}
+				error={query.isError}
+				onRetry={() => query.refetch()}
 			/>
 			{#if data.length}<div class="weather-table-wrap">
 					<table class="weather-table">
