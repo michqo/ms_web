@@ -22,15 +22,19 @@ interface ListResponse<T> {
 }
 
 interface Measurement {
+	id?: number;
 	timestamp: Dayjs;
 	temperature: number;
 	humidity: number;
-	pressure: number;
-	rain: number;
-	wind_speed: number;
-	wind_direction: number;
+	pressure: number | null;
+	rain: number | null;
+	wind_speed: number | null;
+	wind_direction: number | null;
 	created_at: string;
 }
+
+export type MeasurementDTO = Omit<Measurement, 'timestamp'> & { timestamp: string };
+export type MeasurementStatDTO = Omit<MeasurementStat, 'date'> & { date: string };
 
 interface MeasurementStat {
 	temperature: number;
@@ -69,7 +73,8 @@ type ForecastArray = {
 	[K in keyof ForecastBase]: ForecastBase[K][];
 };
 
-interface Forecast extends ForecastArray {
+interface Forecast extends Omit<ForecastArray, 'time'> {
+	time: string[];
 	id: number;
 	latitude: number;
 	longitude: number;
@@ -91,6 +96,7 @@ interface Station {
 }
 
 interface CurrentUser {
+	id?: number;
 	username: string;
 	email: string;
 	has_usable_password: boolean;

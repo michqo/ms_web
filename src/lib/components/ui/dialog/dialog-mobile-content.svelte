@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { globalState } from '@/shared/runes.svelte.js';
+	import { getGlobalState } from '@/shared/runes.svelte.js';
 	import { cn, type WithoutChildrenOrChild } from '@/utils.js';
 	import { Dialog as DialogPrimitive } from 'bits-ui';
 	import type { Snippet } from 'svelte';
 	import * as Dialog from './index.js';
+	const globalState = getGlobalState();
 
 	let {
 		class: className,

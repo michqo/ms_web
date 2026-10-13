@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 vi.mock('$app/environment', () => ({
 	browser: true,
@@ -17,7 +17,8 @@ vi.mock('__sveltekit/paths', () => ({ assets: '', base: '' }));
 
 import AuthCard from './AuthCard.svelte';
 import { loginSchema } from '@/shared/schemas';
-import { globalState } from '@/shared/runes.svelte';
+import { APP_CONTEXT, createAppState } from '@/shared/runes.svelte';
+const globalState = createAppState();
 
 const rendered: Array<{ component: Record<string, never>; target: HTMLDivElement }> = [];
 
@@ -26,9 +27,10 @@ async function renderAuthCard(id: 'login' | 'register') {
 	document.body.append(target);
 	const component = mount(AuthCard, {
 		target,
+		context: new Map([[APP_CONTEXT, { state: globalState }]]),
 		props: {
 			id,
-			data: await superValidate(zod(loginSchema)),
+			data: await superValidate(zod4(loginSchema)),
 			value: id,
 			success: () => undefined,
 			failed: () => undefined
@@ -44,7 +46,7 @@ afterEach(() => {
 		unmount(component);
 		target.remove();
 	}
-	globalState.mockMode = false;
+	globalState.demo = false;
 });
 
 describe('AuthCard', () => {

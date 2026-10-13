@@ -1,70 +1,63 @@
 # AGENTS.md
 
-## Commands
+<!-- context7 -->
 
-```bash
-pnpm dev                   # vite dev server
-pnpm build                 # vite build
-pnpm check                 # svelte-kit sync + svelte-check (typecheck)
-pnpm lint                  # prettier --check .
-pnpm format                # prettier --write .
-```
+Use Context7 for current library, framework, SDK, API, CLI, and cloud-service
+documentation. Resolve the library ID before querying. Skip it for refactoring,
+business-logic debugging, code review, and general programming unless product
+documentation is needed.
 
-Pre-commit (Husky) runs `pnpm exec lint-staged` — auto-formats staged `*.{js,ts,svelte,css,md}` via Prettier.
+<!-- context7 -->
+
+## Commands and runtime
+
+Use Node 24 and pnpm 10.8.0. `pnpm dev`, `build`, `check`, `test`, `lint`, and
+`format` are the standard commands. `build:vercel` validates the production API
+origin and builds the explicit Node 24 Vercel adapter. Husky runs lint-staged/Prettier before commits.
+Tests are in `src/**/*.test.ts`; they do not require a live API or env variable.
+`pnpm dev` starts/checks the sibling local Django API and aligns its CORS/OAuth
+origin with the fixed frontend port 5174. `dev:frontend` runs Vite alone. Keep
+strictPort enabled so a port collision cannot silently break CORS.
 
 ## Architecture
 
-SvelteKit 5 + Svelte 5 frontend for a Django REST API backend. Backend runs separately at `ms-api/`.
+SvelteKit 2 / Svelte 5 / Vite 7, Tailwind 4, `@miqal/theme@0.2.1`, TanStack Query,
+LayerChart, Axios, and sveltekit-i18n. The Django API is the sibling `../ms_api`.
+Forms use Zod 4 with Superforms' `zod4` / `zod4Client` adapters. Keep the app and
+adapter on the same Zod version; import browser form helpers from `/client`.
+`@/*` resolves to `src/lib/*`. TypeScript is strict; format with tabs, single quotes,
+no trailing commas, and 100 print width.
 
-- **Path alias**: `@/*` → `src/lib/*` (not `src/*`). `$lib` is SvelteKit default → same place.
-- **Package manager**: pnpm 10.8+ only (strict engine). Node 18+.
-- **Styling**: Tailwind CSS v4 (`@import 'tailwindcss'`, no `@tailwind` directives). shadcn-svelte (base: zinc) in `src/lib/components/ui/`.
-- **State**: TanStack Query for server state, Svelte 5 `$state()` runes (`runes.svelte.ts`) for client state.
-- **Charts**: LayerChart, d3-scales.
-- **i18n**: `sveltekit-i18n` (en/sk) — key prefix matches route folder: `home.hero.title`, `dash...`, `measurements...`. Locale from cookie `lang` or `Accept-Language`.
-- **Auth**: JWT. Tokens stored as cookies (`access_token`, `refresh_token`). `Authorization: JWT <token>` header.
+- `hooks.server.ts` validates cookies using explicit-token authentication calls.
+  Refresh results populate the current request. Network failures preserve cookies.
+- `+layout.server.ts` returns request locals, translations, form defaults, and the
+  preferred station cookie. Universal layout load only initializes translations.
+- `+layout.svelte` creates one QueryClient per app instance. `StateContext.svelte`
+  supplies a context-owned rune object and WeatherApi instance. Never introduce
+  a shared mutable server user state or mutate a singleton authorization header.
+- Components read `getGlobalState()` / `getApi()` during initialization. Shared query
+  factories are in `shared/queries.ts`; pass reactive options via `toStore` to the
+  installed TanStack Svelte Query API. Keep query keys primitive and scoped.
+- `/dash`, `/measurements`, `/demo`, and `/demo/measurements` share WeatherWorkspace.
+  Overview sections and history/detail controls live under `components/weather`.
+- Reads normalize JSON at the API boundary. Dates/times for measurement history are
+  UTC. Forecast days are provider calendar dates. See `docs/api-contracts.md`.
+- Demo is explicit, deterministic, and read-only; never enable mock auth/mutations
+  or quietly replace a live API error with samples.
+- Mutations invalidate the whole current weather query scope. Station selection
+  changes the URL/query identity rather than calling invalidateAll.
+- Authentication still uses secure JWT cookies, provider POST forms, and one-time
+  OAuth callback ticket exchange. Account mutations require the request's token.
+- `PUBLIC_API_URL` uses dynamic public env. Development defaults to localhost:8000;
+  production defaults to https://meteostanica.fly.dev and rejects non-HTTPS/loopback origins.
+- English/Slovak UI uses `weather.*` plus retained auth/menu/forecast keys. Locale
+  changes keep URL state. Add matching keys in both languages.
+- Theme core owns fonts, colors, focus, and radii. App CSS owns composition and
+  spacing. Keep main controls at least 44px and maps behind a disclosure.
 
-## Auth flow
+## Verification
 
-1. `hooks.server.ts` reads cookies → calls `authApi.getUsersMe()` → sets `locals.accessToken` and `locals.user`.
-2. `+layout.server.ts` passes `locals` + i18n data to `+layout.ts`.
-3. `+layout.ts` prefetches user + stations via TanStack Query, sets `api.setAuthToken()`.
-4. `StateContext.svelte` hydrates `globalState` (stationId, station, user, isMobile).
-5. Stale token → `hooks.server.ts` tries refresh; if that fails, deletes cookies.
-6. Form actions in `actions/+page.server.ts`: login, register, delete account, logout.
-
-## Key files
-
-| Path                                     | Purpose                                                                   |
-| ---------------------------------------- | ------------------------------------------------------------------------- |
-| `src/hooks.server.ts`                    | Auth middleware (JWT validation, refresh, redirect)                       |
-| `src/routes/+layout.server.ts`           | Server-side layout load (auth, i18n, form validation init)                |
-| `src/routes/+layout.ts`                  | Client layout load (QueryClient, prefetch, API token setup)               |
-| `src/routes/+layout.svelte`              | Root layout (ModeWatcher, QueryClientProvider, Nav, StateContext)         |
-| `src/routes/actions/+page.server.ts`     | Form actions: auth, logout, delete                                        |
-| `src/lib/shared/api.ts`                  | Axios API client (`authApi` = unauthenticated, `api` = authenticated)     |
-| `src/lib/shared/types.ts`                | All TS types/interfaces                                                   |
-| `src/lib/shared/schemas.ts`              | Zod schemas for forms                                                     |
-| `src/lib/shared/runes.svelte.ts`         | `globalState` ($state rune) + `useMediaQuery`                             |
-| `src/lib/shared/index.ts`                | Re-exports `api`, `authApi`, `transformForecast`, `setLocale`, `setParam` |
-| `src/lib/components/StateContext.svelte` | Hydrates global state from server data + station cookie                   |
-| `src/lib/translations/index.ts`          | i18n config, exports `t`, `locale`, `setLocale`, etc.                     |
-
-## Conventions
-
-- **shadcn-svelte components**: each component dir has `index.ts` barrel. Import: `import { Button } from '@/components/ui/button'`.
-- **Prettier**: tabs, single quotes, no trailing commas, 100 print width.
-- **Tailwind v4**: uses CSS-based config (`@theme inline`, `@custom-variant dark`). Dark mode via class (`:is(.dark *)`).
-- **TS strict** mode is on.
-- **Env**: `PUBLIC_API_URL` (required, default `http://localhost:8000`). SvelteKit static public env — accessed via `$env/static/public`.
-
-## Gotchas
-
-- **No test suite** — no unit/E2E/integration tests exist in this repo.
-- **`@/*` is `src/lib/*`** — not `src/*`. The shadcn `components.json` uses `@/components` for UI, resolved through `components.json` aliases (not svelte.config.js alias).
-- **`pnpm check` requires `svelte-kit sync`** — it runs `svelte-kit sync && svelte-check` together.
-- **Forecast data** comes as parallel arrays from API — `transformForecast()` in `src/lib/shared/index.ts` maps them to object array.
-- **Form handling** uses `sveltekit-superforms` + `zod` adapters. Server forms validated in `+layout.server.ts` and passed as props.
-- **`.svelte-kit/tsconfig.json`** is the base tsconfig (auto-generated by SvelteKit).
-- **Husky autoformat** runs on staged files — commit without local Prettier may fail or produce follow-up commit.
-- **Vercel deploy** — `vercel.json` exists; uses `@sveltejs/adapter-auto`.
+Run the standard checks after relevant changes. Browser verification uses the
+explicit demo routes and labeled real PostgreSQL fixtures from `seed_weather`.
+Run `verify_weather_api` against the live local API as well as `../ms_api/tests`. Keep
+empty/error states distinct and never describe a partial day/range as complete.

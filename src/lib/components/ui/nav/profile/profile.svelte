@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { globalState, setMockMode } from '@/shared/runes.svelte';
+	import { getGlobalState } from '@/shared/runes.svelte';
 	import type { DeleteSchema } from '@/shared/schemas';
 	import { t } from '@/translations';
-	import { FlaskConical, KeyRound, Trash2, User } from 'lucide-svelte';
+	import { KeyRound, Trash2, User } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Dialog from '../../dialog';
 	import DeleteDialog from './delete-dialog.svelte';
 	import PasswordDialog from './password-dialog.svelte';
 	import UserDialog from './user-dialog.svelte';
+	const globalState = getGlobalState();
 
 	interface Props {
 		data: SuperValidated<DeleteSchema>;
@@ -37,7 +38,7 @@
 
 		<div class="space-y-4">
 			{#if currentUser}
-				<div class="bg-muted/50 flex flex-col gap-2 rounded-lg p-4">
+				<div class="flex flex-col gap-2 border-b py-4">
 					<div class="flex items-center justify-between">
 						<span class="text-sm font-semibold">{currentUser.username}</span>
 						{#if currentUser.email}
@@ -67,8 +68,8 @@
 				</div>
 			{/if}
 
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div class="flex flex-col items-center justify-center space-y-2 rounded-lg border p-4">
+			<div class="grid grid-cols-1 gap-3">
+				<div class="flex flex-wrap items-center justify-between gap-3 border-b py-3">
 					<User class="size-6" />
 					<p class="text-sm font-medium">{$t('menu.actions.account.dialog.username')}</p>
 					<UserDialog />
@@ -76,7 +77,7 @@
 
 				{#if isOAuthOnly}
 					<div
-						class="border-border/50 bg-muted/20 flex flex-col items-center justify-center space-y-2 rounded-lg border p-4"
+						class="border-border/50 bg-muted/20 flex flex-wrap items-center justify-between gap-3 border-b py-3"
 					>
 						<KeyRound class="text-muted-foreground size-6" />
 						<p class="text-muted-foreground text-sm font-medium">
@@ -87,7 +88,7 @@
 						</p>
 					</div>
 				{:else}
-					<div class="flex flex-col items-center justify-center space-y-2 rounded-lg border p-4">
+					<div class="flex flex-wrap items-center justify-between gap-3 border-b py-3">
 						<KeyRound class="size-6" />
 						<p class="text-sm font-medium">{$t('menu.actions.account.dialog.password')}</p>
 						<PasswordDialog />
@@ -95,33 +96,7 @@
 				{/if}
 			</div>
 
-			<div class="rounded-lg border p-4">
-				<button
-					onclick={() => setMockMode(!globalState.mockMode)}
-					class="flex w-full items-center justify-between gap-3 text-left transition-colors"
-				>
-					<div class="flex items-center gap-3">
-						<FlaskConical class="text-muted-foreground size-5 shrink-0" />
-						<div>
-							<p class="text-sm font-medium">Mock data mode</p>
-							<p class="text-muted-foreground text-xs">Browse with fake data when API is offline</p>
-						</div>
-					</div>
-					<div
-						class="flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors"
-						class:bg-primary={globalState.mockMode}
-						class:bg-muted={!globalState.mockMode}
-					>
-						<div
-							class="bg-background h-4 w-4 rounded-full shadow-sm transition-transform"
-							class:translate-x-4={globalState.mockMode}
-							class:translate-x-0={!globalState.mockMode}
-						></div>
-					</div>
-				</button>
-			</div>
-
-			<div class="border-destructive/50 bg-destructive/5 space-y-4 rounded-lg border p-4">
+			<div class="space-y-3 border-t pt-4">
 				<div class="space-y-1">
 					<h3 class="text-destructive font-semibold">
 						{$t('menu.actions.account.dialog.delete_title')}

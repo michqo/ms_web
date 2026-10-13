@@ -15,6 +15,16 @@ export const config: Config = {
 	loaders: [
 		{
 			locale: 'en',
+			key: 'weather',
+			loader: async () => (await import('./en/weather.json')).default
+		},
+		{
+			locale: 'sk',
+			key: 'weather',
+			loader: async () => (await import('./sk/weather.json')).default
+		},
+		{
+			locale: 'en',
 			key: 'menu',
 			loader: async () => (await import('./en/menu.json')).default
 		},

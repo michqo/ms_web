@@ -1,7 +1,7 @@
 import { deleteSchema, loginSchema } from '@/shared/schemas';
 import { defaultLocale, loadTranslations, locales, translations } from '@/translations';
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ url, locals, cookies, request }) => {
@@ -29,8 +29,8 @@ export const load = (async ({ url, locals, cookies, request }) => {
 
 	return {
 		...locals,
-		deleteForm: await superValidate(zod(deleteSchema)),
-		authForm: await superValidate(zod(loginSchema)),
+		deleteForm: await superValidate(zod4(deleteSchema)),
+		authForm: await superValidate(zod4(loginSchema)),
 		i18n: { locale, route: pathname },
 		translations: translations.get(),
 		defaultStationId: cookies.get('defaultStationId') ?? null

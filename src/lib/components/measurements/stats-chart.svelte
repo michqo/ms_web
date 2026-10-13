@@ -1,61 +1,49 @@
 <script lang="ts">
 	import type { ChartData } from '@/shared/types';
 	import { scaleTime } from 'd3-scale';
+	import { curveLinear } from 'd3-shape';
 	import dayjs from 'dayjs';
-	import { Axis, Chart, Highlight, Labels, Spline, Svg, Tooltip } from 'layerchart';
-
-	type LineColor = 'red' | 'purple' | 'blue' | 'green' | 'orange';
-
-	interface Props {
+	import { Axis, Chart, Spline, Svg } from 'layerchart';
+	import { locale } from '@/translations';
+	let {
+		chartData,
+		suffix = '',
+		title = '',
+		intraday = false
+	}: {
 		chartData: ChartData[];
-		lineColor: LineColor;
+		lineColor?: string;
 		suffix?: string;
 		title?: string;
-	}
-
-	const lineColors: Record<LineColor, string> = {
-		red: 'stroke-[var(--chart-4)]',
-		purple: 'stroke-[var(--chart-2)]',
-		blue: 'stroke-[var(--chart-1)]',
-		green: 'stroke-[var(--chart-3)]',
-		orange: 'stroke-[var(--chart-5)]'
-	};
-
-	const { chartData, lineColor, suffix = '', title = '' }: Props = $props();
+		intraday?: boolean;
+	} = $props();
 </script>
 
-<div
-	class="border-border/50 bg-card relative h-[300px] w-full rounded-xl border p-6 shadow-xs backdrop-blur-sm sm:p-7"
->
-	{#if title}
-		<div class="text-muted-foreground absolute top-2 left-3 text-sm font-medium">
-			{title}
-		</div>
-	{/if}
-
+<div class="weather-chart" role="img" aria-label={title}>
 	<Chart
 		data={chartData}
 		x="date"
 		xScale={scaleTime()}
 		y="value"
 		yNice
-		padding={{ left: 40, bottom: 24, top: 20, right: 20 }}
-		tooltip={{ mode: 'bisect-x' }}
+		padding={{ left: 42, bottom: 26, top: 16, right: 16 }}
 	>
-		<Svg>
-			<Axis
+		<Svg
+			><Axis
 				placement="left"
 				grid
 				rule={{ class: 'stroke-border' }}
 				format={(v) => `${v}${suffix}`}
-			/>
-			<Axis
+			/><Axis
 				placement="bottom"
-				format={(d) => dayjs(d).format('ddd')}
+				ticks={4}
+				format={(d) =>
+					dayjs(d)
+						.utc()
+						.locale($locale)
+						.format(intraday ? 'HH:mm' : 'D MMM')}
 				rule={{ class: 'stroke-border' }}
-			/>
-			<Spline class="stroke-2 {lineColors[lineColor]}" />
-			<Labels format="decimal" />
-		</Svg>
+			/><Spline curve={curveLinear} class="stroke-primary stroke-2" /></Svg
+		>
 	</Chart>
 </div>

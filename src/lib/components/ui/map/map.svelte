@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import 'leaflet/dist/leaflet.css';
 	import { browser } from '$app/environment';
 	import { cn } from '@/utils.js';
 	import type { Map as LeafletMap, Marker, TileLayer, LeafletMouseEvent } from 'leaflet';
@@ -9,6 +10,7 @@
 	import type { Station } from '@/shared/types';
 
 	let mapElement: HTMLDivElement;
+	let destroyed = false;
 	let map = $state<LeafletMap | null>(null);
 	let marker = $state<Marker | null>(null);
 	let locating = $state(false);
@@ -39,6 +41,7 @@
 
 		// Dynamically import Leaflet
 		const L = await import('leaflet');
+		if (destroyed || !mapElement?.isConnected) return;
 
 		// Create map with controls disabled in preview mode
 		zoom = stations ? 7 : zoom ? zoom : 8;
@@ -53,9 +56,8 @@
 
 		// Add tile layer
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: preview
-				? ''
-				: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			attribution:
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
 		if (stations && stations.length > 0) {
@@ -147,20 +149,10 @@
 	});
 
 	onDestroy(() => {
+		destroyed = true;
 		if (map) map.remove();
 	});
 </script>
-
-<svelte:head>
-	{#if browser}
-		<link
-			rel="stylesheet"
-			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-			integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-			crossorigin=""
-		/>
-	{/if}
-</svelte:head>
 
 <div class="ms-map-container">
 	<div bind:this={mapElement} class={cn('h-[300px] w-full rounded-md border', className)}></div>
@@ -230,9 +222,6 @@
 	}
 	:global(.ms-map-container .leaflet-control) {
 		z-index: 49 !important;
-	}
-	:global(.leaflet-control-attribution) {
-		display: none !important;
 	}
 
 	/* Shadcn style for markers */

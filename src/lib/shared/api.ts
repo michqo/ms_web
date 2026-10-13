@@ -1,6 +1,14 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-import axios, { type CreateAxiosDefaults, type AxiosInstance } from 'axios';
-import type { Dayjs } from 'dayjs';
+import axios, { type AxiosInstance } from 'axios';
+import dayjs, { type Dayjs } from 'dayjs';
+import { API_BASE_URL } from '@/shared/config';
+import { normalizeMeasurement, normalizeStats, validDate, normalizeForecast } from './weather';
+import {
+	mockGetForecast,
+	mockGetLatestMeasurement,
+	mockGetMeasurements,
+	mockGetMeasurementStats,
+	mockGetStations
+} from './mock';
 import type { DeleteSchema, LoginSchema, PasswordSchema, UsernameSchema } from './schemas';
 import type {
 	CurrentUser,
@@ -8,214 +16,192 @@ import type {
 	ListResponse,
 	LoginResponse,
 	Measurement,
-	MeasurementStat,
 	RefreshJWTResponse,
 	Station
 } from './types';
-import {
-	delay as mockDelay,
-	mockAuthGetUser,
-	mockAuthLogin,
-	mockAuthRegister,
-	mockCreateStation,
-	mockDeleteAccount,
-	mockDeleteMeasurement,
-	mockDeleteMeasurements,
-	mockDeleteStation,
-	mockGetForecast,
-	mockGetLatestMeasurement,
-	mockGetMeasurementStats,
-	mockGetMeasurements,
-	mockGetStations,
-	mockSetPassword,
-	mockSetUsername,
-	mockUpdateStation
-} from './mock';
-import { isMockMode } from './mock-mode';
 
-const instanceConfig: CreateAxiosDefaults = {
-	baseURL: PUBLIC_API_URL,
-	validateStatus(status) {
-		return status < 400;
+class ApiClient {
+	protected instance: AxiosInstance;
+	constructor(token = '') {
+		this.instance = axios.create({ baseURL: API_BASE_URL, timeout: 8000 });
+		this.setAuthToken(token);
 	}
-};
-
-class AxiosInterceptor {
-	protected instance = axios.create(instanceConfig);
-	protected get: AxiosInstance['get'];
-	protected post: AxiosInstance['post'];
-	protected put: AxiosInstance['put'];
-	protected delete: AxiosInstance['delete'];
-
-	constructor() {
-		this.instance.interceptors.response.use(
-			(response) => response,
-			(error) => {
-				if (error.response && error.response.status === 401) {
-					this.setAuthToken('');
-				}
-				return Promise.reject(error);
-			}
-		);
-
-		this.get = this.instance.get.bind(this.instance);
-		this.post = this.instance.post.bind(this.instance);
-		this.put = this.instance.put.bind(this.instance);
-		this.delete = this.instance.delete.bind(this.instance);
-	}
-
 	setAuthToken(token: string) {
-		if (token === '') {
-			delete this.instance.defaults.headers.common['Authorization'];
-			return;
-		}
-		this.instance.defaults.headers.common['Authorization'] = `JWT ${token}`;
+		if (token) this.instance.defaults.headers.common.Authorization = `JWT ${token}`;
+		else delete this.instance.defaults.headers.common.Authorization;
 	}
 }
-
-class AuthenticationApi extends AxiosInterceptor {
-	// Server-only: use through $lib/server/oauth to keep OAuth tickets out of client bundles.
+class AuthenticationApi extends ApiClient {
 	async exchangeOAuthTicket(code: string): Promise<LoginResponse> {
-		const response = await this.post('/auth/social/token/', { code });
-		return response.data;
+		return (await this.instance.post('/auth/social/token/', { code })).data;
 	}
-
 	async createJwt(credentials: LoginSchema): Promise<LoginResponse> {
-		if (isMockMode()) return mockAuthLogin(credentials);
-		const response = await this.post('/auth/jwt/create/', credentials);
-		return response.data;
+		return (await this.instance.post('/auth/jwt/create/', credentials)).data;
 	}
-
-	async postUser(credentials: LoginSchema): Promise<any> {
-		if (isMockMode()) return mockAuthRegister();
-		const response = await this.post('/auth/users/', credentials);
-		return response.data;
+	async postUser(credentials: LoginSchema) {
+		return (await this.instance.post('/auth/users/', credentials)).data;
 	}
-
 	async refreshJwt(refresh: string): Promise<RefreshJWTResponse> {
-		if (isMockMode()) return { access: 'mock_access_token_xxx' };
-		const response = await this.post('/auth/jwt/refresh/', { refresh });
-		return response.data;
+		return (await this.instance.post('/auth/jwt/refresh/', { refresh })).data;
 	}
-
-	async getUsersMe(token?: string): Promise<CurrentUser> {
-		if (isMockMode()) return mockAuthGetUser();
-		const headers = token ? { Authorization: `JWT ${token}` } : undefined;
-		const response = await this.get('/auth/users/me/', { headers });
-		return response.data;
+	async getUsersMe(token: string): Promise<CurrentUser> {
+		return (
+			await this.instance.get('/auth/users/me/', { headers: { Authorization: `JWT ${token}` } })
+		).data;
 	}
 }
-
-class AuthenticatedApi extends AxiosInterceptor {
-	async setUsername(profile: UsernameSchema) {
-		if (isMockMode()) return mockSetUsername();
-		await this.post('/auth/users/set_username/', profile);
+export class WeatherApi extends ApiClient {
+	constructor(
+		token = '',
+		private isDemo: () => boolean = () => false
+	) {
+		super(token);
 	}
-
-	async setPassword(profile: Omit<PasswordSchema, 'confirm_password'>) {
-		if (isMockMode()) return mockSetPassword();
-		await this.post('/auth/users/set_password/', profile);
+	private writable() {
+		if (this.isDemo()) throw new Error('Sample data is read-only');
 	}
-
-	async deleteAccount(profile: DeleteSchema) {
-		if (isMockMode()) return mockDeleteAccount();
-		await this.delete('/auth/users/me/', { data: profile });
+	async getStations(): Promise<ListResponse<Station>> {
+		if (this.isDemo()) return mockGetStations();
+		const results: Station[] = [];
+		for (let page = 1; page <= 100; page++) {
+			const { data } = await this.instance.get<ListResponse<Station>>('/api/stations/', {
+				params: { page }
+			});
+			results.push(...data.results);
+			if (!data.next) {
+				if (results.length !== data.count) throw new Error('Incomplete station list');
+				return { count: results.length, results, next: null, previous: null };
+			}
+			if (!data.results.length) throw new Error('Incomplete station list');
+		}
+		throw new Error('Station list exceeds request limit');
 	}
-
-	async getUsersMe(): Promise<CurrentUser> {
-		if (isMockMode()) return mockAuthGetUser();
-		const response = await this.get('/auth/users/me/');
-		return response.data;
+	async getLatestMeasurement(station: number): Promise<Measurement | null> {
+		try {
+			return normalizeMeasurement(
+				this.isDemo()
+					? mockGetLatestMeasurement(station)
+					: (await this.instance.get('/api/measurements/latest/', { params: { station } })).data
+			);
+		} catch (error) {
+			if (axios.isAxiosError(error) && error.response?.status === 404) return null;
+			throw error;
+		}
 	}
-
+	async getMeasurementStats(station: number, gt: string, lt: string) {
+		if (
+			!validDate(gt) ||
+			!validDate(lt) ||
+			gt > lt ||
+			dayjs.utc(lt).diff(dayjs.utc(gt), 'day') > 365
+		)
+			throw new Error('Invalid date range');
+		// The API accepts inclusive UTC dates, at most seven days apart.
+		const stats = [];
+		for (let start = dayjs.utc(gt); !start.isAfter(dayjs.utc(lt)); start = start.add(7, 'day')) {
+			const end = start.add(6, 'day').isAfter(dayjs.utc(lt)) ? dayjs.utc(lt) : start.add(6, 'day');
+			const from = start.format('YYYY-MM-DD'),
+				to = end.format('YYYY-MM-DD');
+			const data = this.isDemo()
+				? mockGetMeasurementStats(station, from, to)
+				: (
+						await this.instance.get('/api/measurements/stats/', {
+							params: { station, timestamp__gt: from, timestamp__lt: to }
+						})
+					).data;
+			stats.push(...normalizeStats(data));
+		}
+		return stats.sort((a, b) => a.date.valueOf() - b.date.valueOf());
+	}
 	async getMeasurements(
 		station: number,
-		page: number = 1,
+		page: number,
 		date: Dayjs,
-		pageSize: number = 10
+		pageSize = 10
 	): Promise<ListResponse<Measurement>> {
-		if (isMockMode()) return mockGetMeasurements(station, page, date, pageSize);
-		const params = new URLSearchParams();
-		params.append('station', station.toString());
-		params.append('page', page.toString());
-		params.append('timestamp_date', date.format('YYYY-MM-DD'));
-		params.append('page_size', pageSize.toString());
-		const response = await this.get<ListResponse<Measurement>>('/api/measurements/', {
-			params
-		});
-		return response.data;
+		const data = this.isDemo()
+			? mockGetMeasurements(station, page, date, pageSize)
+			: (
+					await this.instance.get('/api/measurements/', {
+						params: {
+							station,
+							page,
+							timestamp_date: date.format('YYYY-MM-DD'),
+							page_size: pageSize
+						}
+					})
+				).data;
+		return { ...data, results: data.results.map(normalizeMeasurement) };
 	}
-
-	async getMeasurementStats(station: number, gt: string, lt: string): Promise<MeasurementStat[]> {
-		if (isMockMode()) return mockGetMeasurementStats(station, gt, lt);
-		const params = new URLSearchParams();
-		params.append('station', station.toString());
-		params.append('timestamp__gt', gt);
-		params.append('timestamp__lt', lt);
-		const response = await this.get<MeasurementStat[]>('/api/measurements/stats/', {
-			params
-		});
-		return response.data;
+	async getDayMeasurements(station: number, date: Dayjs) {
+		const readings: Measurement[] = [];
+		let expectedCount: number | undefined;
+		const ids = new Set<number>();
+		for (let page = 1; page <= 50; page++) {
+			const data = await this.getMeasurements(station, page, date, 30);
+			if (expectedCount !== undefined && data.count !== expectedCount)
+				throw new Error('Day changed during retrieval');
+			expectedCount = data.count;
+			for (const reading of data.results) {
+				if (reading.id !== undefined) {
+					if (ids.has(reading.id)) throw new Error('Duplicate reading in day series');
+					ids.add(reading.id);
+				}
+			}
+			readings.push(...data.results);
+			if (!data.next) {
+				if (readings.length !== data.count) throw new Error('Incomplete day series');
+				return readings.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf());
+			}
+			if (!data.results.length) throw new Error('Incomplete day series');
+		}
+		throw new Error('Day series exceeds the request limit');
 	}
-
-	async getLatestMeasurement(station: number): Promise<Measurement> {
-		if (isMockMode()) return mockGetLatestMeasurement(station);
-		const params = new URLSearchParams();
-		params.append('station', station.toString());
-		const response = await this.get<Measurement>('/api/measurements/latest/', {
-			params
-		});
-		return response.data;
-	}
-
-	async deleteMeasurement(measurementId: number): Promise<void> {
-		if (isMockMode()) return mockDeleteMeasurement();
-		await this.delete(`/api/measurements/${measurementId}/`);
-	}
-
-	async deleteMeasurements(stationId: number, gt?: string, lt?: string): Promise<void> {
-		if (isMockMode()) return mockDeleteMeasurements();
-		const params = new URLSearchParams();
-		params.append('station', stationId.toString());
-		if (gt) params.append('timestamp__gt', gt);
-		if (lt) params.append('timestamp__lt', lt);
-
-		await this.delete('/api/measurements/bulk-delete/', { params });
-	}
-
 	async getForecast(station: number): Promise<Forecast> {
-		if (isMockMode()) return mockGetForecast(station);
-		const params = new URLSearchParams();
-		params.append('station', station.toString());
-		const response = await this.get<Forecast>('/api/forecast/', { params });
-		return response.data;
+		return normalizeForecast(
+			this.isDemo()
+				? mockGetForecast(station)
+				: (await this.instance.get('/api/forecast/', { params: { station } })).data
+		);
 	}
-
-	async getStations(): Promise<ListResponse<Station>> {
-		if (isMockMode()) return mockGetStations();
-		const response = await this.get<ListResponse<Station>>('/api/stations/');
-		return response.data;
+	async getUsersMe(): Promise<CurrentUser> {
+		return (await this.instance.get('/auth/users/me/')).data;
 	}
-
-	async updateStation(stationId: number, station: Partial<Station>): Promise<Station> {
-		if (isMockMode()) return mockUpdateStation(stationId, station);
-		const response = await this.put<Station>(`/api/stations/${stationId}/`, station);
-		return response.data;
+	async setUsername(profile: UsernameSchema) {
+		this.writable();
+		await this.instance.post('/auth/users/set_username/', profile);
 	}
-
-	async deleteStation(stationId: number): Promise<void> {
-		if (isMockMode()) return mockDeleteStation();
-		await this.delete(`/api/stations/${stationId}/`);
+	async setPassword(profile: Omit<PasswordSchema, 'confirm_password'>) {
+		this.writable();
+		await this.instance.post('/auth/users/set_password/', profile);
 	}
-
+	async deleteAccount(profile: DeleteSchema) {
+		this.writable();
+		await this.instance.delete('/auth/users/me/', { data: profile });
+	}
+	async deleteMeasurement(id: number) {
+		this.writable();
+		await this.instance.delete(`/api/measurements/${id}/`);
+	}
+	async deleteMeasurements(station: number, gt?: string, lt?: string) {
+		this.writable();
+		await this.instance.delete('/api/measurements/bulk-delete/', {
+			params: { station, timestamp__gt: gt, timestamp__lt: lt }
+		});
+	}
 	async createStation(station: Partial<Station>): Promise<Station> {
-		if (isMockMode()) return mockCreateStation(station);
-		const response = await this.post<Station>('/api/stations/', station);
-		return response.data;
+		this.writable();
+		return (await this.instance.post('/api/stations/', station)).data;
+	}
+	async updateStation(id: number, station: Partial<Station>): Promise<Station> {
+		this.writable();
+		return (await this.instance.put(`/api/stations/${id}/`, station)).data;
+	}
+	async deleteStation(id: number) {
+		this.writable();
+		await this.instance.delete(`/api/stations/${id}/`);
 	}
 }
-
-const authApi = new AuthenticationApi();
-const authenticatedApi = new AuthenticatedApi();
-
-export { authenticatedApi as api, authApi };
+export const createApiClient = (token = '', isDemo?: () => boolean) =>
+	new WeatherApi(token, isDemo);
+export const authApi = new AuthenticationApi();

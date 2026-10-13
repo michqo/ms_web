@@ -19,7 +19,7 @@ import Snow from '@/components/svgs/snow.svelte';
 import dayjs from 'dayjs';
 import type { Forecast, ForecastTransformed } from './types';
 import { goto, invalidateAll } from '$app/navigation';
-import { api, authApi } from './api';
+import { authApi } from './api';
 import { locale } from '@/translations';
 import Cookies from 'js-cookie';
 
@@ -77,4 +77,4 @@ async function setLocale(lang: string) {
 	await invalidateAll();
 }
 
-export { transformForecast, setParam, authApi, api, setLocale };
+export { transformForecast, setParam, authApi, setLocale };

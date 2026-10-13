@@ -3,7 +3,7 @@
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { setLocale } from '@/shared';
 	import { locale, t } from '@/translations';
-	import { Languages } from 'lucide-svelte';
+	import { Languages } from '@lucide/svelte';
 </script>
 
 <DropdownMenu.Root>

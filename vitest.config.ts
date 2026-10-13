@@ -8,7 +8,10 @@ export default mergeConfig(
 			conditions: ['browser']
 		},
 		test: {
+			include: ['src/**/*.test.ts'],
+			setupFiles: ['./tests/setup.ts'],
 			alias: {
+				'@/shared/config': new URL('./tests/api-config.ts', import.meta.url).pathname,
 				'__sveltekit/environment': new URL('./tests/sveltekit/environment.ts', import.meta.url)
 					.pathname,
 				'__sveltekit/paths': new URL('./tests/sveltekit/paths.ts', import.meta.url).pathname

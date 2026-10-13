@@ -86,8 +86,8 @@
 	"avgTemperature": "Priemern\u00e1 teplota",
 	"status": {
 		"updatedJustNow": "Pr\u00e1ve aktualizovan\u00e9",
-		"updatedAgo": "Aktualizovan\u00e9 pred {{n}}",
-		"lastSeenAgo": "Naposledy viden\u00e9 pred {{n}}",
+		"updatedAgo": "Aktualizovan\u00e9 pred {{time}}",
+		"lastSeenAgo": "Naposledy viden\u00e9 pred {{time}}",
 		"noData": "\u017diadne prijat\u00e9 d\u00e1ta",
 		"apiUnavailable": "Nepodarilo sa na\u010d\u00edta\u0165 d\u00e1ta",
 		"apiUnavailableHint": "API nie je dostupn\u00e9. Sk\u00faste to znova nesk\u00f4r.",

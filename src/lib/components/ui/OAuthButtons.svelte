@@ -11,12 +11,13 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PUBLIC_API_URL } from '$env/static/public';
-	import { globalState } from '@/shared/runes.svelte';
+	import { API_BASE_URL } from '@/shared/config';
+	import { getGlobalState } from '@/shared/runes.svelte';
 	import { t } from '@/translations';
 	import { Button } from './button';
+	const globalState = getGlobalState();
 
-	const actionUrls = buildOAuthActionUrls(PUBLIC_API_URL);
+	const actionUrls = buildOAuthActionUrls(API_BASE_URL);
 	let submitting = $state(false);
 
 	function startSubmission() {
@@ -36,10 +37,10 @@
 	});
 </script>
 
-{#if !globalState.mockMode}
-	<div class="space-y-3 px-6" data-slot="oauth-buttons">
+{#if !globalState.demo}
+	<div class="space-y-3" data-slot="oauth-buttons">
 		<form method="POST" action={actionUrls.google} onsubmit={startSubmission}>
-			<Button type="submit" variant="outline" class="w-full" disabled={submitting}>
+			<Button type="submit" variant="outline" class="min-h-11 w-full" disabled={submitting}>
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="size-4">
 					<path
 						fill="#4285F4"
@@ -63,7 +64,7 @@
 		</form>
 
 		<form method="POST" action={actionUrls.github} onsubmit={startSubmission}>
-			<Button type="submit" variant="outline" class="w-full" disabled={submitting}>
+			<Button type="submit" variant="outline" class="min-h-11 w-full" disabled={submitting}>
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="size-4 fill-current">
 					<path
 						d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .9.1-.6.4-1.1.7-1.4-2.3-.3-4.7-1.1-4.7-5A3.9 3.9 0 0 1 6.7 8c-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1A9.8 9.8 0 0 1 12 6c.8 0 1.7.1 2.4.3 1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1.1 2.7c0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"

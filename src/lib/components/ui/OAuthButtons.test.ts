@@ -7,7 +7,8 @@ import { get } from 'svelte/store';
 vi.mock('$app/environment', () => ({ dev: false }));
 
 import OAuthButtons, { buildOAuthActionUrls } from './OAuthButtons.svelte';
-import { globalState } from '@/shared/runes.svelte';
+import { APP_CONTEXT, createAppState } from '@/shared/runes.svelte';
+const globalState = createAppState();
 import { t } from '@/translations';
 
 const rendered: Array<{ component: Record<string, never>; target: HTMLDivElement }> = [];
@@ -15,7 +16,10 @@ const rendered: Array<{ component: Record<string, never>; target: HTMLDivElement
 function renderOAuthButtons() {
 	const target = document.createElement('div');
 	document.body.append(target);
-	const component = mount(OAuthButtons, { target });
+	const component = mount(OAuthButtons, {
+		target,
+		context: new Map([[APP_CONTEXT, { state: globalState }]])
+	});
 	flushSync();
 	rendered.push({ component, target });
 	return target;
@@ -26,7 +30,7 @@ afterEach(() => {
 		unmount(component);
 		target.remove();
 	}
-	globalState.mockMode = false;
+	globalState.demo = false;
 });
 
 describe('buildOAuthActionUrls', () => {
@@ -81,7 +85,7 @@ describe('OAuthButtons', () => {
 	});
 
 	it('hides provider controls in mock mode', () => {
-		globalState.mockMode = true;
+		globalState.demo = true;
 		const target = renderOAuthButtons();
 
 		expect(target.querySelectorAll('form')).toHaveLength(0);

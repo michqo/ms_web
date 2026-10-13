@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { ForecastTransformed } from '@/shared/types';
 	import Wind from '@/components/svgs/wind.svelte';
-	import { Droplets, Umbrella, Gauge, CloudFog, ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import { Droplets, Umbrella, Gauge, CloudFog, ChevronLeft, ChevronRight } from '@lucide/svelte';
 	import { Button } from '../ui/button';
 	import { t } from '@/translations';
-	import { globalState } from '@/shared/runes.svelte';
+	import { getGlobalState } from '@/shared/runes.svelte';
+	const globalState = getGlobalState();
 
 	interface Props {
 		forecast: ForecastTransformed;
@@ -36,7 +37,7 @@
 			class="h-12 w-12 rounded-full"
 			onclick={goToPrevious}
 			disabled={currentIndex == 0}
-			aria-label={$t('forecast.table.dialog.previous')}
+			aria-label={$t('weather.previous')}
 		>
 			<ChevronLeft class="h-6 w-6" />
 		</Button>
@@ -61,7 +62,7 @@
 			class="h-12 w-12 rounded-full"
 			onclick={goToNext}
 			disabled={currentIndex == allForecasts.length - 1}
-			aria-label={$t('forecast.table.dialog.previous')}
+			aria-label={$t('weather.next')}
 		>
 			<ChevronRight class="h-6 w-6" />
 		</Button>

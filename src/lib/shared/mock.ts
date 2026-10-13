@@ -1,226 +1,131 @@
-import type {
-	Forecast,
-	ForecastBase,
-	ListResponse,
-	Measurement,
-	MeasurementStat,
-	Station
-} from './types';
-import type { LoginSchema } from './schemas';
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import dayjs, { type Dayjs } from 'dayjs';
+import type { Forecast, ListResponse, MeasurementDTO, MeasurementStatDTO, Station } from './types';
 
-const MOCK_TOKEN = 'mock_access_token_xxx';
-const MOCK_REFRESH = 'mock_refresh_token_xxx';
-
-let stationIdCounter = 100;
-
+dayjs.extend(utc);
 const stations: Station[] = [
 	{
 		id: 1,
-		user: 1,
+		user: 0,
 		name: 'Bratislava',
 		city_name: 'Bratislava',
 		latitude: 48.1486,
 		longitude: 17.1077,
-		created_at: '2024-01-15T08:00:00Z'
+		created_at: '2026-01-01T00:00:00Z'
 	},
 	{
 		id: 2,
-		user: 1,
+		user: 0,
 		name: 'Košice',
 		city_name: 'Košice',
 		latitude: 48.7164,
 		longitude: 21.2611,
-		created_at: '2024-02-20T10:30:00Z'
-	},
-	{
-		id: 3,
-		user: 1,
-		name: 'Žilina',
-		city_name: 'Žilina',
-		latitude: 49.2235,
-		longitude: 18.7394,
-		created_at: '2024-03-10T14:15:00Z'
+		created_at: '2026-01-01T00:00:00Z'
 	}
 ];
-
-function randomBetween(min: number, max: number, decimals = 1): number {
-	const val = Math.random() * (max - min) + min;
-	return parseFloat(val.toFixed(decimals));
-}
-
-function generateMeasurement(date: Dayjs): Measurement {
+function reading(date: Dayjs, station: number): MeasurementDTO {
+	const hour = date.hour() + date.minute() / 60;
+	const offset = date.startOf('day').diff(dayjs.utc('2026-01-01'), 'day');
 	return {
-		timestamp: date,
-		temperature: randomBetween(15, 30),
-		humidity: randomBetween(40, 85, 0),
-		pressure: randomBetween(1005, 1025, 0),
-		rain: randomBetween(0, 5),
-		wind_speed: randomBetween(0, 20),
-		wind_direction: randomBetween(0, 360, 0),
-		created_at: date.toISOString()
+		id: date.valueOf() * 10 + station,
+		timestamp: date.toISOString(),
+		created_at: date.toISOString(),
+		temperature: Number(
+			(
+				19 +
+				station +
+				Math.sin(offset * 0.9) * 2.4 +
+				Math.sin(((hour - 7) * Math.PI) / 12) * 5
+			).toFixed(1)
+		),
+		humidity: Math.round(
+			62 + Math.cos(offset * 0.7) * 9 - Math.sin(((hour - 7) * Math.PI) / 12) * 12
+		),
+		pressure: null,
+		wind_speed: null,
+		wind_direction: null,
+		rain: null
 	};
 }
-
-export function delay(ms = 300): Promise<void> {
-	return new Promise((r) => setTimeout(r, ms));
-}
-
-export function mockAuthLogin(_credentials: LoginSchema) {
-	return { access: MOCK_TOKEN, refresh: MOCK_REFRESH };
-}
-
-export function mockAuthRegister() {}
-
-export function mockAuthGetUser(): {
-	username: string;
-	email: string;
-	has_usable_password: boolean;
-	social_providers: string[];
-} {
-	return {
-		username: 'demo_user',
-		email: 'demo@example.com',
-		has_usable_password: true,
-		social_providers: []
-	};
-}
-
 export function mockGetStations(): ListResponse<Station> {
-	return { count: stations.length, next: null, previous: null, results: [...stations] };
+	return {
+		count: stations.length,
+		next: null,
+		previous: null,
+		results: stations.map((s) => ({ ...s }))
+	};
 }
-
-export function mockGetLatestMeasurement(stationId: number): Measurement {
-	const now = dayjs();
-	return generateMeasurement(now.subtract(randomBetween(1, 15, 0), 'minute'));
+export function mockGetLatestMeasurement(station: number) {
+	return reading(dayjs.utc().startOf('day').hour(12), station);
 }
-
 export function mockGetMeasurements(
 	station: number,
 	page: number,
 	date: Dayjs,
-	pageSize: number
-): ListResponse<Measurement> {
-	const totalCount = 48;
-	const startIdx = (page - 1) * pageSize;
-	const results: Measurement[] = [];
-
-	for (let i = 0; i < pageSize && startIdx + i < totalCount; i++) {
-		const hour = date.hour(23 - Math.floor((startIdx + i) / 2)).minute((i % 2) * 30);
-		results.push(generateMeasurement(hour));
-	}
-
+	pageSize = 10
+): ListResponse<MeasurementDTO> {
+	if (date.isBefore(dayjs.utc().subtract(29, 'day').startOf('day')))
+		return { count: 0, next: null, previous: null, results: [] };
+	const total = 48;
+	const results = Array.from({ length: total }, (_, i) =>
+		reading(date.startOf('day').add((47 - i) * 30, 'minute'), station)
+	);
 	return {
-		count: totalCount,
-		next: startIdx + pageSize < totalCount ? `?page=${page + 1}` : null,
-		previous: page > 1 ? `?page=${page - 1}` : null,
-		results
+		count: total,
+		next: page * pageSize < total ? '?page=' + (page + 1) : null,
+		previous: page > 1 ? '?page=' + (page - 1) : null,
+		results: results.slice((page - 1) * pageSize, page * pageSize)
 	};
 }
-
 export function mockGetMeasurementStats(
 	station: number,
 	gt: string,
 	lt: string
-): MeasurementStat[] {
-	const from = dayjs(gt);
-	const to = dayjs(lt);
-	const results: MeasurementStat[] = [];
-	let current = from.startOf('day');
-
-	while (current.isBefore(to) || current.isSame(to, 'day')) {
+): MeasurementStatDTO[] {
+	const results: MeasurementStatDTO[] = [];
+	let date = dayjs.utc(gt).startOf('day');
+	const end = dayjs.utc(lt);
+	while (!date.isAfter(end) && results.length < 366) {
+		if (date.isBefore(dayjs.utc().subtract(29, 'day').startOf('day'))) {
+			date = date.add(1, 'day');
+			continue;
+		}
+		const offset = date.diff(dayjs.utc('2026-01-01'), 'day');
 		results.push({
-			temperature: randomBetween(18, 28),
-			humidity: randomBetween(45, 80, 0),
 			station,
-			date: current
+			date: date.format('YYYY-MM-DD'),
+			temperature: Number((19 + station + Math.sin(offset * 0.9) * 2.4).toFixed(1)),
+			humidity: Math.round(62 + Math.cos(offset * 0.7) * 9)
 		});
-		current = current.add(1, 'day');
+		date = date.add(1, 'day');
 	}
-
 	return results;
 }
-
 export function mockGetForecast(stationId: number): Forecast {
-	const now = dayjs();
 	const station = stations.find((s) => s.id === stationId) ?? stations[0];
-	const days = 7;
-
-	const arrays: Record<string, any[]> = {
-		time: [],
-		temperature_mean: [],
-		temperature_instant: [],
-		temperature_max: [],
-		temperature_min: [],
-		relativehumidity_mean: [],
-		windspeed_mean: [],
-		sealevelpressure_mean: [],
-		precipitation: [],
-		precipitation_hours: [],
-		predictability: [],
-		pictocode: [],
-		winddirection: [],
-		uvindex: []
-	};
-
-	for (let i = 0; i < days; i++) {
-		const ts = now.valueOf() + i * 86400 * 1000;
-		arrays.time.push(new Date(ts).toISOString());
-		arrays.temperature_instant.push(randomBetween(16, 28));
-		arrays.temperature_max.push(randomBetween(22, 32));
-		arrays.temperature_min.push(randomBetween(12, 20));
-		arrays.temperature_mean.push(randomBetween(18, 26));
-		arrays.relativehumidity_mean.push(randomBetween(45, 85, 0));
-		arrays.windspeed_mean.push(randomBetween(2, 15));
-		arrays.sealevelpressure_mean.push(randomBetween(1005, 1025, 0));
-		arrays.precipitation.push(randomBetween(0, 3));
-		arrays.precipitation_hours.push(randomBetween(0, 1, 0));
-		arrays.predictability.push(randomBetween(70, 100, 0));
-		arrays.pictocode.push(Math.floor(randomBetween(1, 5, 0)));
-		arrays.winddirection.push(randomBetween(0, 360, 0));
-		arrays.uvindex.push(randomBetween(1, 8, 0));
-	}
-
+	const today = dayjs.utc().startOf('day');
 	return {
-		id: station.id,
+		id: stationId,
 		latitude: station.latitude,
 		longitude: station.longitude,
 		city_name: station.city_name,
-		modelrun_utc: now.toISOString(),
+		modelrun_utc: today.hour(6).toISOString(),
 		utc_timeoffset: 2,
-		generation_time_ms: 245,
-		created_at: now.toISOString(),
-		...arrays
-	} as Forecast;
-}
-
-export function mockCreateStation(data: Partial<Station>): Station {
-	stationIdCounter++;
-	return {
-		id: stationIdCounter,
-		user: 1,
-		name: data.name ?? 'New Station',
-		city_name: data.city_name ?? 'Unknown',
-		latitude: data.latitude ?? 48.1486,
-		longitude: data.longitude ?? 17.1077,
-		created_at: new Date().toISOString()
+		generation_time_ms: 0,
+		created_at: today.hour(7).toISOString(),
+		time: Array.from({ length: 7 }, (_, i) => today.add(i, 'day').format('YYYY-MM-DD')),
+		temperature_max: [25, 24, 22, 21, 23, 24, 25],
+		temperature_min: [14, 13, 12, 11, 12, 13, 14],
+		temperature_mean: [20, 19, 17, 16, 18, 19, 20],
+		temperature_instant: [22, 21, 19, 18, 20, 21, 22],
+		relativehumidity_mean: [61, 65, 72, 75, 66, 62, 60],
+		windspeed_mean: [3.2, 4, 5.1, 3, 2.5, 3.8, 3],
+		sealevelpressure_mean: [1013, 1012, 1009, 1010, 1014, 1015, 1013],
+		precipitation: [0, 0, 2.4, 1.2, 0, 0, 0],
+		precipitation_hours: [0, 0, 3, 2, 0, 0, 0],
+		predictability: [90, 85, 80, 75, 70, 65, 60],
+		pictocode: [1, 3, 7, 7, 3, 1, 1],
+		winddirection: [180, 200, 220, 180, 160, 180, 200],
+		uvindex: [4, 4, 2, 2, 3, 4, 4]
 	};
 }
-
-export function mockUpdateStation(id: number, data: Partial<Station>): Station {
-	const existing = stations.find((s) => s.id === id);
-	return { ...existing!, ...data, id: existing!.id };
-}
-
-export function mockDeleteStation() {}
-
-export function mockDeleteMeasurement() {}
-
-export function mockDeleteMeasurements() {}
-
-export function mockSetUsername() {}
-
-export function mockSetPassword() {}
-
-export function mockDeleteAccount() {}

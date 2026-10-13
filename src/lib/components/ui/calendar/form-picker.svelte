@@ -2,11 +2,12 @@
 	import { buttonVariants } from '@/components/ui/button';
 	import { cn } from '@/utils';
 	import { CalendarDate, DateFormatter, getLocalTimeZone, today } from '@internationalized/date';
-	import { CalendarIcon } from 'lucide-svelte';
+	import { CalendarIcon } from '@lucide/svelte';
 	import { Calendar } from '../calendar';
 	import * as Form from '../form';
 	import * as Popover from '../popover';
 	import { t } from '@/translations';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		form: any;
@@ -23,7 +24,7 @@
 
 	const placeholder = today(getLocalTimeZone());
 
-	const { form: formData } = form;
+	const { form: formData } = untrack(() => form);
 </script>
 
 <Form.Field {form} {name} class="flex flex-col">

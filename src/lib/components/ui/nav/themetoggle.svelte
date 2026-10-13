@@ -2,7 +2,7 @@
 	import { buttonVariants } from '@/components/ui/button';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { mode, resetMode, setMode, userPrefersMode } from 'mode-watcher';
-	import { Moon, Sun, SunMoon } from 'lucide-svelte';
+	import { Moon, Sun, SunMoon } from '@lucide/svelte';
 	import { t } from '@/translations';
 
 	const themes = $derived([

@@ -4,8 +4,9 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			accessToken: string | undefined;
-			user: import('$lib/shared/types').CurrentUser;
+			accessToken?: string;
+			authUnavailable?: boolean;
+			user?: import('$lib/shared/types').CurrentUser;
 		}
 		// interface PageData {}
 		// interface PageState {}
